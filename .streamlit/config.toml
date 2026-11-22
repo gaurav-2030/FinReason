@@ -1,0 +1,36 @@
+# FinReason app theme: warm near-black surfaces, champagne accent, Inter + Instrument Serif.
+# app/theme.py adds the component styles on top.
+[theme]
+base = "dark"
+primaryColor = "#d6b46a"
+backgroundColor = "#0b0c0f"
+secondaryBackgroundColor = "#16181e"
+textColor = "#eceae4"
+linkColor = "#e3c37c"
+borderColor = "#262931"
+dataframeBorderColor = "#22252c"
+dataframeHeaderBackgroundColor = "#14161b"
+codeBackgroundColor = "#0f1115"
+showWidgetBorder = true
+baseRadius = "0.7rem"
+buttonRadius = "full"
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap, sans-serif"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&display=swap, sans-serif"
+codeFont = "'JetBrains Mono':https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400..700&display=swap, monospace"
+chartCategoricalColors = ["#3987e5", "#d95926", "#199e70"]
+greenColor = "#3ccf8e"
+redColor = "#ef6f6f"
+yellowColor = "#e8b04a"
+blueColor = "#3987e5"
+orangeColor = "#d95926"
+
+[theme.sidebar]
+backgroundColor = "#0e1014"
+secondaryBackgroundColor = "#16181e"
+borderColor = "#1e2026"
+
+[client]
+toolbarMode = "minimal"
+
+[server]
+fileWatcherType = "none"

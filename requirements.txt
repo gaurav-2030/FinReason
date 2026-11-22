@@ -1,0 +1,21 @@
+# Python 3.13. Install with: python3.13 -m venv .venv && .venv/bin/pip install -r requirements.txt
+dspy==3.4.0
+optuna==5.0.0        # required by DSPy MIPROv2
+textgrad==0.1.8
+litellm==1.103.2
+ollama==0.6.3
+openai==2.54.0
+anthropic==1.11.0
+sentence-transformers==6.1.0
+torch==2.14.1
+faiss-cpu==1.15.1
+rank-bm25==0.2.2
+numpy==2.5.3
+pandas==3.0.6
+scipy==1.18.1
+matplotlib==3.11.2
+tabulate==0.10.0
+pdfplumber==0.11.10
+pypdf==6.19.0
+streamlit==1.64.0
+pytest==9.1.1

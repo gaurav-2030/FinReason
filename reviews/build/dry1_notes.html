@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Review 1 notes</title><style>
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: #1b2433; background: #fff; }
+code, .mono { font-family: Menlo, "SF Mono", monospace; font-size: .86em; }
+table { border-collapse: collapse; }
+svg text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+@page { size: A4; margin: 20mm 19mm 20mm 19mm;
+  @bottom-center { content: counter(page); font: 9pt "Helvetica Neue", Helvetica, sans-serif; color: #777; }
+  @top-right { content: var(--running, ""); font: 8.5pt "Helvetica Neue", Helvetica, sans-serif; color: #888; } }
+@page cover { margin: 0; @bottom-center { content: none; } }
+body { font-family: Charter, Georgia, "Times New Roman", serif; font-size: 10.6pt; line-height: 1.5; }
+.cover { page: cover; height: 297mm; padding: 34mm 24mm 20mm; position: relative; break-after: page;
+  background: linear-gradient(160deg, #13294b 0%, #1d3d6b 55%, #0e7c86 130%); color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.cover .kicker { letter-spacing: .16em; text-transform: uppercase; font-size: 10.5pt; color: #9fe3e8; font-weight: 700; }
+.cover h1 { font-size: 28pt; line-height: 1.12; margin: 10mm 0 5mm; }
+.cover .sub { font-size: 14pt; color: #d6e2f3; line-height: 1.35; }
+.cover .doc { margin-top: 16mm; font-size: 17pt; font-weight: 700; color: #fff; border-left: 4px solid #9fe3e8; padding-left: 5mm; }
+.cover .doc span { display: block; font-size: 11pt; font-weight: 400; color: #c3d3ea; margin-top: 2mm; }
+.cover table { position: absolute; left: 24mm; right: 24mm; bottom: 34mm; width: calc(100% - 48mm); font-size: 11pt; }
+.cover td { padding: 2.2mm 0; border-bottom: 1px solid rgba(255,255,255,.25); }
+.cover .meta { position: absolute; left: 24mm; bottom: 14mm; font-size: 9.5pt; color: #c3d3ea; line-height: 1.5; }
+h1.doc-title { font-family: "Helvetica Neue", Helvetica, sans-serif; color: #13294b; font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #13294b; font-size: 15pt; margin: 8mm 0 3mm;
+  padding-bottom: 1.5mm; border-bottom: 2px solid #0e7c86; break-after: avoid; }
+h2.newpage { break-before: page; margin-top: 0; }
+h3 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #13294b; font-size: 11.8pt; margin: 5mm 0 2mm; break-after: avoid; }
+h4 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10.5pt; margin: 3.5mm 0 1.5mm; color: #2a3a55; break-after: avoid; }
+p { margin: 0 0 2.6mm; text-align: justify; hyphens: auto; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; } li { margin-bottom: 1.2mm; }
+table.t { width: 100%; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 8.6pt; margin: 2mm 0 4mm; break-inside: auto; }
+table.t th { background: #13294b; color: #fff; text-align: left; padding: 1.6mm 2mm; font-weight: 600; }
+table.t td { padding: 1.4mm 2mm; border-bottom: 1px solid #dde3ec; vertical-align: top; }
+table.t tr { break-inside: avoid; }
+table.t tr:nth-child(even) td { background: #f7f9fc; }
+table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.t tr.hl td { background: #fff4e5 !important; font-weight: 700; }
+.caption { font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 8.8pt; color: #5b6678; margin: 1mm 0 4mm; text-align: center; }
+.tcaption { font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 8.8pt; color: #5b6678; margin: 3mm 0 0; font-weight: 600; }
+figure { margin: 3mm 0 2mm; text-align: center; break-inside: avoid; } figure img, figure svg { max-width: 100%; }
+.box { background: #f4f7fb; border: 1px solid #dde3ec; border-left: 4px solid #0e7c86; border-radius: 4px; padding: 3mm 4mm; margin: 3mm 0; break-inside: avoid; }
+.box.warn { border-left-color: #c2610c; background: #fffaf3; }
+.box p:last-child, .box ul:last-child { margin-bottom: 0; }
+.toc { font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 10pt; }
+.toc li { margin-bottom: 1mm; }
+pre { font-family: Menlo, monospace; font-size: 8pt; line-height: 1.4; background: #0f1b2d; color: #e6edf7; padding: 3mm 4mm;
+  border-radius: 4px; white-space: pre-wrap; break-inside: avoid; }
+.refs li { font-size: 9pt; margin-bottom: 1.3mm; text-align: left; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.kv td:first-child { font-weight: 600; width: 32%; }
+
+@page { margin: 15mm 16mm 15mm 16mm; }
+body { font-size: 10.4pt; line-height: 1.42; }
+.nhead { border-bottom: 3px solid #0e7c86; padding-bottom: 3mm; margin-bottom: 4mm; font-family: "Helvetica Neue", Helvetica, sans-serif; }
+.nhead .k { color: #0e7c86; font-size: 8.5pt; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; }
+.nhead h1 { margin: 1mm 0 1mm; color: #13294b; font-size: 17pt; }
+.nhead .t { color: #5b6678; font-size: 8.8pt; }
+h2 { font-size: 12.5pt; margin: 5mm 0 2mm; padding-bottom: 1mm; }
+p, li { text-align: left; }
+li { margin-bottom: 0.8mm; }
+.oneline { background: #fff4e5; border-left: 4px solid #c2610c; padding: 2.5mm 4mm; font-size: 11pt; font-weight: 600; color: #13294b; margin: 2mm 0 3mm; }
+.qa dt { font-weight: 700; font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 9.8pt; margin-top: 2mm; color: #13294b; }
+.qa dd { margin: 0.5mm 0 0 0; }
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 2mm 0 3mm; }
+.nums div { background: #f4f7fb; border: 1px solid #dde3ec; border-radius: 4px; padding: 2.5mm 3mm; font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 8.3pt; color: #5b6678; line-height: 1.3; }
+.nums b { display: block; font-size: 15pt; color: #13294b; margin-bottom: 1mm; }
+:root { --running: "FinReason · Review 1 · notes"; }</style></head><body><div class="nhead"><div class="k">Review 1 · study notes</div><h1>Idea &amp; literature survey</h1><div class="t">Numerical Reasoning over Financial Reports — UE24AM343AB5 — Prompt Engineering and Optimization for Generative AI<br>Gaurav Girish (PES1UG24AM103) · Sunay R Hegde (PES1UG24AM903) · Dhruvagouda (PES1UG24AM089) · Hanshal Nagesh (PES1UG24AM110)</div></div>
+<div class="oneline">Which prompting strategies and automatic prompt optimizers make LLMs accurate, reliable and cheap at numerical questions over financial reports?</div>
+<h2>Who presents what</h2><table class="t"><colgroup><col style="width:13%"><col style="width:11%"><col style="width:30%"><col style="width:25%"><col style="width:21%"></colgroup><thead><tr><th class="">Member</th><th class="">Slides</th><th class="">Slide topics</th><th class="">Learn</th><th class="">Answers</th></tr></thead><tbody><tr><td class=""><b>Gaurav Girish</b></td><td class="">1–4<br><span style='color:#5b6678'>4 slides</span></td><td class="">Title & introductions; Numerical questions over financial reports; LLMs read finance well but calculate badly; Problem statement</td><td class="">Introduction, the problem, motivation, problem statement (notes §1)</td><td class="">“The project in one line?”, “Why local models?”</td></tr><tr><td class=""><b>Sunay R Hegde</b></td><td class="">5–8<br><span style='color:#5b6678'>4 slides</span></td><td class="">Objectives; Financial QA benchmarks; Main and latest papers — and the gaps we address; One pipeline — only the prompt changes</td><td class="">Objectives; benchmarks; main papers (FinQA, PoT, EEDP) and latest papers (FinanceReasoning, VeriFin, IndiaFinBench) with gaps; the pipeline (notes §2–4)</td><td class="">“How are you different from EEDP / VeriFin?”, “Why an Indian set?”</td></tr><tr><td class=""><b>Dhruvagouda</b></td><td class="">12–14<br><span style='color:#5b6678'>3 slides</span></td><td class="">Optimizing the prompts automatically; Experimental design; What is new</td><td class="">DSPy/TextGrad design; experimental design; novelty (notes §4–5)</td><td class="">“How do you avoid test leakage?”, “What is new?”</td></tr><tr><td class=""><b>Hanshal Nagesh</b></td><td class="">9–11<br><span style='color:#5b6678'>3 slides</span></td><td class="">Our seven prompting strategies; Text-based strategies — one question, four prompts; Code-based strategies — Program-of-Thought → VPSC</td><td class="">The seven strategies: CoT, Self-Consistency, decomposition, PoT, VPSC and their prompts (notes §3–4)</td><td class="">“How do the strategies differ?”, “How does VPSC work?”</td></tr></tbody></table><p class="note">Slides 1–14 are divided (14 slides: 4 + 4 + 3 + 3). The “Key references” and “Thank you” slides are not assigned; the last presenter shows them and the team takes questions together.</p>
+<h2>1. Problem</h2>
+<p>Financial reports mix tables and text. A question like “What was revenue growth?” needs four skills: <b>locate</b> the row, <b>extract</b> values with
+unit/scale/sign (₹ crore; “(6,537)” = −6,537), choose the <b>formula</b>, and <b>compute</b> without slips. LLMs are fluent but unreliable at this.</p>
+<h2>2. Objectives</h2>
+<ol><li>Compare 7 prompting strategies: direct, zero/few-shot CoT, decomposition, Program-of-Thought, Self-Consistency and our VPSC.</li>
+<li>Test automatic optimization: DSPy BootstrapFewShot, MIPROv2, TextGrad — vs hand-written prompts, with their cost.</li>
+<li>Compare Qwen3-1.7B and Qwen3-8B (local, Ollama) on accuracy, tokens, latency.</li>
+<li>Analyse errors and robustness; test on 44 new questions from Indian annual reports.</li></ol>
+<h2>3. Literature — papers to remember</h2>
+<table class="t"><colgroup><col style="width:7%"><col style="width:30%"><col style="width:63%"></colgroup><thead><tr><th class="">Ref</th><th class="">Work</th><th class="">Remember this</th></tr></thead><tbody><tr><td class="">[1]</td><td class="">FinQA (EMNLP 2021)</td><td class="">8,281 Qs with reasoning programs; model 61.24% vs experts 91.16%</td></tr><tr><td class="">[2]</td><td class="">TAT-QA (ACL 2021)</td><td class="">16,552 Qs over table + text; TagOp 50.1 EM vs humans 84.1</td></tr><tr><td class="">[5]</td><td class="">FinanceBench (2023)</td><td class="">GPT-4-Turbo + retrieval: 81% wrong or refused</td></tr><tr><td class="">[8]</td><td class="">EEDP (ACL Findings 2024)</td><td class="">Elicit→Extract→Decompose→Predict; basis of our decomposition prompt</td></tr><tr><td class="">[10]</td><td class="">Chain-of-Thought (NeurIPS 2022)</td><td class="">Examples with steps → better reasoning</td></tr><tr><td class="">[11]</td><td class="">Zero-shot CoT (NeurIPS 2022)</td><td class="">“Let's think step by step”: GSM8K 10.4→40.7%</td></tr><tr><td class="">[12]</td><td class="">Self-Consistency (ICLR 2023)</td><td class="">Vote over sampled answers: +17.9 pts GSM8K</td></tr><tr><td class="">[15]</td><td class="">Program-of-Thought (TMLR 2023)</td><td class="">Python does the math: FinQA 40.4→64.5% (Codex)</td></tr><tr><td class="">[19]</td><td class="">DSPy (ICLR 2024)</td><td class="">Compiles prompts; BootstrapFewShot keeps correct self-made demos</td></tr><tr><td class="">[20]</td><td class="">MIPROv2 (EMNLP 2024)</td><td class="">Optimizes instructions + demos; up to +13%</td></tr><tr><td class="">[21]</td><td class="">TextGrad (Nature 2025)</td><td class="">Textual “gradients” rewrite the prompt; GPT-4o GPQA 51→55%</td></tr><tr><td class="">[28]</td><td class="">GSM-Symbolic (ICLR 2025)</td><td class="">Changing only numbers lowers accuracy → memorization test idea</td></tr><tr><td class="">[36], [37]</td><td class="">IndFin-Bench, IndiaFinBench (2026)</td><td class="">Indian benchmarks: filing look-up (100 Qs) and SEBI/RBI regulatory text (406 Qs) — not multi-step calculation</td></tr><tr><td class="">[40]</td><td class="">FinanceReasoning (ACL 2025)</td><td class="">Harder, cleaner financial numerical-reasoning benchmark; o1 + PoT best at 89.1%; reasoning models still imprecise with numbers</td></tr><tr><td class="">[38], [39]</td><td class="">VeriFin (2026), DCRC (KDD 2026)</td><td class="">Check a model's numbers against XBRL facts with a solver / train an evidence-auditing agent — closest to VPSC</td></tr></tbody></table>
+<h2>4. Gaps → our answer</h2>
+<table class="t"><colgroup><col style="width:45%"><col style="width:55%"></colgroup><thead><tr><th class="">Gap</th><th class="">What we do</th></tr></thead><tbody><tr><td class="">Cost and significance rarely reported together</td><td class="">Same questions/scorer/models; accuracy + CI, tokens, McNemar tests</td></tr><tr><td class="">No manual-vs-automatic comparison on financial calculations (that we found)</td><td class="">DSPy + TextGrad vs strong manual prompts, with one-time cost</td></tr><tr><td class="">Indian benchmarks cover look-up and regulation, not calculation</td><td class="">Indian calculation set: Titan, Asian Paints, Marico, Pidilite</td></tr><tr><td class="">Number verifiers need XBRL, a solver or training</td><td class="">VPSC: training-free check that program numbers occur in the report</td></tr></tbody></table>
+<h2>5. Approach in one sentence</h2>
+<p>Load question → build context (table as Markdown, optional retrieval) → prompt with a strategy → run code in a sandbox → score (0.5% tolerance) →
+classify errors → statistics. Only the strategy changes between runs.</p>
+<h2>6. Likely questions</h2>
+<dl class="qa"><dt>What is the project in one line?</dt><dd>We test which prompting and prompt-optimization methods make LLMs accurate and cheap at numerical questions over financial reports, using local models.</dd><dt>Why not fine-tune?</dt><dd>Needs labelled data, GPUs and retraining for every model; prompting is cheap, works with any model and is the course focus.</dd><dt>Why Program-of-Thought?</dt><dd>LLMs make arithmetic slips; in PoT the model writes Python and the computer calculates exactly.</dd><dt>What is new?</dt><dd>A fair manual-vs-automatic prompting comparison with cost and significance; a training-free grounding check inside program voting (VPSC); and Indian multi-step calculation questions.</dd><dt>Isn't this already done (VeriFin, IndFin-Bench)?</dt><dd>Related, not the same: VeriFin needs XBRL data and a solver, DCRC needs training — VPSC needs neither. IndFin-Bench is mostly fact look-up; our Indian set is multi-step calculation.</dd><dt>Why local models?</dt><dd>Financial data is sensitive; local models keep data on the laptop and cost nothing per query.</dd><dt>Why an Indian set?</dt><dd>The main benchmarks are US filings; Indian reports use ₹ crore/lakh, 1,00,000 grouping and bracketed negatives, and existing Indian benchmarks do not test multi-step calculation.</dd></dl>
+<p class="note">[n] = reference numbers on the “Key references” slide.</p></body></html>

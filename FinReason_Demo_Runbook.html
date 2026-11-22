@@ -1,0 +1,406 @@
+<title>FinReason Demo Runbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a run-of-show sheet. Left rail = the order of events; main column = numbered cues (do / see / say), read top to bottom while presenting. */
+:root{
+  --bg:#f6f8f7; --paper:#ffffff; --ink:#14201c; --ink-2:#4b5a55; --rule:#d9e1de;
+  --accent:#0f6b55; --accent-soft:#e3f1ec; --amber:#a35f00; --amber-soft:#fdf1dc;
+  --red:#b3261e; --red-soft:#fbe9e7; --code-bg:#f0f4f2; --code-ink:#1d2b27; --you:#2a5bd7; --you-soft:#e6edfc;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1513; --paper:#141d1a; --ink:#e3ebe8; --ink-2:#9fb0aa; --rule:#26332f;
+  --accent:#4cc3a0; --accent-soft:#16302a; --amber:#f0b45a; --amber-soft:#2e2412;
+  --red:#ff8a80; --red-soft:#341a18; --code-bg:#0b110f; --code-ink:#d5e2dd; --you:#8fb0ff; --you-soft:#18233d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1513; --paper:#141d1a; --ink:#e3ebe8; --ink-2:#9fb0aa; --rule:#26332f;
+  --accent:#4cc3a0; --accent-soft:#16302a; --amber:#f0b45a; --amber-soft:#2e2412;
+  --red:#ff8a80; --red-soft:#341a18; --code-bg:#0b110f; --code-ink:#d5e2dd; --you:#8fb0ff; --you-soft:#18233d; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.6;margin:0;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px;max-width:1160px;margin:0 auto;padding-block:40px 80px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 24px);align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:14px}
+nav.toc .brand{font-family:var(--f-display);font-weight:700;font-size:20px;color:var(--accent)}
+nav.toc .sub{color:var(--ink-2);font-size:12.5px;margin-bottom:18px}
+nav.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+nav.toc a{display:block;color:var(--ink-2);text-decoration:none;padding:4px 10px;border-radius:6px}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--ink);background:var(--accent-soft);outline:none}
+nav.toc .t{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);margin-right:6px}
+main{min-width:0;max-width:780px}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.2}
+h1{font-size:clamp(32px,5vw,44px);margin:0 0 12px;font-weight:700}
+h2{font-size:27px;margin:64px 0 12px;padding-top:16px;border-top:2px solid var(--ink);font-weight:700}
+h2 .t{font-family:var(--f-mono);font-size:13.5px;color:var(--accent);display:block;margin-bottom:6px;letter-spacing:.06em}
+h3{font-size:19px;margin:30px 0 8px;font-weight:700}
+p{margin:0 0 12px}
+a{color:var(--accent)}
+.lede{font-size:18px;color:var(--ink-2);max-width:62ch}
+.meta{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px}
+ul,ol{padding-left:22px;margin:0 0 12px}
+li{margin:3px 0}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);color:var(--code-ink);padding:1px 5px;border-radius:4px}
+pre{font-family:var(--f-mono);font-size:13.5px;line-height:1.5;background:var(--code-bg);color:var(--code-ink);border:1px solid var(--rule);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:6px 0 14px}
+pre code{background:none;padding:0}
+.tbl{overflow-x:auto;margin:8px 0 18px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:none}
+tr.you td{background:var(--you-soft)}
+.num{text-align:right}
+.box{border-radius:8px;padding:13px 16px;margin:12px 0 16px;border:1px solid var(--rule);background:var(--paper)}
+.box > :last-child{margin-bottom:0}
+.lbl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:6px;display:block}
+.warn{background:var(--amber-soft);border-color:transparent}.warn .lbl{color:var(--amber)}
+.bad{background:var(--red-soft);border-color:transparent}.bad .lbl{color:var(--red)}
+.say{background:var(--accent-soft);border-color:transparent}.say .lbl{color:var(--accent)}
+/* a cue card: one slide or one demo step */
+.cue{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin:14px 0}
+.cue-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:8px}
+.cue-head .no{font-family:var(--f-mono);font-size:12px;color:var(--paper);background:var(--accent);border-radius:4px;padding:2px 7px}
+.cue-head h3{margin:0;font-size:18px}
+.cue-head .who{font-size:13px;color:var(--ink-2)}
+.cue-head .time{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);margin-left:auto}
+.cue.you{border-color:var(--you);box-shadow:inset 4px 0 0 var(--you)}
+.cue.you .no{background:var(--you)}
+.tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border-radius:4px;padding:1px 6px;background:var(--you);color:var(--paper)}
+.rows{display:grid;grid-template-columns:72px minmax(0,1fr);gap:6px 12px;font-size:15.5px}
+.rows dt{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);padding-top:3px}
+.rows dd{margin:0;min-width:0}
+.rows dd.say-line{background:var(--accent-soft);border-radius:6px;padding:8px 10px}
+.rows dd.fix{color:var(--amber)}
+.k{font-weight:600}
+.click{font-family:var(--f-mono);font-size:13px;background:var(--code-bg);border:1px solid var(--rule);border-radius:4px;padding:0 5px;white-space:nowrap}
+.checks{list-style:none;padding:0}
+.checks li{padding-left:28px;position:relative;margin:7px 0}
+.checks li::before{content:"□";position:absolute;left:4px;color:var(--accent);font-weight:700}
+.small{font-size:14px;color:var(--ink-2)}
+.toc-mobile{display:none}
+@media (max-width: 900px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0;padding-block:24px 60px}
+  nav.toc{display:none}
+  .toc-mobile{display:block}
+}
+@media (max-width: 520px){
+  body{font-size:15.5px}
+  .rows{grid-template-columns:minmax(0,1fr);gap:2px}
+  .rows dt{padding-top:8px}
+  .cue-head .time{margin-left:0}
+}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Run of show">
+  <div class="brand">Demo runbook</div>
+  <div class="sub">FinReason · Review 3 · 13 Nov 2026</div>
+  <ol>
+    <li><a href="#before"><span class="t">T−30</span>Before you start</a></li>
+    <li><a href="#order"><span class="t">0:00</span>Order of the talk</a></li>
+    <li><a href="#s1"><span class="t">0:00</span>Slides 1–5 · Sunay</a></li>
+    <li><a href="#s6"><span class="t">4:00</span>Slides 6–9 · Gaurav</a></li>
+    <li><a href="#s10"><span class="t">7:00</span>Slides 10–13 · Hanshal</a></li>
+    <li><a href="#s14"><span class="t">10:00</span>Slides 14–16 · Dhruvagouda</a></li>
+    <li><a href="#demo"><span class="t">13:00</span>Live demo, click by click</a></li>
+    <li><a href="#close"><span class="t">18:00</span>Slides 17–18 and Q&amp;A</a></li>
+    <li><a href="#code"><span class="t">Q&amp;A</span>If asked to show code</a></li>
+    <li><a href="#rescue"><span class="t">!</span>If something breaks</a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="meta">Review 3 · Final demo · reviews/Review3/Review3_Final_Demo_Slides.pdf</div>
+<h1>FinReason demo runbook</h1>
+<p class="lede">The whole presentation in order: what to set up, what is on each slide, what to say, and every click of the live demo with the result you should see. Read it top to bottom while you rehearse.</p>
+<p class="small">Your slides are shown with a blue edge and a <span class="tag">you</span> tag (slides 6–9, from the work division). If you end up presenting alone, follow every card in order; nothing is skipped. Every expected answer below was checked in the app on 11–12 Nov 2026. For the background and the full question bank, use the <a href="FinReason_Presentation_Guide.html">presentation guide</a> (<code>FinReason_Presentation_Guide.html</code> in the project folder).</p>
+
+<div class="toc-mobile box"><span class="lbl" style="color:var(--accent)">Jump to</span>
+<a href="#before">Before</a> · <a href="#order">Order</a> · <a href="#s1">1–5</a> · <a href="#s6">6–9</a> · <a href="#s10">10–13</a> · <a href="#s14">14–16</a> · <a href="#demo">Demo</a> · <a href="#close">17–18</a> · <a href="#code">Code</a> · <a href="#rescue">Rescue</a></div>
+
+<!-- ======================================================= BEFORE -->
+<h2 id="before"><span class="t">T−30 MIN</span>Before you start</h2>
+<ul class="checks">
+  <li>Laptop on charger. Close other heavy apps (both models together use a lot of memory).</li>
+  <li>Turn on Do Not Disturb so no notifications pop up on the projector.</li>
+  <li>Open Terminal and start the app (leave this window open the whole time):
+<pre><code>cd ~/Desktop/FinReason && bash scripts/start_app.sh</code></pre>
+  Wait for <code>URL: http://localhost:8501</code>. If it says <code>FinReason is already running</code>, it is already up; just open the link.</li>
+  <li>Keep the screen awake: open a second Terminal tab and run <code>caffeinate -d</code> (stop it later with <span class="click">Ctrl+C</span>).</li>
+  <li>Open <a href="http://localhost:8501">http://localhost:8501</a> in Chrome or Safari. Check the green <b>Ollama online</b> pill at the top right of the Overview page.</li>
+  <li><b>Warm up both models</b> (the first call loads a model into memory and takes longer): on the <b>Ask</b> page choose any Indian question, strategy <b>CoT few-shot</b>, click <span class="click">Run the pipeline</span>. Then switch <b>Model</b> to <b>Qwen3-8B</b> and run again. Switch the model back to <b>Qwen3-1.7B</b>.</li>
+  <li>Open these browser tabs in this order so you can click across instead of navigating: <b>Overview</b>, <b>Ask</b>, <b>Data</b>, <b>Compare</b>, <b>Results</b>, <b>Optimization</b>, <b>Errors</b> (each is a link in the app’s top bar; open with <span class="click">Cmd+click</span>).</li>
+  <li>Zoom the browser to about 125% with <span class="click">Cmd +</span> so the room can read it.</li>
+  <li>Open the slides <code>reviews/Review3/Review3_Final_Demo_Slides.pdf</code> in full-screen. Keep this runbook on your phone or a second screen.</li>
+  <li>Backup: <code>results/report.md</code> has every table if the app ever fails.</li>
+</ul>
+
+<!-- ======================================================= ORDER -->
+<h2 id="order"><span class="t">0:00</span>Order of the talk</h2>
+<div class="tbl"><table>
+<tr><th>Slides</th><th>Presenter</th><th>Topic</th><th class="num">Time</th></tr>
+<tr><td>1–5</td><td>Sunay R Hegde</td><td>Intro, what we compared, setup, main results (1.7B, 8B)</td><td class="num">≈ 4 min</td></tr>
+<tr class="you"><td>6–9</td><td><b>Gaurav Girish (you)</b></td><td>1.7B vs 8B, Indian reports, accuracy vs cost, why answers are wrong</td><td class="num">≈ 3 min</td></tr>
+<tr><td>10–13</td><td>Hanshal Nagesh</td><td>VPSC result, DSPy &amp; TextGrad, memorization check, ablations</td><td class="num">≈ 3 min</td></tr>
+<tr><td>14–16</td><td>Dhruvagouda</td><td>Key findings, the web app, demo plan</td><td class="num">≈ 3 min</td></tr>
+<tr><td>Demo</td><td>Dhruvagouda</td><td>Live app, 7 steps</td><td class="num">≈ 5 min</td></tr>
+<tr><td>17–18</td><td>Dhruvagouda</td><td>Conclusion, thank you, Q&amp;A (everyone answers their own part)</td><td class="num">≈ 1 min + Q&amp;A</td></tr>
+</table></div>
+<p class="small">Total ≈ 19 minutes before questions. Speak, do not read. Stress each slide’s “Key point” line.</p>
+
+<!-- ======================================================= 1-5 -->
+<h2 id="s1"><span class="t">0:00 · SUNAY</span>Slides 1–5: setup and main results</h2>
+
+<div class="cue"><div class="cue-head"><span class="no">1</span><h3>Title &amp; introductions</h3><span class="who">Sunay</span><span class="time">40 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Title, course code, four names.</dd>
+<dt>Say</dt><dd class="say-line">“We are Sunay, Gaurav, Dhruvagouda and Hanshal. Our question: which way of prompting an AI model gives correct answers to number questions about financial reports? Today: results and a live demo. I cover the setup and main results, Gaurav goes deeper into the results, Hanshal covers the automatic prompt tools and robustness, Dhruvagouda shows the demo and concludes.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">2</span><h3>What we compared</h3><span class="who">Sunay</span><span class="time">35 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>The 8-step pipeline: Load → Context → Prompt → LLM call → Execute/parse → Score → Diagnose → Record &amp; analyze.</dd>
+<dt>Say</dt><dd class="say-line">“Every question goes through the same eight steps. Only the prompting strategy changes; the questions, model and scoring stay fixed. 11 strategies, 3 datasets, 244 questions, Qwen3 models running on our own laptop, so no data left the machine.”</dd>
+<dt>Know</dt><dd>11 = 7 hand-written + the PoT-SC ablation + 3 optimizers. 244 = 100 FinQA + 100 TAT-QA + 44 Indian.</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">3</span><h3>Experimental setup</h3><span class="who">Sunay</span><span class="time">45 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Settings table and the status table (✓ complete, ◐ partial, pending).</dd>
+<dt>Say</dt><dd class="say-line">“100 FinQA, 100 TAT-QA, all 44 Indian questions, and 88 FinQA questions with changed numbers. Correct means within half a percent. With about 100 questions we show uncertainty ranges, and we only call a difference real if McNemar’s test says so, corrected for multiple tests. This table shows what is complete; the 8B model has only part of the grid because it is about five times slower on one laptop.”</dd>
+<dt>Know</dt><dd>8B “6/12 runs” = 6 FinQA strategies done; TAT-QA not complete. Say “pending” plainly; never estimate.</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">4</span><h3>Accuracy by strategy · Qwen3-1.7B</h3><span class="who">Sunay</span><span class="time">60 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Bars per strategy for FinQA, TAT-QA, Indian, with 95% CI lines.</dd>
+<dt>Say</dt><dd class="say-line">“Direct is 5, 11 and 2 percent: without showing its working the model almost always fails. Every reasoning strategy is far higher. Best: Program-of-Thought 57% on FinQA, Self-Consistency 74% on TAT-QA, Program-of-Thought 77% on the Indian set. But the good strategies are close and none of their differences is significant. The big win is asking for reasoning at all.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">5</span><h3>Accuracy by strategy · Qwen3-8B</h3><span class="who">Sunay</span><span class="time">55 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Same chart, 8B, FinQA only.</dd>
+<dt>Say</dt><dd class="say-line">“With the 8B model Direct gets 37% on FinQA; reasoning strategies get 70 to 75%, best is zero-shot Chain-of-Thought at 75%. Again the reasoning strategies are not significantly different from each other.”</dd>
+<dt>Hand over</dt><dd>“I now hand over to Gaurav, who starts with 1.7B versus 8B.”</dd>
+</dl></div>
+
+<!-- ======================================================= 6-9 -->
+<h2 id="s6"><span class="t">4:00 · GAURAV (YOU)</span>Slides 6–9: deeper into the results</h2>
+
+<div class="cue you"><div class="cue-head"><span class="no">6</span><h3>1.7B vs 8B</h3><span class="tag">you</span><span class="time">40 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Paired bars per strategy: blue = Qwen3-1.7B, orange = Qwen3-8B (FinQA).</dd>
+<dt>Say</dt><dd class="say-line">“Thank you, Sunay. Blue is the 1.7 billion model, orange the 8 billion. The bigger model is better for every strategy, by 16 to 32 points: Direct goes from 5 to 37, few-shot Chain-of-Thought from 52 to 70, Program-of-Thought from 57 to 73. The biggest jump is for Direct. But prompting still matters more than size here: the big model answering directly, 37%, is far below the small model writing Python, 57%.”</dd>
+<dt class="fix">Note</dt><dd class="fix">The speaker-script PDF used to end this slide with “the bigger model does not clearly beat the small one”, which was wrong (8B beats 1.7B on every strategy). It was fixed and rebuilt on 12 Nov; it now says “a bigger model helps, but a good prompt on the small model already gets a long way”. The line above says the same with numbers.</dd>
+<dt>Know</dt><dd>Gains: Direct +32, CoT zero-shot +26 (49→75), CoT few-shot +18, Decomposition +29 (44→73), PoT +16, Self-Consistency +22 (51→73). The 8B model makes far fewer evidence errors (few-shot CoT: 31 → 11).</dd>
+</dl></div>
+
+<div class="cue you"><div class="cue-head"><span class="no">7</span><h3>Indian annual reports</h3><span class="tag">you</span><span class="time">40 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Table: Direct 2, CoT zero-shot 66, CoT few-shot 66, Decomposition 66, PoT 77, Self-Consistency 66, PoT-SC 77, VPSC 77 (8B column “–”).</dd>
+<dt>Say</dt><dd class="say-line">“These are 44 questions we wrote ourselves over the annual reports of Titan, Asian Paints, Marico and Pidilite, so no model has seen them. They use rupees crore and lakh, brackets for negatives, and long tables, 18 rows on average. Direct gets 2%, Chain-of-Thought 66%, and Program-of-Thought 77%, even higher than its 57% on FinQA. So the methods carry over to Indian reports. Every gold answer is computed by running a formula, and all 44 were re-checked against the PDF pages.”</dd>
+<dt>Know</dt><dd>13 Titan, 12 Asian Paints, 12 Marico, 7 Pidilite. 8B on this set is pending. If asked why higher than FinQA: our tables are clean transcriptions and questions state period and unit clearly; FinQA text is noisy.</dd>
+</dl></div>
+
+<div class="cue you"><div class="cue-head"><span class="no">8</span><h3>Accuracy vs cost</h3><span class="tag">you</span><span class="time">60 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Two scatter plots (FinQA, TAT-QA): x = tokens per question (log scale), y = accuracy, one dot per strategy with its CI line. Blue = 1.7B, orange = 8B. There is no frontier line on the slide (the app’s Results page draws one).</dd>
+<dt>Say</dt><dd class="say-line">“A token is a small piece of text; more tokens means more time and money. Left is cheaper, up is more accurate, so top-left is best. The best-value strategies, the ones nothing else beats on both cost and accuracy, are on FinQA Direct, then zero-shot Chain-of-Thought, then Program-of-Thought. On the right are the strategies that ask the model five times: they use 4.4 to 5 times the tokens of few-shot Chain-of-Thought, but none is significantly more accurate. For a small model, asking five times is not worth it.”</dd>
+<dt>Know</dt><dd>Tokens per question (FinQA, 1.7B): Direct 1,148 · CoT zero-shot 1,281 · PoT 2,498 · CoT few-shot 2,745 · VPSC 12,388 · Self-Consistency 13,720. TAT-QA frontier: Direct, CoT zero-shot, CoT few-shot, Self-Consistency.</dd>
+</dl></div>
+
+<div class="cue you"><div class="cue-head"><span class="no">9</span><h3>Why answers are wrong</h3><span class="tag">you</span><span class="time">60 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Stacked bars of error categories.</dd>
+<dt>Say</dt><dd class="say-line">“For every wrong answer our code assigns one error type with fixed rules. The biggest part, about 60%, is evidence errors: the model used a wrong number or left one out. About 23% are reasoning errors, right numbers but wrong formula. About 9% are unit errors like millions versus thousands, and 4% sign errors. The grey part is Direct, which usually shows no working. So the main problem is not the maths, it is picking the right numbers.”</dd>
+<dt>Know</dt><dd>Based on 549 wrong answers: Qwen3-1.7B, FinQA + TAT-QA, reasoning strategies. Rules are checked in a fixed order: no answer → execution error → sign → scale → near miss (within 5%) → no work shown → evidence → reasoning.</dd>
+<dt>Hand over</dt><dd>“I now hand over to Hanshal, who presents our own method, VPSC.”</dd>
+</dl></div>
+
+<!-- ======================================================= 10-13 -->
+<h2 id="s10"><span class="t">7:00 · HANSHAL</span>Slides 10–13: VPSC, optimizers, robustness</h2>
+
+<div class="cue"><div class="cue-head"><span class="no">10</span><h3>VPSC result</h3><span class="who">Hanshal</span><span class="time">60 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>VPSC vs PoT-SC: FinQA 56/56, TAT-QA 67/67, Indian 77/77; programs rejected 26/493, 0/491, 0/219; flagged 6 (6 wrong).</dd>
+<dt>Say</dt><dd class="say-line">“Our method: the model writes five programs, we run them, and we throw away any program that uses a number not found in the report. Of 1,203 programs that ran, the check rejected 26, from 6 questions. Accuracy is the same as voting without the check, because this small model usually writes the same program five times: when one is bad, all five are bad. But all 6 flagged answers were wrong. So the check is a reliable warning light: when it fires, do not trust the answer.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">11</span><h3>DSPy and TextGrad</h3><span class="who">Hanshal</span><span class="time">40 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Optimized vs hand-written accuracy.</dd>
+<dt>Say</dt><dd class="say-line">“The automatic tools. DSPy BootstrapFewShot picks example solutions the model itself got right; it reached 45% on FinQA versus 52% for our hand-written few-shot prompt. TextGrad lets the 8B model criticise wrong answers and rewrite the prompt; it reached 43%. Both used only training and validation questions. TextGrad took 318 minutes and 768 thousand tokens to optimize, and its 62.5% validation score did not carry over: it overfit 40 validation questions. MIPROv2 is implemented but its run did not finish, so we report no number for it.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">12</span><h3>Memorization check</h3><span class="who">Hanshal</span><span class="time">45 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Original vs numbers-changed: CoT few-shot 56→50, PoT 58→56, VPSC 57→55; p = 0.424, 0.754, 0.754.</dd>
+<dt>Say</dt><dd class="say-line">“FinQA is public, so a model might have memorized answers. We changed every number in 88 questions by 10 to 30% and recomputed the true answers. Drops are small and none is significant, so the model is calculating, not remembering.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">13</span><h3>What else changes accuracy?</h3><span class="who">Hanshal</span><span class="time">65 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Ablation table: formats, retrieval, thinking.</dd>
+<dt>Say</dt><dd class="say-line">“One change at a time. Table format: on FinQA JSON was best with 54%, plain row text worst with 44%. Giving only the 5 most relevant rows instead of the full page lowered Program-of-Thought from 57 to 51%, because sometimes a needed number was left out. Qwen3’s thinking mode raised zero-shot Chain-of-Thought from 49 to 63%, which is significant, but used twice the tokens and took 13 times longer.”</dd>
+<dt>Hand over</dt><dd>“I now hand over to Dhruvagouda for the key findings and the live demo.”</dd>
+</dl></div>
+
+<!-- ======================================================= 14-16 -->
+<h2 id="s14"><span class="t">10:00 · DHRUVAGOUDA</span>Slides 14–16: findings and the app</h2>
+
+<div class="cue"><div class="cue-head"><span class="no">14</span><h3>Key findings</h3><span class="who">Dhruvagouda</span><span class="time">75 s</span></div>
+<dl class="rows">
+<dt>Say</dt><dd class="say-line">“One: showing the working is essential, at most 11% without it, 44 to 77% with it. Two: Program-of-Thought is the best single call on FinQA and Indian reports. Three: asking five times is not worth it for a small model. Four: the main problem is picking the right numbers, 60% of mistakes. Five: our VPSC check is a reliable warning light. Six: changing the numbers does not hurt significantly, and the methods work on Indian reports. Seven: thinking mode helps a lot but is slow. The automatic optimizers did not beat our hand-written prompts.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">15</span><h3>Live demo: every answer is auditable</h3><span class="who">Dhruvagouda</span><span class="time">50 s</span></div>
+<dl class="rows">
+<dt>Screen</dt><dd>Screenshot of the Ask page: Titan revenue growth, VPSC, answer 16.40.</dd>
+<dt>Say</dt><dd class="say-line">“On the left, the answer 16.40% with a green chip because it matches the correct answer, the agreement bar shows all five programs agreed, and the green box says every number they used is in the report. On the right, the tabs show the evidence rows, the Python code, each vote with its grounding check, and the exact prompt. Nobody has to trust the answer blindly.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">16</span><h3>Demo plan</h3><span class="who">Dhruvagouda</span><span class="time">30 s</span></div>
+<dl class="rows">
+<dt>Say</dt><dd class="say-line">“Here is what you will see: the Overview with our findings and claims checklist; the Ask page with a Marico growth question and then a new table; the Data page with the real report page; Compare with four strategies side by side; and the Results, Optimization and Errors pages.” Then switch to the browser.</dd>
+</dl></div>
+
+<!-- ======================================================= DEMO -->
+<h2 id="demo"><span class="t">13:00 · LIVE DEMO</span>The demo, click by click</h2>
+<p>Model: <b>Qwen3-1.7B</b> everywhere unless a step says otherwise. Steps 2 and 4 are replayed from the cache and appear instantly; step 3 is truly live. Say which is which; it builds trust.</p>
+
+<div class="cue"><div class="cue-head"><span class="no">D1</span><h3>Overview</h3><span class="time">30 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>Show the <b>Overview</b> tab. Scroll slowly to <b>Headline findings</b>, then to <b>Claims checklist</b> at the bottom.</dd>
+<dt>See</dt><dd>Tiles: 10 prompt configurations · 4,119 answers scored · best accuracy 75% · 74% · 77% · 7,805 model calls. The findings table. The checklist with ✓ and … marks.</dd>
+<dt>Say</dt><dd class="say-line">“Nothing on this page is typed by hand: it is computed live from our saved results. The checklist lists every claim from our three reviews; a tick means implemented with results, three dots means implemented but the run is pending, like MIPROv2 and the 8B grid.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D2</span><h3>Ask: Marico 9-year CAGR with VPSC</h3><span class="time">90 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>Go to <b>Ask</b>. Input is already <span class="click">Benchmark question</span> and Dataset <span class="click">Indian reports</span>. Click the <b>Question</b> box, type <code>marico-08</code>, press <span class="click">Enter</span>. Strategy is already <b>VPSC (ours)</b>. Click <span class="click">Run the pipeline</span>.</dd>
+<dt>See</dt><dd>Question: “What was the compound annual growth rate (CAGR) of income from operations from the year ended March 31, 2016 to the year ended March 31, 2025, in percent?” · gold 6.74. Stepper: Context → Prompt → Model (5 calls) → Sandbox executed → Grounding 5/5 grounded → Vote 5 samples → Score correct. Answer card <b>6.74</b> (exact 6.735598…), “100% of samples agree”, green grounding box. Caption: “answered from the response cache”.</dd>
+<dt>Then</dt><dd>Click the tabs on the right in this order:
+<ul>
+<li><b>Evidence</b>: the 10-year highlights table; the amber row is <b>Income from operations</b>, the row whose numbers the model used (6,024 in 2016 and 10,831 in 2025). The table shows 2016–2021 first: scroll it sideways (two-finger swipe on the table) to show 2025 = 10,831.</li>
+<li><b>Code &amp; trace</b>: <code>((income_from_operations_2025 / income_from_operations_2016) ** (1 / 9)) - 1</code>, then <code>ans = cagr * 100</code>; below it the variable values computed in the sandbox.</li>
+<li><b>Votes</b>: 5 samples (#1 greedy, #2–5 at T=0.7), all 6.74, all “✓ yes” grounded.</li>
+<li><b>Prompt</b>: the exact messages; 3 worked examples come before the question.</li>
+</ul></dd>
+<dt>Say</dt><dd class="say-line">“The model wrote five programs; the sandbox ran each, all five used only numbers that are in the report, and all five agree on 6.74, which matches the correct answer. This exact question was run before, so it is replayed from our response cache; the 85 seconds and 11,378 tokens shown are from the original run. Now something the system has never seen.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D3</span><h3>Ask: a new table, live</h3><span class="time">60–90 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>Click <span class="click">Paste a table</span>. A Titan table appears (Revenue 54,842 / 47,114; Other income 493 / 406; Profit before tax 4,481 / 4,607; Changes in inventories (6,537) / (2,149)). In the CSV box change <code>"54,842"</code> to <code>"60,000"</code> (keep the quotes). In <b>Question</b> type: <code>By what percent did revenue from operations grow from FY2024 to FY2025?</code> and press <span class="click">Enter</span>. Keep <b>VPSC (ours)</b>. Click <span class="click">Run the pipeline</span>.</dd>
+<dt>See</dt><dd>A live timer for about 10 seconds, then about <b>27.35</b>, 5/5 grounded, “no gold answer” (a pasted table has no gold). Check aloud: (60,000 − 47,114) / 47,114 × 100 = 27.35.</dd>
+<dt>Say</dt><dd class="say-line">“I just changed a number, so this answer cannot come from memory or from our cache: the model reads the new table, writes code, the sandbox computes it, and the grounding check confirms every number is in the table.”</dd>
+<dt>Tip</dt><dd>If the teacher gives you a question, type theirs instead. Tested live on 12 Nov with VPSC on Qwen3-1.7B (original table): profit before tax margin FY2025 = 8.17 (one of the five programs is rejected, so a yellow “check this answer” note appears even though 8.17 is right); PBT growth = −2.73; revenue + other income FY2025 = 55,335; change in inventories = −4,388. Any question asked before is answered instantly from the cache.</dd>
+<dt>Bonus</dt><dd>To show why code beats text, run <b>CoT few-shot</b> on “What was the change in inventories from FY2024 to FY2025?”: it answers +4,388 (sign error), while VPSC and Program-of-Thought give −4,388.</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D4</span><h3>Data: the same question next to the PDF page</h3><span class="time">30 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>Go to <b>Data</b>, scroll to <b>Browse the Indian set</b>. <b>Company</b> → <span class="click">Marico Limited</span>; <b>Question</b> → <span class="click">marico-08</span>.</dd>
+<dt>See</dt><dd>Gold 6.74 · <code>marico_ar_fy25.pdf · PDF page 253 (printed 502)</code> · “✓ verified against the PDF” · gold formula <code>((10831 / 6024) ** (1 / 9) - 1) * 100</code> · the table given to the model · the image of the real annual-report page. The page image is small; open <span class="click">Enlarge the PDF page (full width)</span> just below it so the room can read the numbers.</dd>
+<dt>Say</dt><dd class="say-line">“Our gold answers are never typed by hand. Each question has a formula over the printed numbers; the sandbox computes it; and here is the actual page of Marico’s annual report the numbers come from. The tile at the top shows all 44 were re-verified against the PDFs.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D5</span><h3>Compare: four strategies, one question</h3><span class="time">60 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>Go to <b>Compare</b>. Dataset is <span class="click">Indian reports</span>. In <b>Question</b> type <code>marico-08</code> and press <span class="click">Enter</span>. The strategies are already Direct, CoT few-shot, Program-of-Thought, VPSC (ours). Click <span class="click">Run all strategies</span>.</dd>
+<dt>See</dt><dd>Instantly (cached):
+<div class="tbl" style="margin-top:6px"><table>
+<tr><th>Strategy</th><th>Answer</th><th>Result</th><th class="num">Calls</th><th class="num">Tokens</th></tr>
+<tr><td>Direct</td><td>12.50</td><td>✕ wrong</td><td class="num">1</td><td class="num">920</td></tr>
+<tr><td>CoT few-shot</td><td>8.30</td><td>✕ wrong</td><td class="num">1</td><td class="num">2,730</td></tr>
+<tr><td>Program-of-Thought</td><td>6.74</td><td>✓ correct</td><td class="num">1</td><td class="num">2,274</td></tr>
+<tr><td>VPSC (ours)</td><td>6.74</td><td>✓ correct</td><td class="num">5</td><td class="num">11,378</td></tr>
+</table></div>
+Tiles: Correct 2 / 4, and the token bar chart on the right.</dd>
+<dt>Say</dt><dd class="say-line">“A CAGR needs a 9th root, which is very hard to do in text. Direct guesses 12.5, Chain-of-Thought writes out the steps but gets 8.3. Both code strategies get 6.74, because Python does the arithmetic. VPSC agrees but costs five times the tokens; that is our cost finding in one picture.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D6</span><h3>Results and Optimization</h3><span class="time">45 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd><b>Results</b> (FinQA selected): show the <span class="click">Accuracy</span> tab (dots with CI lines for both models), then <span class="click">Accuracy vs cost</span>, then <span class="click">1.7B vs 8B</span>. Then <b>Optimization</b>: point at the cost tiles, scroll to the test-accuracy chart, open the <span class="click">TextGrad</span> expander at the bottom.</dd>
+<dt>See</dt><dd>Results tiles: best strategy CoT zero-shot 75% · Qwen3-8B; VPSC 56% (+4 vs CoT few-shot); Direct 37%. Optimization tiles: DSPy BootstrapFewShot 42% dev · 3 min · 15 calls; DSPy MIPROv2 <b>not run · pending</b>; TextGrad 62% dev · 318 min · 382 calls. TextGrad expander: the rewritten system prompt and its step history.</dd>
+<dt>Say</dt><dd class="say-line">“Every chart is recomputed from the saved runs with one scorer. On Optimization you see the one-time cost of each tool next to its test accuracy: TextGrad spent over five hours and its long rewritten prompt did worse on the test set than our short hand-written one. MIPROv2 is implemented but its run did not finish, so it is marked pending.”</dd>
+</dl></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D7</span><h3>Errors: open one evidence error</h3><span class="time">45 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>Go to <b>Errors</b>. <b>Dataset</b> → <span class="click">Indian reports</span>. Model Qwen3-1.7B and Strategy Program-of-Thought are the defaults. <b>Error category</b> → <span class="click">evidence error</span>. Scroll to the case list (“6 wrong answers”) and tick the box at the left of the <b>marico-07</b> row; the case opens below with the program and the model output side by side.</dd>
+<dt>See</dt><dd>marico-07: “By what percentage did current investments grow from 31st March, 2024 to 31st March, 2025?” Gold 430.89, model answer 0. The model’s code sets both years to 1375.</dd>
+<dt>Say</dt><dd class="say-line">“A typical evidence error: the model put the same number in for both years, so it computes zero growth. The arithmetic is perfect; the number is wrong. That is the 60% of errors we saw, and it is exactly what a cell-level check would catch next.”</dd>
+<dt>Back up</dt><dd>Other clear cases in the same list: <b>asian-06</b> (asked in ₹ million; the model returned the crore figure 5,321.55 instead of 53,215.5, since 1 crore = 10 million: a unit slip that our rules file as an evidence error because ×10 is not one of the scale factors), <b>marico-10</b> (used dividend per share as EPS).</dd>
+</dl>
+<p class="small">Then switch back to the slides for slide 17.</p></div>
+
+<div class="cue"><div class="cue-head"><span class="no">D+</span><h3>Only if asked: upload a PDF page</h3><span class="time">60 s</span></div>
+<dl class="rows">
+<dt>Do</dt><dd>On <b>Ask</b>, click <span class="click">Upload a PDF page</span>. Choose <code>Desktop/FinReason/data/indian/reports/titan_ar_2024-25.pdf</code>, set <b>Page</b> to <code>275</code>, type <code>What was the percentage growth in revenue from operations from FY2024 to FY2025?</code>, keep VPSC, click <span class="click">Run the pipeline</span>.</dd>
+<dt>See</dt><dd>About 12 s, then <b>16.40</b>, 5/5 grounded. Open “Report table given to the model”: the columns are named <b>Note · 2025 · 2024</b>, read from the page heading.</dd>
+<dt>Also works</dt><dd>Marico <code>marico_ar_fy25.pdf</code> page <code>253</code>: “What was the compound annual growth rate (CAGR) of income from operations from 2016 to 2025, in percent?” → 6.74. Asian Paints <code>asianpaints_fs_2023-24.pdf</code> page <code>12</code>: “What was the percentage growth in total income from 2022-23 to 2023-24?” → 3.52.</dd>
+<dt>Say if asked</dt><dd class="say-line">“Turning a PDF page into a table is a hard problem in itself. Our experiments use tables transcribed and verified against the PDFs; the upload is a convenience that works well on single statement pages like this one, and less well on pages with two statements side by side. Better table extraction is future work.”</dd>
+</dl></div>
+
+<!-- ======================================================= CLOSE -->
+<h2 id="close"><span class="t">18:00 · DHRUVAGOUDA</span>Slides 17–18 and Q&amp;A</h2>
+<div class="cue"><div class="cue-head"><span class="no">17</span><h3>Conclusion, limitations, future work</h3><span class="who">Dhruvagouda</span><span class="time">50 s</span></div>
+<dl class="rows">
+<dt>Say</dt><dd class="say-line">“Good prompting makes a small laptop model useful. Letting it write Python gets the arithmetic right. The remaining problem is picking the right numbers. Our grounding check warns when not to trust an answer. Limits: about 100 questions per set, one model family, an incomplete 8B grid, and a check that confirms a number exists but not that it is the right cell. Next: full test sets, bigger models, and a cell-level check that can abstain.”</dd>
+</dl></div>
+<div class="cue"><div class="cue-head"><span class="no">18</span><h3>Thank you &amp; questions</h3><span class="who">Dhruvagouda</span><span class="time">20 s</span></div>
+<dl class="rows">
+<dt>Say</dt><dd class="say-line">“In one line: asking for reasoning matters most, letting the computer do the maths works best, and our check tells you when not to trust an answer. We are happy to take questions.”</dd>
+<dt>Q&amp;A</dt><dd>Each person answers questions about their own slides. You (Gaurav) take model size, Indian reports, cost and errors. Keep answers to two or three sentences; offer to show it in the app.</dd>
+</dl></div>
+
+<h3>The five questions most likely to come, with short answers</h3>
+<div class="tbl"><table>
+<tr><th>Question</th><th>Short answer</th></tr>
+<tr><td>Did VPSC beat PoT-SC?</td><td>No, identical accuracy, because the five programs nearly always agree. Its value is a precise warning: all 6 flagged answers were wrong. It costs nothing extra over PoT-SC.</td></tr>
+<tr><td>Why only 100 questions?</td><td>Compute on one laptop (about 30 hours for everything). Same fixed sample for every strategy, 95% CIs and paired McNemar tests. <code>--n 0</code> runs the full sets.</td></tr>
+<tr><td>Isn’t the cache cheating?</td><td>It only replays an identical request, stores the original tokens and time, and the live new-table answer in the demo was not cached.</td></tr>
+<tr><td>Why did the optimizers lose?</td><td>Small 40-question validation set (overfitting), a long rewritten prompt that made the small model sometimes give no number (10% format failures vs 2%), and DSPy demos written by the weak 1.7B model itself.</td></tr>
+<tr><td>Is running model code safe?</td><td>Four layers: AST check (only <code>math</code>, no dunder, no <code>open/exec/eval</code>), a separate isolated Python process, whitelisted builtins, 5-second timeout and CPU limit. A production system should add a memory limit or a container.</td></tr>
+</table></div>
+<p class="small">Fifty more questions with answers are in section 09 of the <a href="FinReason_Presentation_Guide.html">presentation guide</a> (<code>FinReason_Presentation_Guide.html</code>).</p>
+
+<!-- ======================================================= CODE -->
+<h2 id="code"><span class="t">Q&amp;A</span>If the teacher asks to see the code</h2>
+<p>Open the file in VS Code (or <code>open -a TextEdit file</code>) and jump to the line with <span class="click">Ctrl+G</span>. Say what the function does in one sentence before scrolling.</p>
+<div class="tbl"><table>
+<tr><th>Asked about</th><th>Open</th><th>One sentence</th></tr>
+<tr><td>Our method VPSC</td><td><code>finreason/strategies.py:99</code> <code>program_consistency</code></td><td>Five programs, sandbox each, keep grounded ones, majority vote; <code>verify=False</code> is the ablation.</td></tr>
+<tr><td>Grounding check</td><td><code>finreason/verify.py:36</code> <code>grounding_check</code></td><td>Every number literal in the code must be in the report (or a unit constant or year).</td></tr>
+<tr><td>Sandbox</td><td><code>finreason/sandbox.py:53</code> <code>check_code</code>, <code>:82</code> <code>run_code</code></td><td>AST check, then a separate isolated process with safe builtins and a timeout.</td></tr>
+<tr><td>Program-of-Thought</td><td><code>finreason/strategies.py:47</code></td><td>Model writes code; if it fails, the error is shown once for a repair.</td></tr>
+<tr><td>Self-Consistency</td><td><code>finreason/strategies.py:74</code></td><td>Five CoT samples, 1 greedy + 4 at T=0.7, vote.</td></tr>
+<tr><td>Prompts</td><td><code>finreason/prompts.py:141</code> <code>build_messages</code></td><td>System prompt, 3 worked FinQA train examples as chat turns, then the question.</td></tr>
+<tr><td>Scoring</td><td><code>finreason/answers.py:120</code> <code>score</code></td><td>Within 0.5%, or equal at the gold’s decimals; percent and fraction forms accepted.</td></tr>
+<tr><td>McNemar test</td><td><code>finreason/metrics.py:18</code></td><td>Only disagreements count; exact binomial test.</td></tr>
+<tr><td>Retrieval</td><td><code>finreason/retrieval.py:62</code> <code>retrieve</code></td><td>BM25 + MiniLM/FAISS rankings fused with RRF (k = 60).</td></tr>
+<tr><td>Model calls &amp; cache</td><td><code>finreason/llm.py:89</code> <code>chat</code></td><td>SHA-256 key of the request, SQLite cache, 3 retries.</td></tr>
+</table></div>
+<p>Show a test run if asked “does it work?”: <code>.venv/bin/python -m pytest -q</code> → 58 passed in about 30 seconds (with the app running).</p>
+
+<!-- ======================================================= RESCUE -->
+<h2 id="rescue"><span class="t">!</span>If something breaks</h2>
+<div class="tbl"><table>
+<tr><th>What you see</th><th>What to do</th></tr>
+<tr><td>“Ollama offline” pill, or “The model call failed”</td><td>In Terminal: <span class="click">Ctrl+C</span>, then <code>bash scripts/start_app.sh</code>. Results, Data, Errors and Optimization pages work even without Ollama; continue the demo there.</td></tr>
+<tr><td>A live answer takes long</td><td>Keep talking over the timer (explain the pipeline). VPSC on 1.7B ≈ 10 s; on 8B over a minute, so use 1.7B for VPSC.</td></tr>
+<tr><td>A live answer is wrong</td><td>Fine: “This is the 1.7B model at 57% on FinQA, so roughly every other hard question is wrong. Look: the Evidence tab shows which number it used.” It proves the demo is real.</td></tr>
+<tr><td>Page stays blank or spins</td><td>Reload with <span class="click">Cmd+R</span>. If still stuck, restart the app as above.</td></tr>
+<tr><td>Python hangs with no output</td><td>iCloud evicted files: <code>find . -flags +dataless -type f -print0 | xargs -0 -P 24 cat &gt; /dev/null</code>, then start again.</td></tr>
+<tr><td>“FinReason is already running”</td><td>Not an error; open <a href="http://localhost:8501">http://localhost:8501</a>.</td></tr>
+<tr><td>Nothing works</td><td>Present from the slides: slide 15 has the app screenshot; <code>results/report.md</code> has every number.</td></tr>
+</table></div>
+<p class="small" style="margin-top:36px">Checked in the running app on 11–12 Nov 2026: all expected answers, labels and defaults above match what the app shows.</p>
+</main>
+</div>

@@ -1,0 +1,4 @@
+dataset,model,questions,vpsc_accuracy,pot_sc_accuracy,programs,executed,ungrounded,flagged_questions,flagged_wrong,all_ungrounded,answers_changed,agreement
+finqa,ollama:qwen3:1.7b,100,0.56,0.56,500,493,26,6,6,5,0,0.9119999999999999
+indian,ollama:qwen3:1.7b,44,0.7727272727272727,0.7727272727272727,220,219,0,0,0,0,0,0.9863636363636364
+tatqa,ollama:qwen3:1.7b,100,0.67,0.67,500,491,0,0,0,0,0,0.9739999999999999

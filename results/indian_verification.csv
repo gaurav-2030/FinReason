@@ -1,0 +1,45 @@
+uid,company,pdf_file,pdf_page,operands_checked,all_operands_on_cited_pages,gold,gold_recomputed,gold_matches
+titan-01,Titan Company Limited,titan_ar_2024-25.pdf,275,54842 47114 47114,yes,16.4028,16.4028,yes
+titan-02,Titan Company Limited,titan_ar_2024-25.pdf,275,4481 54842,yes,8.1707,8.1707,yes
+titan-03,Titan Company Limited,titan_ar_2024-25.pdf,275,1146 4481,yes,25.5746,25.5746,yes
+titan-04,Titan Company Limited,titan_ar_2024-25.pdf,275,767 480,yes,287.0,287,yes
+titan-05,Titan Company Limited,titan_ar_2024-25.pdf,275,3335,yes,333500.0,333500,yes
+titan-06,Titan Company Limited,titan_ar_2024-25.pdf,275,3335 3544 3544,yes,-5.8973,-5.8973,yes
+titan-07,Titan Company Limited,titan_ar_2024-25.pdf,275,1717 4093 50854,yes,11.4249,11.4249,yes
+titan-08,Titan Company Limited,titan_ar_2024-25.pdf,275,4481 4607,yes,no,no,yes
+titan-09,Titan Company Limited,titan_ar_2024-25.pdf,274,30444 21645,yes,1.4065,1.4065,yes
+titan-10,Titan Company Limited,titan_ar_2024-25.pdf,274,420 7483 16811,yes,0.4701,0.4701,yes
+titan-11,Titan Company Limited,titan_ar_2024-25.pdf,274,24517 16874 16874,yes,45.2945,45.2945,yes
+titan-12,Titan Company Limited,titan_ar_2024-25.pdf,274,24517,yes,245.17,245.17,yes
+titan-13,Titan Company Limited,titan_ar_2024-25.pdf,274,3335 16811 14457,yes,21.3317,21.3317,yes
+asian-01,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,30635.29 92.42 122.41,yes,30850.12,30850.12,yes
+asian-02,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,7854.95 31674.68,yes,24.7988,24.7988,yes
+asian-03,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,5321.55 4100.18 4100.18,yes,29.7882,29.7882,yes
+asian-04,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,7854.95 115.42,yes,68.0554,68.0554,yes
+asian-05,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,14790.95 29883.09,yes,49.4961,49.4961,yes
+asian-06,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,5321.55,yes,53215.5,53215.5,yes
+asian-07,Asian Paints Limited,asianpaints_fs_2023-24.pdf,12,55.50 42.76,yes,12.74,12.74,yes
+asian-08,Asian Paints Limited,asianpaints_fs_2023-24.pdf,11,14553.21 6221.01,yes,2.3394,2.3394,yes
+asian-09,Asian Paints Limited,asianpaints_fs_2023-24.pdf,11,2560.93 978.04 978.04,yes,161.8431,161.8431,yes
+asian-10,Asian Paints Limited,asianpaints_fs_2023-24.pdf,11,191.02 3047.81,yes,323883.0,323883.0,yes
+asian-11,Asian Paints Limited,asianpaints_fs_2023-24.pdf,11,18425.09 25981.90,yes,70.9151,70.9151,yes
+asian-12,Asian Paints Limited,asianpaints_fs_2023-24.pdf,11,5321.55 18425.09 15585.56,yes,31.2934,31.2934,yes
+marico-01,Marico Limited,marico_ar_fy25.pdf,170,10831 9653 9653,yes,12.2035,12.2035,yes
+marico-02,Marico Limited,marico_ar_fy25.pdf,170,10831 4572 960 144 10831,yes,50.2539,50.2539,yes
+marico-03,Marico Limited,marico_ar_fy25.pdf,170,29 1658,yes,1.7491,1.7491,yes
+marico-04,Marico Limited,marico_ar_fy25.pdf,170,22 82,yes,-104.0,-104,yes
+marico-05,Marico Limited,marico_ar_fy25.pdf,170,1658,yes,16.58,16.58,yes
+marico-06,Marico Limited,marico_ar_fy25.pdf,170,4072 4266,yes,0.9545,0.9545,yes
+marico-07,Marico Limited,marico_ar_fy25.pdf,170,1375 259 259,yes,430.888,430.888,yes
+marico-08,Marico Limited,marico_ar_fy25.pdf,253,10831 6024,yes,6.7356,6.7356,yes
+marico-09,Marico Limited,marico_ar_fy25.pdf,253,7.5 9.3 4.5 9.5 10.5,yes,8.26,8.26,yes
+marico-10,Marico Limited,marico_ar_fy25.pdf,253,4.5 10.1,yes,44.5545,44.5545,yes
+marico-11,Marico Limited,marico_ar_fy25.pdf,253,3975 2017,yes,1958.0,1958,yes
+marico-12,Marico Limited,marico_ar_fy25.pdf,253,1593,yes,159300.0,159300,yes
+pidilite-01,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,2096.17 1747.42 1747.42,yes,19.958,19.958,yes
+pidilite-02,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,1741.62 13140.31,yes,13.254,13.254,yes
+pidilite-03,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,13140.31 10536.63 50.35 358.48,yes,3012.51,3012.51,yes
+pidilite-04,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,631.93 2379.35,yes,26.5589,26.5589,yes
+pidilite-05,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,7461.99 1685.09 3289.85,yes,1.756,1.756,yes
+pidilite-06,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,323.94 515.14 515.14,yes,-37.1161,-37.1161,yes
+pidilite-07,Pidilite Industries Limited,pidilite_consolidated_fs_2024-25.pdf,5,14011.47,yes,140114.7,140114.7,yes

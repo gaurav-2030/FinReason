@@ -1,0 +1,5 @@
+dataset,model,format: markdown,format: json,format: html,format: text,"PoT, full page","PoT, retrieved top-5","zero-shot CoT, no thinking","zero-shot CoT, thinking"
+finqa,ollama:qwen3:1.7b,0.52,0.54,0.49,0.44,0.57,0.51,0.49,0.63
+finqa,ollama:qwen3:8b,0.7,,,,0.73,,0.75,
+indian,ollama:qwen3:1.7b,0.6590909090909091,,,,0.7727272727272727,,0.6590909090909091,
+tatqa,ollama:qwen3:1.7b,0.73,0.68,0.73,0.63,0.67,0.56,0.68,

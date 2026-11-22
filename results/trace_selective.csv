@@ -1,0 +1,5 @@
+run,method,accuracy,aurc,acc_at_50,acc_at_80,oracle
+finqa_dev_n50 (dev),TRACE,0.62,0.2618499413425342,0.8,0.7,0.7
+tatqa_dev_n50 (dev),TRACE,0.78,0.2477299249478942,0.84,0.825,0.84
+finqa_test_n100__ollama-qwen3-1.7b,TRACE,0.61,0.2030306933424711,0.8,0.7125,0.75
+tatqa_test_n100__ollama-qwen3-1.7b,TRACE,0.81,0.10303623268924053,0.92,0.875,0.9

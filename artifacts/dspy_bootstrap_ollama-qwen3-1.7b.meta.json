@@ -1,0 +1,31 @@
+{
+  "lm_spec": "ollama:qwen3:1.7b",
+  "optimizer": "bootstrap",
+  "train_size": 50,
+  "val_size": 40,
+  "val_accuracy": 0.425,
+  "compile_seconds": 151,
+  "compile_lm_calls": 15,
+  "compile_prompt_tokens": 19021,
+  "compile_completion_tokens": 4660,
+  "program": {
+    "instruction": "Answer a numerical question about a financial report using only the given table and text.\nKeep the report's units unless the question asks for another unit, write percentages as percent numbers (12.5 means 12.5%), use a minus\nsign for decreases, and answer yes or no for yes/no questions.",
+    "demos": [
+      {
+        "question": "what was the net change in the repurchase reserve between 2008 and 2009 , in millions?",
+        "reasoning": "The net change in the repurchase reserve between 2008 and 2009 can be determined by comparing the repurchase reserves for these two years. The repurchase reserve for 2009 is $482 million, and for 2008 it is $75 million. The net change is calculated as the difference between these two values.",
+        "answer": "407"
+      },
+      {
+        "question": "for the year ending december 31 , 2008 , were principal payments greater than 2009?",
+        "reasoning": "The question asks whether principal payments for the year ending December 31, 2008, were greater than those for 2009. From the context, we are given the amounts for the years ending December 31, 2008, and 2009. The amount for 2008 is $526,768 and for 2009 is $478,269. Since 526,768 is greater than 478,269, the principal payments for 2008 were greater than those for 2009.",
+        "answer": "yes"
+      },
+      {
+        "question": "what is the percent change in number of shares purchased by employees between 2008 and 2009?",
+        "reasoning": "To calculate the percent change in the number of shares purchased by employees between 2008 and 2009, we use the formula:\n\n$$\n\\text{Percent Change} = \\left( \\frac{\\text{New Value} - \\text{Old Value}}{\\text{Old Value}} \\right) \\times 100\n$$\n\nFrom the table, the number of shares purchased in 2008 was 18.9 million, and in 2009 it was 29.4 million.\n\n$$\n\\text{Percent Change} = \\left( \\frac{29.4 - 18.9}{18.9} \\right) \\times 100 = \\left( \\frac{10.5}{18.9} \\right) \\times 100 \\approx 55.56\\%\n$$",
+        "answer": "55.56"
+      }
+    ]
+  }
+}

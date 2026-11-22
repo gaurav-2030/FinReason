@@ -1,0 +1,90 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Review 2 notes</title><style>
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { margin: 0; color: #1b2433; background: #fff; }
+code, .mono { font-family: Menlo, "SF Mono", monospace; font-size: .86em; }
+table { border-collapse: collapse; }
+svg text { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+
+@page { size: A4; margin: 20mm 19mm 20mm 19mm;
+  @bottom-center { content: counter(page); font: 9pt "Helvetica Neue", Helvetica, sans-serif; color: #777; }
+  @top-right { content: var(--running, ""); font: 8.5pt "Helvetica Neue", Helvetica, sans-serif; color: #888; } }
+@page cover { margin: 0; @bottom-center { content: none; } }
+body { font-family: Charter, Georgia, "Times New Roman", serif; font-size: 10.6pt; line-height: 1.5; }
+.cover { page: cover; height: 297mm; padding: 34mm 24mm 20mm; position: relative; break-after: page;
+  background: linear-gradient(160deg, #13294b 0%, #1d3d6b 55%, #0e7c86 130%); color: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+.cover .kicker { letter-spacing: .16em; text-transform: uppercase; font-size: 10.5pt; color: #9fe3e8; font-weight: 700; }
+.cover h1 { font-size: 28pt; line-height: 1.12; margin: 10mm 0 5mm; }
+.cover .sub { font-size: 14pt; color: #d6e2f3; line-height: 1.35; }
+.cover .doc { margin-top: 16mm; font-size: 17pt; font-weight: 700; color: #fff; border-left: 4px solid #9fe3e8; padding-left: 5mm; }
+.cover .doc span { display: block; font-size: 11pt; font-weight: 400; color: #c3d3ea; margin-top: 2mm; }
+.cover table { position: absolute; left: 24mm; right: 24mm; bottom: 34mm; width: calc(100% - 48mm); font-size: 11pt; }
+.cover td { padding: 2.2mm 0; border-bottom: 1px solid rgba(255,255,255,.25); }
+.cover .meta { position: absolute; left: 24mm; bottom: 14mm; font-size: 9.5pt; color: #c3d3ea; line-height: 1.5; }
+h1.doc-title { font-family: "Helvetica Neue", Helvetica, sans-serif; color: #13294b; font-size: 20pt; margin: 0 0 4mm; }
+h2 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #13294b; font-size: 15pt; margin: 8mm 0 3mm;
+  padding-bottom: 1.5mm; border-bottom: 2px solid #0e7c86; break-after: avoid; }
+h2.newpage { break-before: page; margin-top: 0; }
+h3 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #13294b; font-size: 11.8pt; margin: 5mm 0 2mm; break-after: avoid; }
+h4 { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 10.5pt; margin: 3.5mm 0 1.5mm; color: #2a3a55; break-after: avoid; }
+p { margin: 0 0 2.6mm; text-align: justify; hyphens: auto; }
+ul, ol { margin: 0 0 3mm; padding-left: 6mm; } li { margin-bottom: 1.2mm; }
+table.t { width: 100%; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 8.6pt; margin: 2mm 0 4mm; break-inside: auto; }
+table.t th { background: #13294b; color: #fff; text-align: left; padding: 1.6mm 2mm; font-weight: 600; }
+table.t td { padding: 1.4mm 2mm; border-bottom: 1px solid #dde3ec; vertical-align: top; }
+table.t tr { break-inside: avoid; }
+table.t tr:nth-child(even) td { background: #f7f9fc; }
+table.t td.n, table.t th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.t tr.hl td { background: #fff4e5 !important; font-weight: 700; }
+.caption { font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 8.8pt; color: #5b6678; margin: 1mm 0 4mm; text-align: center; }
+.tcaption { font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 8.8pt; color: #5b6678; margin: 3mm 0 0; font-weight: 600; }
+figure { margin: 3mm 0 2mm; text-align: center; break-inside: avoid; } figure img, figure svg { max-width: 100%; }
+.box { background: #f4f7fb; border: 1px solid #dde3ec; border-left: 4px solid #0e7c86; border-radius: 4px; padding: 3mm 4mm; margin: 3mm 0; break-inside: avoid; }
+.box.warn { border-left-color: #c2610c; background: #fffaf3; }
+.box p:last-child, .box ul:last-child { margin-bottom: 0; }
+.toc { font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 10pt; }
+.toc li { margin-bottom: 1mm; }
+pre { font-family: Menlo, monospace; font-size: 8pt; line-height: 1.4; background: #0f1b2d; color: #e6edf7; padding: 3mm 4mm;
+  border-radius: 4px; white-space: pre-wrap; break-inside: avoid; }
+.refs li { font-size: 9pt; margin-bottom: 1.3mm; text-align: left; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+.kv td:first-child { font-weight: 600; width: 32%; }
+
+@page { margin: 15mm 16mm 15mm 16mm; }
+body { font-size: 10.4pt; line-height: 1.42; }
+.nhead { border-bottom: 3px solid #0e7c86; padding-bottom: 3mm; margin-bottom: 4mm; font-family: "Helvetica Neue", Helvetica, sans-serif; }
+.nhead .k { color: #0e7c86; font-size: 8.5pt; letter-spacing: .14em; text-transform: uppercase; font-weight: 800; }
+.nhead h1 { margin: 1mm 0 1mm; color: #13294b; font-size: 17pt; }
+.nhead .t { color: #5b6678; font-size: 8.8pt; }
+h2 { font-size: 12.5pt; margin: 5mm 0 2mm; padding-bottom: 1mm; }
+p, li { text-align: left; }
+li { margin-bottom: 0.8mm; }
+.oneline { background: #fff4e5; border-left: 4px solid #c2610c; padding: 2.5mm 4mm; font-size: 11pt; font-weight: 600; color: #13294b; margin: 2mm 0 3mm; }
+.qa dt { font-weight: 700; font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 9.8pt; margin-top: 2mm; color: #13294b; }
+.qa dd { margin: 0.5mm 0 0 0; }
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 2mm 0 3mm; }
+.nums div { background: #f4f7fb; border: 1px solid #dde3ec; border-radius: 4px; padding: 2.5mm 3mm; font-family: "Helvetica Neue", Helvetica, sans-serif; font-size: 8.3pt; color: #5b6678; line-height: 1.3; }
+.nums b { display: block; font-size: 15pt; color: #13294b; margin-bottom: 1mm; }
+:root { --running: "FinReason · Review 2 · notes"; }</style></head><body><div class="nhead"><div class="k">Review 2 · study notes</div><h1>High-level design &amp; data collection</h1><div class="t">Numerical Reasoning over Financial Reports — UE24AM343AB5 — Prompt Engineering and Optimization for Generative AI<br>Gaurav Girish (PES1UG24AM103) · Sunay R Hegde (PES1UG24AM903) · Dhruvagouda (PES1UG24AM089) · Hanshal Nagesh (PES1UG24AM110)</div></div>
+<div class="oneline">One controlled pipeline: only the prompting strategy changes; everything else (questions, scorer, model, settings) stays fixed.</div>
+<h2>Who presents what</h2><table class="t"><colgroup><col style="width:13%"><col style="width:11%"><col style="width:30%"><col style="width:25%"><col style="width:21%"></colgroup><thead><tr><th class="">Member</th><th class="">Slides</th><th class="">Slide topics</th><th class="">Learn</th><th class="">Answers</th></tr></thead><tbody><tr><td class=""><b>Gaurav Girish</b></td><td class="">1–4<br><span style='color:#5b6678'>3 slides</span></td><td class="">Six layers; How one question flows; Key modules</td><td class="">Six layers, flow of a question, key modules (notes §1)</td><td class="">“Why one common format?”, “Why cache responses?”</td></tr><tr><td class=""><b>Sunay R Hegde</b></td><td class="">5–7<br><span style='color:#5b6678'>3 slides</span></td><td class="">Strategies compared; Three datasets; How we built and checked it</td><td class="">Strategies; FinQA, TAT-QA; how the Indian set was built and verified (notes §2–3)</td><td class="">“How do you trust the Indian set?”</td></tr><tr><td class=""><b>Dhruvagouda</b></td><td class="">11–14<br><span style='color:#5b6678'>3 slides</span></td><td class="">Sandbox: running model code safely; Project status; First results (Qwen3-1.7B, accuracy %)</td><td class="">Sandbox (4 layers); project status; first results (notes §2–3)</td><td class="">“How is model code kept safe?”, “What is done and what is next?”</td></tr><tr><td class=""><b>Hanshal Nagesh</b></td><td class="">8–10<br><span style='color:#5b6678'>3 slides</span></td><td class="">VPSC: Verified Program Self-Consistency; DSPy and TextGrad design; Scoring rule</td><td class="">VPSC design; DSPy and TextGrad design; scoring rule and McNemar (notes §2)</td><td class="">“How do you prevent test leakage?”, “Why McNemar?”</td></tr></tbody></table><p class="note">The first presenter of each review introduces the team; the last one leads the Q&amp;A.</p>
+<h2>1. Architecture (6 layers)</h2>
+<ul><li><b>Data</b>: loaders turn FinQA, TAT-QA and the Indian set into one <code>Example</code> (question, table, text, gold, steps, unit).</li>
+<li><b>Context</b>: table as Markdown/JSON/HTML/text; optional hybrid retrieval (BM25 + MiniLM embeddings in FAISS, fused with RRF).</li>
+<li><b>Reasoning</b>: prompt library, strategy engine, LLM client (Ollama/API, cache), code sandbox, grounding verifier.</li>
+<li><b>Optimization</b>: DSPy (BootstrapFewShot, MIPROv2) and TextGrad save optimized prompts as artifacts.</li>
+<li><b>Evaluation</b>: answer parser + scorer (0.5% tolerance), 8-category error taxonomy, bootstrap CIs, McNemar + Holm.</li>
+<li><b>Presentation</b>: one JSON line per answer → analysis tables/figures → Streamlit app.</li></ul>
+<h2>2. Key designs to explain</h2>
+<table class="t"><colgroup><col style="width:18%"><col style="width:82%"></colgroup><thead><tr><th class="">Design</th><th class="">In one line</th></tr></thead><tbody><tr><td class="">VPSC</td><td class="">5 programs (1 greedy + 4 at T=0.7) → run → keep those whose numbers all appear in the report → majority vote</td></tr><tr><td class="">Sandbox</td><td class="">AST rules + isolated <code>python -I</code> + safe builtins + CPU/time limits</td></tr><tr><td class="">Scoring</td><td class="">Within 0.5% of gold, or equal at gold's precision; % and fraction both accepted</td></tr><tr><td class="">DSPy</td><td class="">ChainOfThought program; metric = our scorer; 50 train / 40 dev FinQA questions</td></tr><tr><td class="">TextGrad</td><td class="">System prompt is the variable; critiques of wrong answers rewrite it; keep only if dev accuracy holds</td></tr><tr><td class="">Experiments</td><td class="">Same 100/100/44 questions (seed 42), temperature 0, same examples; McNemar vs few-shot CoT</td></tr></tbody></table>
+<h2>3. Data collection</h2>
+<div class="nums"><div><b>1,147</b>FinQA test Qs (100 sampled)</div><div><b>699</b>TAT-QA arithmetic test Qs (100 sampled)</div>
+<div><b>44</b>Indian questions, 4 companies</div><div><b>44/44</b>Indian Qs re-verified vs PDF</div></div>
+<ul><li><b>FinQA / TAT-QA</b>: downloaded from the authors' GitHub; TAT-QA filtered to arithmetic questions.</li>
+<li><b>Indian set</b>: statements from Titan (AR 2024-25), Asian Paints (2023-24), Marico (FY25), Pidilite (2024-25) → rows transcribed exactly →
+each question has a formula → gold = formula result in the sandbox → build fails unless all 366 cells appear on the PDF page.</li>
+<li>Mix: 23 percentages, 8 ratios/₹ amounts, 13 in crore/lakh/million/billion, 1 yes/no; 16 questions need 3+ steps.</li>
+<li><b>Perturbed FinQA</b> (88 Qs): operands changed by 10–30%, gold recomputed from the gold program — tests memorization.</li></ul>
+<h2>4. Likely questions</h2>
+<dl class="qa"><dt>Why one common Example format?</dt><dd>Every stage works on every dataset without special cases.</dd><dt>Why cache model responses?</dt><dd>Identical re-runs for free; long experiments can resume; VPSC reuses the PoT call.</dd><dt>How is model code kept safe?</dt><dd>AST check (only math), isolated process, safe builtins, CPU + 5 s limits; output is JSON only.</dd><dt>How do you prevent test leakage?</dt><dd>Worked examples and optimizer data come only from FinQA train/dev.</dd><dt>Why McNemar?</dt><dd>All strategies answer the same questions, so results are paired; McNemar compares only the questions where they differ.</dd><dt>How do you trust the Indian set?</dt><dd>366 cells checked against the PDFs at build time; answers computed from formulas; we re-verified 44/44 questions.</dd></dl></body></html>

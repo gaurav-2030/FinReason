@@ -1,0 +1,964 @@
+<title>FinReason Presentation Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ledger-style study book. Fixed left contents rail on wide screens, one reading column (~68ch), code and tables scroll inside their own boxes. */
+:root{
+  --bg:#f6f8f7; --paper:#ffffff; --ink:#14201c; --ink-2:#4b5a55; --rule:#d9e1de;
+  --accent:#0f6b55; --accent-soft:#e3f1ec; --amber:#a35f00; --amber-soft:#fdf1dc;
+  --red:#b3261e; --red-soft:#fbe9e7; --code-bg:#f0f4f2; --code-ink:#1d2b27;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Helvetica Neue", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1513; --paper:#141d1a; --ink:#e3ebe8; --ink-2:#9fb0aa; --rule:#26332f;
+  --accent:#4cc3a0; --accent-soft:#16302a; --amber:#f0b45a; --amber-soft:#2e2412;
+  --red:#ff8a80; --red-soft:#341a18; --code-bg:#0b110f; --code-ink:#d5e2dd; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1513; --paper:#141d1a; --ink:#e3ebe8; --ink-2:#9fb0aa; --rule:#26332f;
+  --accent:#4cc3a0; --accent-soft:#16302a; --amber:#f0b45a; --amber-soft:#2e2412;
+  --red:#ff8a80; --red-soft:#341a18; --code-bg:#0b110f; --code-ink:#d5e2dd; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.62;margin:0;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.shell{display:grid;grid-template-columns:250px minmax(0,1fr);gap:48px;max-width:1180px;margin:0 auto;padding-block:40px 80px}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 24px);align-self:start;max-height:calc(100vh - 48px);overflow:auto;font-size:14px;padding-right:8px}
+nav.toc .brand{font-family:var(--f-display);font-weight:700;font-size:20px;color:var(--accent);margin-bottom:4px}
+nav.toc .sub{color:var(--ink-2);font-size:12.5px;margin-bottom:18px}
+nav.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+nav.toc a{display:block;color:var(--ink-2);text-decoration:none;padding:4px 10px;border-radius:6px;border-left:2px solid transparent}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--ink);background:var(--accent-soft);outline:none}
+nav.toc .n{font-family:var(--f-mono);font-size:11.5px;color:var(--accent);margin-right:6px}
+nav.toc ol ol{margin:2px 0 6px 18px}
+nav.toc ol ol a{font-size:13px;padding:2px 8px}
+main{min-width:0;max-width:760px}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;line-height:1.2;color:var(--ink)}
+h1{font-size:clamp(32px,5vw,46px);margin:0 0 12px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:28px;margin:72px 0 14px;padding-top:18px;border-top:2px solid var(--ink);font-weight:700}
+h2 .n{font-family:var(--f-mono);font-size:14px;color:var(--accent);display:block;margin-bottom:6px;letter-spacing:.06em}
+h3{font-size:20px;margin:40px 0 8px;font-weight:700}
+h4{font-size:16.5px;margin:26px 0 6px;font-weight:700}
+p{margin:0 0 14px}
+a{color:var(--accent)}
+.lede{font-size:18.5px;color:var(--ink-2);max-width:62ch}
+.meta{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2);letter-spacing:.04em;text-transform:uppercase;margin-bottom:14px}
+ul,ol{padding-left:22px;margin:0 0 14px}
+li{margin:3px 0}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--code-bg);color:var(--code-ink);padding:1px 5px;border-radius:4px}
+pre{font-family:var(--f-mono);font-size:13.2px;line-height:1.55;background:var(--code-bg);color:var(--code-ink);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;overflow-x:auto;margin:6px 0 16px}
+pre code{background:none;padding:0;font-size:inherit}
+.file{font-family:var(--f-mono);font-size:12px;color:var(--accent);margin:18px 0 0;font-weight:500}
+.cm{color:var(--ink-2);font-style:italic}
+.tbl{overflow-x:auto;margin:8px 0 18px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right}
+td.best{font-weight:700;color:var(--accent)}
+.box{border-radius:8px;padding:14px 16px;margin:14px 0 18px;border:1px solid var(--rule);background:var(--paper)}
+.box > :last-child{margin-bottom:0}
+.box .lbl{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;margin-bottom:6px;display:block}
+.say{background:var(--accent-soft);border-color:transparent}
+.say .lbl{color:var(--accent)}
+.warn{background:var(--amber-soft);border-color:transparent}
+.warn .lbl{color:var(--amber)}
+.bad{background:var(--red-soft);border-color:transparent}
+.bad .lbl{color:var(--red)}
+.checks{list-style:none;padding:0}
+.checks li{padding-left:28px;position:relative;margin:7px 0}
+.checks li::before{content:"✓";position:absolute;left:4px;color:var(--accent);font-weight:700}
+.checks li.todo::before{content:"□";color:var(--amber)}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0 20px}
+.flow div{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:10px 12px;font-size:13.5px;line-height:1.4;min-width:0}
+.flow b{display:block;font-family:var(--f-display);font-size:15px;margin-bottom:2px}
+.flow .step{font-family:var(--f-mono);font-size:11px;color:var(--accent)}
+.flow .f{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-2);display:block;margin-top:4px;overflow-wrap:anywhere}
+.vpsc{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 18px;font-size:14px}
+.vpsc span{background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:5px 12px}
+.vpsc span.hl{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.vpsc i{font-style:normal;color:var(--ink-2)}
+details{border:1px solid var(--rule);border-radius:8px;background:var(--paper);margin:8px 0}
+details summary{cursor:pointer;padding:11px 14px;font-weight:600;list-style:none;display:flex;gap:10px}
+details summary::-webkit-details-marker{display:none}
+details summary::before{content:"+";font-family:var(--f-mono);color:var(--accent);width:12px;flex:none}
+details[open] summary::before{content:"−"}
+details summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+details .a{padding:0 16px 12px 36px}
+details .a > :last-child{margin-bottom:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:10px 0 18px}
+.stat{background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:12px 14px}
+.stat .v{font-family:var(--f-display);font-size:26px;font-weight:700;color:var(--accent);line-height:1.1}
+.stat .k{font-size:13.5px;color:var(--ink-2)}
+.kbd{font-family:var(--f-mono);font-size:12.5px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--paper)}
+.small{font-size:14px;color:var(--ink-2)}
+.toc-mobile{display:none}
+@media (max-width: 900px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0;padding-block:24px 60px}
+  nav.toc{display:none}
+  .toc-mobile{display:block;margin:18px 0 8px}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width: 520px){
+  body{font-size:15.5px}
+  .flow,.grid2{grid-template-columns:minmax(0,1fr)}
+  h2{font-size:24px}
+}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <div class="brand">FinReason</div>
+  <div class="sub">Presentation &amp; viva guide · 13 Nov 2026</div>
+  <ol>
+    <li><a href="#tonight"><span class="n">00</span>Status check</a></li>
+    <li><a href="#pitch"><span class="n">01</span>The project in one minute</a></li>
+    <li><a href="#concepts"><span class="n">02</span>Concepts from scratch</a></li>
+    <li><a href="#data"><span class="n">03</span>The datasets</a></li>
+    <li><a href="#pipeline"><span class="n">04</span>How it works end to end</a></li>
+    <li><a href="#code"><span class="n">05</span>Code walkthrough</a>
+      <ol>
+        <li><a href="#c-data">Data &amp; tables</a></li>
+        <li><a href="#c-retrieval">Retrieval</a></li>
+        <li><a href="#c-prompts">Prompts</a></li>
+        <li><a href="#c-llm">LLM client &amp; cache</a></li>
+        <li><a href="#c-strategies">Strategies &amp; VPSC</a></li>
+        <li><a href="#c-sandbox">Sandbox</a></li>
+        <li><a href="#c-verify">Grounding check</a></li>
+        <li><a href="#c-answers">Parsing &amp; scoring</a></li>
+        <li><a href="#c-errors">Error taxonomy</a></li>
+        <li><a href="#c-metrics">Statistics</a></li>
+        <li><a href="#c-perturb">Perturbation test</a></li>
+        <li><a href="#c-opt">DSPy &amp; TextGrad</a></li>
+        <li><a href="#c-scripts">Scripts &amp; analysis</a></li>
+        <li><a href="#c-app">Web app</a></li>
+        <li><a href="#c-tests">Tests</a></li>
+      </ol>
+    </li>
+    <li><a href="#results"><span class="n">06</span>Results &amp; meaning</a></li>
+    <li><a href="#pending"><span class="n">07</span>What is not done</a></li>
+    <li><a href="#demo"><span class="n">08</span>Demo script</a></li>
+    <li><a href="#viva"><span class="n">09</span>Viva questions</a></li>
+    <li><a href="#cheat"><span class="n">10</span>Numbers cheat sheet</a></li>
+  </ol>
+</nav>
+
+<main>
+<div class="meta">UE24AM343AB5 · Prompt Engineering and Optimization for Generative AI · PES University</div>
+<h1>FinReason presentation guide</h1>
+<p class="lede">Everything you need to present FinReason and answer questions about it: what the project does, the ideas behind it, every important piece of code, the real results, what is unfinished, the demo, and a bank of likely viva questions with answers.</p>
+<p class="small">Team: Gaurav Girish (PES1UG24AM103), Sunay R Hegde (PES1UG24AM903), Dhruvagouda (PES1UG24AM089), Hanshal Nagesh (PES1UG24AM110). Every number in this guide was read from <code>results/</code> or recomputed from the saved runs on 11 Nov 2026.</p>
+
+<div class="toc-mobile box"><span class="lbl" style="color:var(--accent)">Sections</span>
+<a href="#tonight">Status</a> · <a href="#pitch">Pitch</a> · <a href="#concepts">Concepts</a> · <a href="#data">Data</a> · <a href="#pipeline">Pipeline</a> · <a href="#code">Code</a> · <a href="#results">Results</a> · <a href="#pending">Not done</a> · <a href="#demo">Demo</a> · <a href="#viva">Viva Q&amp;A</a> · <a href="#cheat">Cheat sheet</a></div>
+
+<!-- ============================================================ 00 -->
+<h2 id="tonight"><span class="n">00</span>Status check: what was tested on 11–12 Nov</h2>
+<p>The whole project was run and checked twice before the presentation. Here is what works and what was fixed.</p>
+<div class="box say"><span class="lbl">Final check · 12 Nov</span>
+<ul class="checks">
+  <li><b>58/58 tests pass</b> with the app and Ollama running; every app page checked on screen at projector size (1280×720) with no errors.</li>
+  <li><b>Every demo step re-run</b> with the exact expected answers (see the demo runbook). Six likely live questions answered correctly by VPSC, PoT and the 8B model, including the 60,000 edited-cell demo (27.35).</li>
+  <li><b>Fixed slide 5</b> (8B chart overflowed the slide), <b>slide 15</b> (its screenshots showed a loading error instead of the answer) and <b>slide 6’s legend</b> covering a dot. Review PDFs rebuilt; all other text is unchanged.</li>
+  <li><b>Fixed the speaker script</b> line on slide 6 (“bigger model does not clearly beat…”): the code ignored missing 8B results; it now says the bigger model helps.</li>
+  <li><b>Fixed report figures:</b> garbled legend (“_container1…”) on the ablation figure, overlapping labels on the cost charts, and “Accuracy falls with more steps” titles that were false for TAT-QA and Indian. All result tables were re-generated and are byte-for-byte identical.</li>
+  <li><b>Fixed PDF upload:</b> uploaded pages lost their year headings (columns were “column 1, column 2”), so answers mixed up years. The parser now reads year/date headings and right-aligns values; on all 44 Indian questions from raw PDF pages accuracy rose from 13/44 to 18/44, and the demo pages (Titan p275, Marico p253, Asian Paints p12) answer correctly.</li>
+  <li><b>App polish:</b> chart labels no longer cut off (Compare, Errors, Robustness); “Enlarge the PDF page” added on the Data page.</li>
+  <li><b>Refresh results</b> button tested: it re-runs the full analysis without errors and reproduces every table exactly.</li>
+</ul></div>
+<ul class="checks">
+  <li><b>All 58 tests pass</b> with Ollama running (46 pass + 12 skip without Ollama, which is expected: those 12 call the model).</li>
+  <li><b>The web app starts</b> with <code>bash scripts/start_app.sh</code> and all 9 pages render: Overview, Ask, Compare, Results, Optimization, Robustness, Errors, Data, Method.</li>
+  <li><b>Demo question marico-08 with VPSC</b> gives 6.74 (gold 6.74), 5/5 programs grounded, 100% agreement. It is answered from the cache in 0.2 s.</li>
+  <li><b>A brand-new question works live:</b> pasted Titan table, “By what percent did other income grow from FY2024 to FY2025?” → 21.43 (correct: (493 − 406) / 406 × 100) in 9.2 s with VPSC on Qwen3-1.7B.</li>
+  <li><b>Live speed:</b> Qwen3-1.7B few-shot CoT ≈ 5 s per fresh question; Qwen3-8B ≈ 14 s (CoT) to 17 s (PoT, first call loads the model).</li>
+  <li><b>The PDF viewer on the Data page</b> renders the annual-report page next to each Indian question.</li>
+  <li><b>Fixed:</b> the Optimization page said MIPROv2 was “running · queued in the experiment pipeline”, and a few other messages said results were “still running”. Nothing is running now, so these were false. They now say “not run · pending” (and only say “running” if an experiment process really is running). Tests re-run after the fix: 58 passed.</li>
+  <li><b>iCloud:</b> the study-guide .docx had been evicted by iCloud. It is downloaded and pinned now. Every other project folder is pinned, and the virtual environment lives in <code>.venv.nosync</code>, which iCloud never touches.</li>
+  <li class="todo"><b>Optional tonight:</b> the human sign-off column in <code>data/indian/verification_checklist.csv</code> is still blank (all 44 rows have <code>verified=False</code>). The automatic check passed for all 44 (see <a href="#data">Datasets</a>). If a teammate ticks it tonight, you can say a person checked every question too.</li>
+</ul>
+
+<h3>Before the presentation (10 minutes)</h3>
+<ol>
+  <li>Plug in the laptop. Close heavy apps (Ollama loads both models into the same memory).</li>
+  <li>Open Terminal, then run:
+<pre><code>cd ~/Desktop/FinReason
+bash scripts/start_app.sh</code></pre>
+  It starts its own Ollama server on port 11435 and the app on <a href="http://localhost:8501">http://localhost:8501</a>. Leave the terminal open.</li>
+  <li>Warm the models: on the Ask page, run any question once with Qwen3-1.7B and once with Qwen3-8B. The first call loads the model into memory (a few seconds); after that answers are quick.</li>
+  <li>Check the Overview page shows the green <b>Ollama online</b> pill.</li>
+  <li>Keep <code>reviews/Review3/Review3_Final_Demo_Slides.pdf</code> open as a backup. If the app fails, the slides have screenshots, and <code>results/report.md</code> has every table.</li>
+</ol>
+<div class="box warn"><span class="lbl">If something goes wrong</span>
+<ul>
+<li><b>Python hangs with no output:</b> iCloud evicted files. Run <code>find . -flags +dataless | wc -l</code>; if it is not 0, run <code>find . -flags +dataless -type f -print0 | xargs -0 -P 24 cat &gt; /dev/null</code> to download them.</li>
+<li><b>“Ollama offline” pill:</b> the results pages still work. Restart with <code>bash scripts/start_app.sh</code>.</li>
+<li><b>Port 8501 already in use:</b> an old app is still running. Open <a href="http://localhost:8501">http://localhost:8501</a>, it is probably fine. Otherwise run <code>pkill -f "streamlit run"</code> and start again.</li>
+<li><b>No internet:</b> not a problem. The models are local and the embedding model is cached; the start script sets <code>HF_HUB_OFFLINE=1</code> for you.</li>
+</ul></div>
+
+<!-- ============================================================ 01 -->
+<h2 id="pitch"><span class="n">01</span>The project in one minute</h2>
+<p><b>The problem.</b> Financial reports are full of tables. Questions like “what was the percentage change in revenue?” need four skills: find the right row and year, read the number with its unit and sign, choose the right formula, and do the arithmetic. One wrong digit, unit or sign gives a confident wrong answer.</p>
+<p><b>The question we ask.</b> How do prompting strategies and automatic prompt optimizers change the accuracy, cost and reliability of <i>small, local</i> LLMs on these questions? We change only the prompt, never the model (no fine-tuning).</p>
+<p><b>What we built.</b></p>
+<ul>
+  <li>7 hand-written prompting strategies: Direct, zero-shot Chain-of-Thought, few-shot CoT, Decomposition, Program-of-Thought, Self-Consistency, and our method VPSC.</li>
+  <li><b>VPSC (Verified Program Self-Consistency)</b>, our method: the model writes 5 Python programs, a sandbox runs each, programs that use a number that is not in the report are thrown out, and the rest vote.</li>
+  <li>3 automatic prompt optimizers: DSPy BootstrapFewShot, DSPy MIPROv2 and TextGrad (MIPROv2 is implemented but its run did not finish; see <a href="#pending">section 07</a>).</li>
+  <li>2 local models: Qwen3-1.7B and Qwen3-8B, run with Ollama on an Apple M4 laptop.</li>
+  <li>3 test sets: FinQA (100 questions), TAT-QA (100) and our own Indian annual-report set (44 questions over Titan, Asian Paints, Marico and Pidilite, in ₹ crore).</li>
+  <li>A full evaluation: accuracy with 95% confidence intervals, paired significance tests, cost in tokens, error taxonomy, memorization test and ablations.</li>
+  <li>A web app where every answer can be audited: evidence rows, code, votes, grounding and the exact prompt.</li>
+</ul>
+<div class="box say"><span class="lbl">Say this · the three findings</span>
+<p>1) Asking the model to reason matters most: answer-only prompts get at most 11% with the 1.7B model; any reasoning strategy gets 44–77%. 2) Letting Python do the arithmetic (Program-of-Thought) is the best single-call strategy on FinQA and our Indian set. 3) The remaining errors are mostly about picking the wrong number from the report (60% of wrong answers), not about arithmetic. Our grounding check flags such answers precisely: every question it flagged was wrong.</p></div>
+
+<!-- ============================================================ 02 -->
+<h2 id="concepts"><span class="n">02</span>Concepts from scratch</h2>
+
+<h3>LLM, prompt, tokens</h3>
+<p>A <b>large language model</b> predicts the next piece of text, one <b>token</b> at a time (a token is roughly ¾ of a word; numbers often split into several tokens). A <b>prompt</b> is everything we send: a <b>system message</b> (the role and rules), optional earlier <b>user/assistant turns</b> (worked examples), and the <b>user message</b> (the report context plus the question). Cost is measured in tokens: <b>prompt tokens</b> (what we send) plus <b>completion tokens</b> (what the model writes).</p>
+
+<h3>Temperature, greedy decoding, seeds</h3>
+<p>At each step the model has a probability for every next token. <b>Temperature 0</b> (greedy) always takes the most likely one, so the same prompt gives the same answer. <b>Temperature 0.7</b> samples, so repeated calls give different reasoning paths. We fix the random <b>seed</b> (<code>42 + sample number</code>) so even sampled runs are reproducible.</p>
+
+<h3>The prompting strategies</h3>
+<div class="tbl"><table>
+<tr><th>Name in code</th><th>Strategy</th><th>What the prompt asks</th><th class="num">Calls</th></tr>
+<tr><td><code>direct</code></td><td>Direct answer</td><td>“Give only the final answer line.” No reasoning. The baseline.</td><td class="num">1</td></tr>
+<tr><td><code>cot_zs</code></td><td>Zero-shot Chain-of-Thought</td><td>“Think step by step: find the numbers, write the calculation, compute it.” No examples.</td><td class="num">1</td></tr>
+<tr><td><code>cot_fs</code></td><td>Few-shot CoT</td><td>Same, after 3 worked examples (real FinQA <i>train</i> questions with hand-written solutions).</td><td class="num">1</td></tr>
+<tr><td><code>decomp_fs</code></td><td>Decomposition (EEDP-style)</td><td>Four labelled parts: Knowledge (formula) → Extract (values with source and unit) → Decompose (one operation per step) → Answer.</td><td class="num">1</td></tr>
+<tr><td><code>pot_fs</code></td><td>Program-of-Thought</td><td>Write Python that stores the answer in <code>ans</code>. The sandbox runs it. If it crashes, the error is shown once and the model repairs the code.</td><td class="num">1–2</td></tr>
+<tr><td><code>sc_cot</code></td><td>Self-Consistency</td><td>5 few-shot CoT samples (1 greedy + 4 at T = 0.7), majority vote on the answer.</td><td class="num">5</td></tr>
+<tr><td><code>pot_sc</code></td><td>PoT Self-Consistency</td><td>5 programs, majority vote, <i>no</i> grounding check. This is the ablation of VPSC.</td><td class="num">5</td></tr>
+<tr><td><code>vpsc</code></td><td>VPSC (ours)</td><td>5 programs → sandbox → reject programs using numbers not in the report → majority vote.</td><td class="num">5</td></tr>
+</table></div>
+<p><b>Why Chain-of-Thought works:</b> the model writes intermediate steps, so each next token depends on numbers it has already written down. It acts like a scratchpad. Without it, the model must “compute in its head” in one token, which small models cannot do.</p>
+<p><b>Why Program-of-Thought works:</b> LLMs are bad at exact multi-digit arithmetic (e.g. 3338 − 4273 = −935, then ÷ 4273). In PoT the model only decides <i>what</i> to compute; Python computes it exactly. This idea comes from Chen et al., “Program of Thoughts Prompting” (TMLR 2023).</p>
+<p><b>Why Self-Consistency works:</b> different sampled reasoning paths make different mistakes, but the correct answer tends to be the most common one (Wang et al., 2023). The cost is 5× the calls.</p>
+
+<h3>Automatic prompt optimization</h3>
+<ul>
+  <li><b>DSPy</b> (Stanford) treats a prompt as a program. You declare a <i>signature</i> (inputs <code>context, question</code> → output <code>answer</code>) and a module (<code>ChainOfThought</code>). An <b>optimizer</b> then chooses the instruction and the few-shot demonstrations automatically, using a metric.</li>
+  <li><b>BootstrapFewShot</b>: runs the program on training questions and keeps up to 3 runs the metric marks correct as demonstrations (the model’s own reasoning in its own words).</li>
+  <li><b>MIPROv2</b>: an LLM proposes candidate instructions; Bayesian optimization (Optuna) searches over (instruction, demo set) pairs, scoring each on validation questions.</li>
+  <li><b>TextGrad</b> (Stanford, 2024): “automatic differentiation with text”. The system prompt is a trainable variable. For each wrong answer an LLM writes a critique (a “textual gradient”: what went wrong and what instruction would prevent it), and an optimizer LLM rewrites the prompt using those critiques. In our setup the 8B model writes the critiques for the 1.7B model’s prompt.</li>
+</ul>
+
+<h3>Retrieval (finding the evidence)</h3>
+<ul>
+  <li><b>Evidence unit:</b> one table row (turned into a sentence) or one text sentence.</li>
+  <li><b>BM25:</b> classic keyword search. Scores a unit higher when it shares rare words with the question, with diminishing returns for repeated words and a correction for long units.</li>
+  <li><b>Dense retrieval:</b> a sentence-embedding model (<code>all-MiniLM-L6-v2</code>, 384-dimensional vectors) turns text into vectors; similar meanings get similar vectors. We compare with cosine similarity using <b>FAISS</b> (<code>IndexFlatIP</code>, exact inner-product search on normalized vectors, which equals cosine).</li>
+  <li><b>Reciprocal Rank Fusion (RRF):</b> combine the two rankings. Each unit gets <code>Σ 1 / (60 + rank)</code> over both rankings (rank starts at 1). It needs no score calibration, only ranks.</li>
+  <li><b>Recall@k:</b> the fraction of gold evidence units that appear in the top k.</li>
+</ul>
+
+<h3>Running models locally</h3>
+<p><b>Ollama</b> is a local server for open-weight models with an HTTP API (default port 11434; our app uses its own on 11435). Our models are <b>Qwen3-1.7B</b> (2.0 B parameters) and <b>Qwen3-8B</b> (8.2 B), both <b>Q4_K_M</b> quantized (weights stored in about 4 bits, so the 8B fits in laptop memory). Qwen3 has a built-in <b>thinking mode</b> that writes hidden reasoning in <code>&lt;think&gt;…&lt;/think&gt;</code>; we turn it off by default and test it as an ablation.</p>
+
+<h3>Evaluation and statistics</h3>
+<ul>
+  <li><b>Execution accuracy</b> (our main metric): correct if within 0.5% of the gold number, or equal when rounded to the gold’s own decimals. For percentage questions, 12.5 and 0.125 are both accepted (FinQA stores percentages as fractions).</li>
+  <li><b>Exact match (EM):</b> prediction and gold equal when both are rounded to 2 decimals. <b>F1:</b> TAT-QA’s token F1; for single numbers it equals EM.</li>
+  <li><b>95% bootstrap confidence interval:</b> resample the 100 right/wrong flags with replacement 2,000 times, compute accuracy each time, take the 2.5th and 97.5th percentiles. With 100 questions the interval is about ±10 points.</li>
+  <li><b>McNemar’s test:</b> for two strategies on the same questions, count only the questions where they disagree: b (A right, B wrong) and c (A wrong, B right). If both are equally good, b follows Binomial(b + c, 0.5). We use the exact binomial version.</li>
+  <li><b>Holm–Bonferroni correction:</b> we test many strategies against one baseline, so some small p-values would appear by luck. Holm sorts the p-values and multiplies the smallest by m, the next by m − 1, and so on (keeping them increasing), which controls the chance of any false positive.</li>
+</ul>
+
+<!-- ============================================================ 03 -->
+<h2 id="data"><span class="n">03</span>The datasets</h2>
+<div class="tbl"><table>
+<tr><th>Set</th><th>Source</th><th class="num">Full size</th><th class="num">We use</th><th>Notes</th></tr>
+<tr><td>FinQA</td><td>Chen et al., EMNLP 2021; S&amp;P 500 earnings reports</td><td class="num">1,147 test</td><td class="num">100</td><td>Gold program like <code>subtract(5829, 5735), divide(#0, 5735)</code>; stores 12.5% as 0.125</td></tr>
+<tr><td>TAT-QA</td><td>Zhu et al., ACL 2021; hybrid tables + text</td><td class="num">699 arithmetic</td><td class="num">100</td><td>Only <code>answer_type == "arithmetic"</code> questions; gold derivation like <code>(1,568.6-1,571.7)/1,571.7*100</code></td></tr>
+<tr><td>Indian set (ours)</td><td>Titan, Asian Paints, Marico, Pidilite annual reports</td><td class="num">44</td><td class="num">44</td><td>13 / 12 / 12 / 7 questions; ₹ crore and lakh; tables transcribed from the PDFs</td></tr>
+<tr><td>FinQA-perturbed</td><td>Our perturbation of the FinQA sample</td><td class="num">—</td><td class="num">88</td><td>12 of the 100 could not be perturbed safely</td></tr>
+</table></div>
+<p><b>Sampling:</b> <code>load_dataset(name, "test", n=100, seed=42)</code> picks a fixed random sample, so every strategy and model answers exactly the same questions. That is what makes paired tests (McNemar) valid.</p>
+<p><b>Composition of the samples</b> (from <code>results/dataset_stats.md</code>): FinQA sample: 61 one-step, 34 two-step, 5 three-or-more-step questions; 63 table-only, 26 text-only, 11 both. TAT-QA sample: 45 / 16 / 39 by steps; 69 table, 1 text, 30 both. Indian set: 15 / 13 / 16 by steps; 42 table, 2 table+text; tables average 18 rows (bigger than FinQA’s 7).</p>
+
+<h3>How the Indian set was built and checked</h3>
+<ol>
+  <li>Each statement table was transcribed from the company PDF into <code>scripts/build_indian_set.py</code>, with the file and page number recorded.</li>
+  <li>Each question has a <b>formula</b> (e.g. <code>(54842 - 47114) / 47114 * 100</code>). The gold answer is <b>computed by running the formula in the sandbox</b>, never typed by hand.</li>
+  <li>The script checks that every number in the formula appears in the table or text, and <code>check_against_pdf</code> asserts that every transcribed cell literally appears in the text of its PDF page.</li>
+  <li><code>results/indian_verification.csv</code>: all 44 questions re-checked; every operand was found on the cited page, and every gold answer recomputes exactly (44/44 “yes”).</li>
+  <li>The test <code>test_indian_set_is_consistent</code> re-runs every formula and compares it with the stored gold.</li>
+</ol>
+<div class="box warn"><span class="lbl">Careful</span><p>The <code>verified</code> flag in <code>indian_set.jsonl</code> and the <code>checked_by</code> column in <code>verification_checklist.csv</code> are still empty. If asked “did a person verify it?”, say the automated checks above passed for all 44 and that the manual sign-off sheet is ready for the team (or fill it in tonight).</p></div>
+
+<!-- ============================================================ 04 -->
+<h2 id="pipeline"><span class="n">04</span>How it works end to end</h2>
+<p>One question goes through eight stages. The same code is used by the experiment runner and by the web app.</p>
+<div class="flow">
+  <div><span class="step">1</span><b>Load</b>FinQA / TAT-QA / Indian → one <code>Example</code> object<span class="f">data.py</span></div>
+  <div><span class="step">2</span><b>Context</b>Table → Markdown/JSON/HTML/text; full page or top-k retrieved<span class="f">tables.py · retrieval.py</span></div>
+  <div><span class="step">3</span><b>Prompt</b>System prompt + worked examples + strategy instruction<span class="f">prompts.py</span></div>
+  <div><span class="step">4</span><b>LLM call</b>Qwen3 via Ollama; cache, tokens, latency<span class="f">llm.py</span></div>
+  <div><span class="step">5</span><b>Execute / parse</b>Code → sandbox; text → read “Answer:” line<span class="f">sandbox.py · answers.py</span></div>
+  <div><span class="step">6</span><b>Verify &amp; vote</b>Grounding check, majority vote (VPSC, SC)<span class="f">verify.py · strategies.py</span></div>
+  <div><span class="step">7</span><b>Score &amp; diagnose</b>0.5% tolerance, EM, F1; error category<span class="f">answers.py · errors.py</span></div>
+  <div><span class="step">8</span><b>Record &amp; analyze</b>One JSON line per answer → CIs, McNemar, figures, app<span class="f">experiment.py · analyze.py</span></div>
+</div>
+
+<h3>Folder map</h3>
+<pre><code>finreason/        the library (all logic)
+  config.py         paths, seed 42, tolerance 0.5%, 5 samples at T=0.7, Ollama URL
+  data.py           Example dataclass + loaders for the 3 datasets
+  tables.py         table → markdown / json / html / text
+  retrieval.py      BM25 + MiniLM/FAISS + RRF; build_context()
+  prompts.py        system prompt, instructions, 3 worked examples
+  llm.py            one client for Ollama + APIs, SQLite response cache
+  strategies.py     the 8 strategies incl. VPSC; get_strategy()
+  sandbox.py        safe execution of model-written Python
+  verify.py         grounding check used by VPSC
+  answers.py        number parsing (₹, crore, (brackets)) and scoring
+  errors.py         8-category error taxonomy
+  metrics.py        bootstrap CI, McNemar, Holm
+  perturb.py        numerical perturbation (memorization test)
+  finqa_program.py  executes FinQA gold programs
+  dspy_opt.py       DSPy signature, optimizers, DSPyStrategy
+  textgrad_opt.py   TextGrad optimization loop
+  pdf_utils.py      one PDF page → Example (for the app)
+  experiment.py     evaluate one question → one result record
+  figures.py        matplotlib report figures
+scripts/          command-line entry points (run_experiment, optimize_*, analyze, run_all.sh, ...)
+app/              Streamlit web app: streamlit_app.py, core.py, theme.py, views/ (9 pages)
+tests/            58 pytest tests
+data/             raw FinQA / TAT-QA JSON, Indian set + PDFs
+artifacts/        optimized prompts (DSPy, TextGrad)
+results/          runs/*.jsonl (one line per answer), summary CSVs, report.md, figures/
+reviews/          slides, speaker scripts, notes, IEEE paper (built by reviews/src/build.py)</code></pre>
+
+<!-- ============================================================ 05 -->
+<h2 id="code"><span class="n">05</span>Code walkthrough</h2>
+<p>The important code, file by file, with what each part does and why. Snippets are copied from the project (sometimes shortened with <code>...</code>).</p>
+
+<h3 id="c-data">Data and tables · <code>data.py</code>, <code>tables.py</code></h3>
+<p>All three datasets have different JSON formats, so the loaders convert each question into one common <code>Example</code>. Everything downstream only knows about <code>Example</code>.</p>
+<div class="file">finreason/data.py</div>
+<pre><code>@dataclass
+class Example:
+    uid: str
+    dataset: str
+    question: str
+    table: list                <span class="cm"># list of rows; row 0 is the header</span>
+    texts: list                <span class="cm"># sentences around the table</span>
+    gold: object               <span class="cm"># float, or "yes" / "no"</span>
+    gold_program: str = ""     <span class="cm"># FinQA program, TAT-QA derivation or Indian formula</span>
+    n_steps: int = 1           <span class="cm"># number of arithmetic operations needed</span>
+    evidence: str = "table"    <span class="cm"># "table", "text" or "table-text"</span>
+    scale: str = ""            <span class="cm"># "percent", "million", ... when known</span>
+    gold_facts: list = ...     <span class="cm"># gold evidence ids like "table_3", "text_5"</span>
+    meta: dict = ...
+
+def load_dataset(name, split="test", n=None, seed=42):
+    examples = LOADERS[name](split)
+    if n is not None and n &lt; len(examples):
+        indices = sorted(random.Random(seed).sample(range(len(examples)), n))
+        examples = [examples[i] for i in indices]
+    return examples</code></pre>
+<ul>
+<li><code>load_tatqa</code> keeps only arithmetic questions and skips the few whose answer is not a number.</li>
+<li><code>count_operations</code> counts <code>+ - * / **</code> in a derivation to get the number of reasoning steps (unary minus signs are removed first). FinQA gives the steps directly.</li>
+<li>The fixed seed means the “100 questions” are always the same 100.</li>
+</ul>
+<p><code>tables.py</code> writes a table in four formats for the table-format ablation. Markdown is the default (<code>| in millions | 2014 | 2013 |</code>), JSON is a list of row dicts with unique column names, HTML uses <code>&lt;tr&gt;&lt;td&gt;</code>, and text writes one sentence per row (<code>sales: 2014 = $ 5720; 2013 = $ 6205.</code>).</p>
+
+<h3 id="c-retrieval">Retrieval · <code>retrieval.py</code></h3>
+<div class="file">finreason/retrieval.py</div>
+<pre><code>def evidence_units(example):
+    <span class="cm"># one unit per table row ("table_i") and one per sentence ("text_j"), FinQA's id convention</span>
+    ...
+
+def retrieve(self, question, units, k=5, method="hybrid"):
+    texts = [text for _, text in units]
+    rankings = []
+    if method in ("bm25", "hybrid"):
+        rankings.append(self.bm25_ranking(question, texts))
+    if method in ("dense", "hybrid"):
+        rankings.append(self.dense_ranking(question, texts))
+    fused = np.zeros(len(units))
+    for ranking in rankings:
+        for rank, idx in enumerate(ranking):
+            fused[idx] += 1.0 / (self.rrf_k + rank + 1)      <span class="cm"># RRF, rrf_k = 60</span>
+    best = np.argsort(-fused, kind="stable")[:k]
+    return [(units[i][0], units[i][1], float(fused[i])) for i in best]</code></pre>
+<p><code>build_context(example, fmt, mode, retriever, k)</code> makes the text the model sees. In <code>mode="full"</code> it is the whole table plus all text. In <code>mode="retrieved"</code> it keeps the header plus only the top-k rows and sentences, in their original document order. The embedding model is loaded lazily, once, behind a lock (several threads use it). <code>finreason/__init__.py</code> sets <code>OMP_NUM_THREADS=1</code> because PyTorch and FAISS each bundle OpenMP and crash together on macOS otherwise.</p>
+
+<h3 id="c-prompts">Prompts · <code>prompts.py</code></h3>
+<div class="file">finreason/prompts.py</div>
+<pre><code>SYSTEM_PROMPT = ("You are a careful financial analyst. Answer questions about a financial report "
+                 "using only the table and text provided.")
+
+ANSWER_FORMAT = """Answer format:
+- The final answer is a single number. Unless the question asks for another unit, use the same
+  units as the report ... Do not write the unit.
+- Write percentages as percent numbers (12.5 means 12.5%).
+- Use a minus sign for decreases and negative values.
+- For yes/no questions, answer yes or no.
+- The last line must be: Answer: &lt;number&gt;"""
+
+def build_messages(style, context, question, fewshot=False, fmt="markdown", system=SYSTEM_PROMPT):
+    messages = [{"role": "system", "content": system}]
+    if fewshot:
+        for shot in EXEMPLARS:                  <span class="cm"># 3 worked examples as earlier chat turns</span>
+            shot_context, _ = build_context(shot["example"], fmt=fmt, mode="full")
+            messages.append({"role": "user", "content": user_message(shot_context, shot["example"].question, style)})
+            messages.append({"role": "assistant", "content": shot[style]})
+    messages.append({"role": "user", "content": user_message(context, question, style)})
+    return messages</code></pre>
+<ul>
+<li>The 3 <b>exemplars</b> are real FinQA <b>train</b> questions (Citigroup carrying amount −21.88%, ADI average share price 34.04, International Paper Brazil share 19.23%), so they can never overlap the test set. Each has a hand-written CoT, Decomposition and PoT solution.</li>
+<li>They teach three hard things: a percentage change with a decrease (sign), a question where the table is a distractor and the answer is in the text, and a unit conversion ($1.1 billion = 1,100 million).</li>
+<li>Few-shot examples are shown as previous user/assistant turns, written in the <i>same table format</i> as the question.</li>
+<li>The test <code>test_exemplars_are_correct</code> runs every PoT example in the sandbox and checks it gets the gold answer.</li>
+<li><code>REPAIR_PROMPT</code>: “Running your code failed with this error: … Fix the code and return only the corrected code.”</li>
+</ul>
+
+<h3 id="c-llm">LLM client and cache · <code>llm.py</code></h3>
+<p>One class talks to Ollama, OpenAI-compatible APIs (OpenAI, Groq, Gemini, OpenRouter) and Anthropic. A model is named <code>provider:model</code>, e.g. <code>ollama:qwen3:8b</code>.</p>
+<div class="file">finreason/llm.py</div>
+<pre><code>def chat(self, messages, temperature=0.0, sample_id=0):
+    request = [self.spec, self.think, self.max_tokens, messages, temperature, sample_id]
+    key = hashlib.sha256(json.dumps(request).encode()).hexdigest()
+    if self.cache and (hit := self.cache.get(key)):
+        return LLMResponse(**hit, cached=True)              <span class="cm"># same request → same stored answer</span>
+    start = time.perf_counter()
+    for attempt in range(3):
+        try:
+            text, n_in, n_out = self._call(messages, temperature, sample_id)
+            if not text and n_in == 0 and n_out == 0:       <span class="cm"># GPU out of memory etc.</span>
+                raise RuntimeError("... returned an empty response (server error)")
+            break
+        except Exception:
+            if attempt == 2: raise
+            time.sleep(2 ** attempt * 5)                    <span class="cm"># back off 5 s, 10 s</span>
+    latency = time.perf_counter() - start
+    text = re.sub(r"&lt;think&gt;.*?&lt;/think&gt;", "", text, flags=re.DOTALL).strip()
+    self.cache.put(key, {"text": text, "prompt_tokens": n_in, "completion_tokens": n_out, "latency": latency})
+    return LLMResponse(text, n_in, n_out, latency)</code></pre>
+<ul>
+<li><b>The cache</b> is a SQLite table at <code>~/.cache/finreason/llm_cache.sqlite</code> (outside iCloud, which locks open databases). The key is a SHA-256 hash of everything that affects the answer. This makes runs <b>resumable</b> and re-running a finished experiment instant. It also stores the <i>original</i> latency, so timing numbers stay honest.</li>
+<li>WAL mode lets several programs read and write at once; one lock protects the shared connection across threads.</li>
+<li>For Ollama, <code>options</code> sets temperature, <code>seed = 42 + sample_id</code>, context window <code>num_ctx = 8192</code> and output limit <code>num_predict = 1024</code>. Token counts come from Ollama’s <code>prompt_eval_count</code> and <code>eval_count</code>.</li>
+<li><code>cost_usd</code> gives dollars for API models with a known price; local models cost 0.</li>
+</ul>
+
+<h3 id="c-strategies">Strategies and VPSC · <code>strategies.py</code></h3>
+<p>Every strategy is a function <code>(llm, example, context, fmt) → Prediction</code>. A <code>Prediction</code> holds the answer, how it was read, the raw output, code, variable trace, error, and usage (calls, tokens, latency).</p>
+<div class="file">finreason/strategies.py · text strategies and Program-of-Thought</div>
+<pre><code>def text_strategy(style, fewshot, system=SYSTEM_PROMPT):
+    def run(llm, example, context, fmt, temperature=0.0, sample_id=0):
+        messages = build_messages(style, context, example.question, fewshot, fmt, system)
+        response = llm.chat(messages, temperature=temperature, sample_id=sample_id)
+        pred = Prediction(output=response.text); pred.add_usage(response)
+        pred.answer, pred.how = extract_answer(response.text)
+        return pred
+    return run
+
+def program_of_thought(llm, example, context, fmt, fewshot=True, repair=True):
+    messages = build_messages("pot", context, example.question, fewshot, fmt)
+    response = llm.chat(messages)
+    ...
+    pred.code = extract_code(response.text)
+    result = run_code(pred.code)
+    if not result.ok and repair:              <span class="cm"># show the error once, let the model fix it</span>
+        messages += [{"role": "assistant", "content": response.text},
+                     {"role": "user", "content": REPAIR_PROMPT.format(error=result.error)}]
+        response = llm.chat(messages)
+        ...
+    if result.ok:
+        pred.answer, pred.how = to_answer(result.ans), "code"
+    return pred</code></pre>
+<p>Direct, zero-shot CoT, few-shot CoT and Decomposition are all <code>text_strategy</code> with a different style and fewshot flag. That is why the strategy table in the code is so short.</p>
+
+<div class="file">finreason/strategies.py · VPSC (our method)</div>
+<pre><code>def program_consistency(llm, example, context, fmt, samples=SC_SAMPLES, verify=True):
+    messages = build_messages("pot", context, example.question, True, fmt)
+    runs = []
+    for i in range(samples):
+        temperature = 0.0 if i == 0 else SC_TEMPERATURE   <span class="cm"># sample 0 greedy, 1-4 at T = 0.7</span>
+        response = llm.chat(messages, temperature=temperature, sample_id=i)
+        code = extract_code(response.text)
+        result = run_code(code)                            <span class="cm"># sandbox</span>
+        grounded, missing = grounding_check(code, context) if result.ok else (False, [])
+        runs.append({..., "grounded": grounded, "missing": missing,
+                     "answer": to_answer(result.ans) if result.ok else None})
+    executed = [r for r in runs if r["answer"] is not None]
+    pool = [r for r in executed if r["grounded"]] if verify else executed
+    if verify and not pool:      <span class="cm"># nothing grounded: fall back to every executed program</span>
+        pool = executed
+    if pool:
+        counts = Counter(_vote_key(r["answer"]) for r in pool)   <span class="cm"># answers rounded to 2 decimals</span>
+        winner, n_votes = counts.most_common(1)[0]              <span class="cm"># tie → answer seen first</span>
+        ...
+        pred.extra["agreement"] = n_votes / samples
+    pred.extra.update(votes=..., grounded=..., ungrounded_numbers=..., n_executed=len(executed))
+    return pred
+
+STRATEGIES = {
+    "direct": text_strategy("direct", fewshot=False),
+    "cot_zs": text_strategy("cot", fewshot=False),
+    "cot_fs": text_strategy("cot", fewshot=True),
+    "decomp_fs": text_strategy("decomp", fewshot=True),
+    "pot_fs": program_of_thought,
+    "sc_cot": self_consistency,
+    "pot_sc": lambda llm, example, context, fmt: program_consistency(llm, example, context, fmt, verify=False),
+    "vpsc": program_consistency,
+}</code></pre>
+<div class="vpsc"><span>Question + report</span><i>→</i><span>5 programs (1 greedy + 4 at T=0.7)</span><i>→</i><span>run each in sandbox</span><i>→</i><span class="hl">drop programs with numbers not in report</span><i>→</i><span>majority vote</span><i>→</i><span>answer + grounding flag</span></div>
+<ul>
+<li><b>Why the PoT-SC ablation is exact:</b> <code>pot_sc</code> builds the same messages with the same temperatures and sample ids, so it gets the <i>identical five programs</i> (they even come from the same cache entries). The only difference is the grounding filter. Any accuracy difference is caused by verification alone.</li>
+<li><b>Self-Consistency</b> (<code>self_consistency</code>) does the same vote over 5 few-shot CoT answers. Sample 0 is greedy, so it equals few-shot CoT.</li>
+<li><b>Optimized strategies:</b> <code>get_strategy("textgrad:artifacts/x.json")</code> returns zero-shot CoT with the optimized system prompt; <code>get_strategy("dspy:artifacts/x.json")</code> loads the compiled DSPy program.</li>
+</ul>
+
+<h3 id="c-sandbox">Sandbox · <code>sandbox.py</code></h3>
+<p>Model-written code is untrusted, so it runs behind four independent layers:</p>
+<ol>
+<li><b>Static check (AST):</b> parse the code without running it; reject any import other than <code>math</code>, any attribute starting with <code>_</code> (blocks tricks like <code>().__class__.__bases__</code>), and names like <code>open, exec, eval, getattr, os, sys, subprocess</code>.</li>
+<li><b>Separate process:</b> a fresh <code>python -I</code> (isolated mode: ignores environment variables and user site-packages). A crash cannot affect the main program.</li>
+<li><b>Restricted builtins:</b> the code runs with a whitelist (<code>abs, min, max, round, sum, len, range, float, int, ...</code>); <code>__import__</code> only returns <code>math</code>; <code>print</code> does nothing.</li>
+<li><b>Time limits:</b> 5-second timeout and an operating-system CPU limit (<code>RLIMIT_CPU</code>).</li>
+</ol>
+<div class="file">finreason/sandbox.py</div>
+<pre><code>def run_code(code, timeout=5):
+    problem = check_code(code)                       <span class="cm"># layer 1</span>
+    if problem:
+        return SandboxResult(ok=False, error=problem)
+    try:
+        proc = subprocess.run([sys.executable, "-I", "-c", CHILD_PROGRAM], input=code,   <span class="cm"># layer 2</span>
+                              capture_output=True, text=True, timeout=timeout,
+                              preexec_fn=_limit_resources(timeout))                       <span class="cm"># layer 4</span>
+    except subprocess.TimeoutExpired:
+        return SandboxResult(ok=False, error=f"timed out after {timeout}s")
+    ...
+    result = json.loads(proc.stdout)                 <span class="cm"># {"ans": ..., "trace": {variable: value}}</span>
+    if result["ans"] is None:
+        return SandboxResult(ok=False, trace=result["trace"], error="the code did not set `ans`")
+    return SandboxResult(ok=True, ans=result["ans"], trace=result["trace"])</code></pre>
+<p>The child program (layer 3) executes the code with the safe builtins and prints <code>ans</code> plus every numeric variable as JSON. That variable <b>trace</b> is what the app shows under “Code &amp; trace”. <code>extract_code</code> takes the first <code>```python</code> block from the model’s reply.</p>
+
+<h3 id="c-verify">Grounding check · <code>verify.py</code></h3>
+<div class="file">finreason/verify.py</div>
+<pre><code>CONSTANTS = set(range(0, 13)) | {100, 1000, 10**5, 10**6, 10**7, 10**9}   <span class="cm"># counts, %, lakh, crore, ...</span>
+SCALE_FACTORS = (1, 100, 0.01, 1000, 0.001)
+
+def code_literals(code):        <span class="cm"># every number typed into the code, via the AST</span>
+    return [abs(node.value) for node in ast.walk(ast.parse(code))
+            if isinstance(node, ast.Constant) and isinstance(node.value, (int, float))
+            and not isinstance(node.value, bool)]
+
+def is_grounded(value, report_numbers):
+    if value in CONSTANTS or (float(value).is_integer() and 1900 &lt;= value &lt;= 2100):   <span class="cm"># years</span>
+        return True
+    for n in report_numbers:
+        for factor in SCALE_FACTORS:                 <span class="cm"># 1.1 (billion) may become 1100 (million)</span>
+            if abs(value - n * factor) &lt;= 1e-6 * max(1.0, abs(n * factor)):
+                return True
+    return False
+
+def grounding_check(code, context):
+    report_numbers = {abs(n["value"]) for n in find_numbers(context)}
+    missing = [v for v in code_literals(code) if not is_grounded(v, report_numbers)]
+    return not missing, missing</code></pre>
+<p>Example from the tests: the report has 5829 and 5735. The program <code>ans = (5829 - 5753) / 5753</code> misread 5735 as 5753, so the check returns <code>(False, [5753, 5753])</code>. <code>ans = 1.1 * 1000 / 5829</code> passes, because 1000 is an allowed unit constant and 1.1 is in the text.</p>
+
+<h3 id="c-answers">Number parsing and scoring · <code>answers.py</code></h3>
+<p><code>NUMBER_RE</code> reads numbers in Western and Indian formats: <code>1,25,000.50</code>, brackets for negatives <code>(6,537)</code>, currency (<code>₹ $ Rs INR</code>), <code>%</code>, and scale words (<code>lakh, crore, million, bn</code>).</p>
+<p><code>extract_answer(text)</code> looks for the answer in this order: the last <code>Answer:</code> line (yes/no or a number, also inside <code>\boxed{}</code>) → a LaTeX <code>\boxed{}</code> anywhere → the last number in the text. The <code>how</code> field records which one worked; <code>last_number</code> counts as a <b>format failure</b> in the analysis.</p>
+<div class="file">finreason/answers.py</div>
+<pre><code>def gold_forms(gold, question="", scale=""):
+    places = _decimals(gold)
+    forms = [(gold, places)]
+    if allows_percent(question, scale):      <span class="cm"># "percent", "ratio", "margin", "growth", ... in the question</span>
+        forms += [(gold * 100, max(0, places - 2)), (gold / 100, places + 2)]
+    return forms
+
+def score(pred, gold, question="", scale="", rel_tol=REL_TOLERANCE):   <span class="cm"># 0.005 = 0.5%</span>
+    if pred is None: return False, False
+    if isinstance(gold, str) or isinstance(pred, str):                 <span class="cm"># yes / no</span>
+        same = isinstance(gold, str) and isinstance(pred, str) and pred == gold
+        return same, same
+    for g, d in gold_forms(gold, question, scale):
+        within_tolerance |= abs(pred - g) &lt;= rel_tol * abs(g)          <span class="cm"># (g == 0: |pred| ≤ 0.005)</span>
+        if places &gt;= 1:
+            rounded_match |= _round(pred, d) == _round(g, d)           <span class="cm"># same at the gold's precision</span>
+        exact |= _round(pred, 2) == _round(g, 2)
+    return within_tolerance or rounded_match or exact, exact</code></pre>
+<p>Example: FinQA gold −0.21882 for a percentage question. The forms are −0.21882, −21.882 and −0.0021882. A model answer of −21.88 is within 0.5% of −21.882, so it is correct. Rounding uses Python’s <code>Decimal</code> with ROUND_HALF_UP so 2.675 rounds to 2.68 (plain floats would give 2.67).</p>
+
+<h3 id="c-errors">Error taxonomy · <code>errors.py</code></h3>
+<p>Every wrong answer gets exactly one category, checked <b>in this order</b> (the first rule that matches wins):</p>
+<div class="tbl"><table>
+<tr><th>#</th><th>Category</th><th>Rule</th></tr>
+<tr><td>1</td><td>no_answer</td><td>Nothing could be parsed and there was no code</td></tr>
+<tr><td>2</td><td>execution_error</td><td>No answer and the code failed (even after the repair attempt)</td></tr>
+<tr><td>3</td><td>sign_error</td><td>−answer is within 1% of a gold form</td></tr>
+<tr><td>4</td><td>scale_error</td><td>Off by a factor of 100, 1,000, 10⁵ (lakh), 10⁶, 10⁷ (crore) or 10⁹</td></tr>
+<tr><td>5</td><td>rounding_near_miss</td><td>Within 5% of gold but outside the 0.5% tolerance</td></tr>
+<tr><td>6</td><td>no_work_shown</td><td>At most one number in the output, so nothing to diagnose</td></tr>
+<tr><td>7</td><td>evidence_error</td><td>At least one gold operand never appears in the model’s work</td></tr>
+<tr><td>8</td><td>reasoning_error</td><td>All gold operands appear, but the formula or arithmetic is wrong</td></tr>
+</table></div>
+<p>The gold operands come from the gold program (FinQA) or the derivation/formula (TAT-QA, Indian), dropping constants like 100. A number “appears” if it is in the model’s code or text, also when written in thousands. This is rule-based, so it is fast and reproducible but not perfect (see limitations).</p>
+
+<h3 id="c-metrics">Statistics · <code>metrics.py</code></h3>
+<div class="file">finreason/metrics.py</div>
+<pre><code>def bootstrap_ci(flags, n_resamples=2000, alpha=0.05, seed=SEED):
+    rng = np.random.default_rng(seed)
+    means = rng.choice(flags, size=(n_resamples, len(flags)), replace=True).mean(axis=1)
+    return float(np.quantile(means, alpha / 2)), float(np.quantile(means, 1 - alpha / 2))
+
+def mcnemar(flags_a, flags_b):
+    b = int(np.sum(a &amp; ~b_))          <span class="cm"># A right, B wrong</span>
+    c = int(np.sum(~a &amp; b_))          <span class="cm"># A wrong, B right</span>
+    if b + c == 0: return b, c, 1.0
+    return b, c, float(binomtest(b, b + c, 0.5).pvalue)
+
+def holm(p_values):                   <span class="cm"># sort, multiply by (m - rank), keep increasing, cap at 1</span>
+    ...</code></pre>
+<p><b>Worked example you can do on the board:</b> FinQA, Qwen3-1.7B, Program-of-Thought vs few-shot CoT. PoT is right and CoT wrong on 14 questions; CoT right and PoT wrong on 9. Under “equally good”, 14 out of 23 disagreements is like 14 heads in 23 coin flips: two-sided p = 0.405. Not significant, even though PoT is 5 points higher (57% vs 52%).</p>
+<p><b>Holm example</b> (from the tests): p = [0.01, 0.04, 0.03] → sorted 0.01, 0.03, 0.04 → 3×0.01 = 0.03, 2×0.03 = 0.06, 1×0.04 = 0.04 but must not be smaller than 0.06 → [0.03, 0.06, 0.06].</p>
+
+<h3 id="c-perturb">Perturbation test · <code>perturb.py</code>, <code>finqa_program.py</code></h3>
+<p>Question: did the model memorize FinQA answers during pre-training? FinQA is public, so this is possible. Test: change the numbers, recompute the true answer, and see whether accuracy drops.</p>
+<ol>
+<li>Take the literal numbers in the FinQA gold program (e.g. 5829 and 5735 in <code>subtract(5829, 5735)</code>).</li>
+<li>Multiply each by a random factor in 0.7–0.9 or 1.1–1.3, keeping its decimal places.</li>
+<li>Replace every occurrence in the table and text in one pass (both <code>1234.5</code> and <code>1,234.5</code> forms), so a new number is never replaced again.</li>
+<li>Rewrite the program with the new numbers and execute it with <code>finqa_program.execute</code> to get the new gold answer.</li>
+<li>Skip a question (return <code>None</code>) if it uses a table operation, a year, a percent or negative argument, or a number not written in the report. 88 of 100 survive.</li>
+</ol>
+<p><code>finqa_program.execute</code> runs FinQA’s little language: <code>add, subtract, multiply, divide, exp, greater</code>, <code>#0</code> refers to step 0’s result, <code>const_100</code> is 100, and <code>table_sum/max/min/average</code> work on a table row.</p>
+
+<h3 id="c-opt">DSPy and TextGrad · <code>dspy_opt.py</code>, <code>textgrad_opt.py</code></h3>
+<div class="file">finreason/dspy_opt.py</div>
+<pre><code>dspy.configure_cache(enable_disk_cache=False, enable_memory_cache=False)   <span class="cm"># so cost is measured honestly</span>
+
+class FinancialQA(dspy.Signature):
+    """Answer a numerical question about a financial report using only the given table and text. ..."""
+    context: str = dspy.InputField(desc="table and text from a financial report")
+    question: str = dspy.InputField()
+    answer: str = dspy.OutputField(desc="the final answer as a single number (or yes/no), without units")
+
+def metric(example, prediction, trace=None):          <span class="cm"># the same scorer as everything else</span>
+    return score(to_answer(prediction.answer), example.gold, example.question, example.scale)[0]
+
+def compile_program(optimizer, trainset, valset, lm):
+    program = dspy.ChainOfThought(FinancialQA)
+    if optimizer == "bootstrap":
+        return dspy.BootstrapFewShot(metric=metric, max_bootstrapped_demos=3,
+                                     max_labeled_demos=0).compile(program, trainset=trainset)
+    if optimizer == "mipro":
+        return dspy.MIPROv2(metric=metric, auto="light", num_threads=4, seed=SEED,
+                            max_bootstrapped_demos=3, max_labeled_demos=0).compile(
+                                program, trainset=trainset, valset=valset, minibatch_size=min(40, len(valset)))</code></pre>
+<ul>
+<li><code>max_labeled_demos=0</code>: demos are only questions the model itself solved correctly, so every demo has a full reasoning chain.</li>
+<li><code>DSPyStrategy</code> wraps a saved program so it has the same interface as the other strategies. It uses a copy of the LM per question so parallel threads count only their own tokens.</li>
+<li>Training data: 50 FinQA <b>train</b> questions; validation: 40 FinQA <b>dev</b> questions. The test sets are never seen during optimization.</li>
+</ul>
+<div class="file">finreason/textgrad_opt.py · the loop</div>
+<pre><code>system_prompt = tg.Variable(SYSTEM_PROMPT, requires_grad=True, role_description="system prompt ...")
+model = tg.BlackboxLLM(task_engine, system_prompt=system_prompt)        <span class="cm"># Qwen3-1.7B</span>
+optimizer = tg.TGD(parameters=[system_prompt], constraints=CONSTRAINTS)  <span class="cm"># keep "Answer: &lt;number&gt;", stay general</span>
+best_acc = accuracy(task_engine, best_prompt, val, val_ctx)
+for step in range(1, steps + 1):                  <span class="cm"># 6 steps</span>
+    batch = rng.sample(range(len(train)), batch_size)   <span class="cm"># 6 train questions</span>
+    for i in batch:
+        response = model(question_variable)
+        if correct: continue                      <span class="cm"># only wrong answers produce feedback</span>
+        loss_fn = tg.TextLoss(f"The correct answer is {gold}. The response above is wrong. "
+                              "Identify precisely which step went wrong ...")
+        losses.append(loss_fn(response))
+    tg.sum(losses).backward()                     <span class="cm"># the 8B critic writes textual gradients</span>
+    optimizer.step()                              <span class="cm"># the prompt is rewritten</span>
+    acc = accuracy(task_engine, system_prompt.value, val, val_ctx)
+    if acc &gt;= best_acc: keep it                   <span class="cm"># otherwise revert to the best prompt</span>
+    else: system_prompt.set_value(best_prompt)</code></pre>
+<p><code>LocalEngine</code> is a small adapter so TextGrad calls our own <code>LLM</code> class (same models, cache and token counting). The 1.7B run’s history: dev accuracy 37.5% → 40 → 42.5 → 60 → 62.5 → (55, reverted) → 62.5%. It took 318 minutes, 382 calls and 767,527 tokens.</p>
+
+<h3 id="c-scripts">Scripts and analysis · <code>experiment.py</code>, <code>scripts/</code></h3>
+<div class="file">scripts/run_experiment.py · resumable, parallel</div>
+<pre><code>for strategy_name in args.strategy.split(","):
+    name = run_name(...)                            <span class="cm"># e.g. finqa_test_n100__ollama-qwen3-8b__cot_fs__markdown__full</span>
+    path = RUNS_DIR / f"{name}.jsonl"
+    done = {json.loads(line)["uid"] for line in open(path)} if path.exists() else set()
+    todo = [ex for ex in examples if ex.uid not in done]            <span class="cm"># resume where it stopped</span>
+    with open(path, "a") as out, ThreadPoolExecutor(args.workers) as pool:   <span class="cm"># 4 questions at once</span>
+        futures = [pool.submit(evaluate_example, strategy, llm, ex, ...) for ex in todo]
+        for future in as_completed(futures):
+            out.write(json.dumps(future.result(), default=str) + "\n"); out.flush()</code></pre>
+<p><code>experiment.evaluate_example</code> builds the context, runs the strategy, scores the answer, classifies the error and returns one flat record (uid, question, gold, answer, correct, exact match, F1, error category, calls, tokens, latency, output, code, sandbox error, votes, retrieved ids, recall).</p>
+<p><code>scripts/analyze.py</code> reads every <code>results/runs/*.jsonl</code> file and <b>re-scores every saved answer</b> with the current scorer (so changing a scoring rule never needs the model again). It then writes <code>summary.csv</code> (accuracy, CI, EM, F1, failures, tokens, latency per run), <code>significance.csv</code> (McNemar vs few-shot CoT, Holm within each setting), accuracy by steps and evidence, the error table, perturbation, ablations, VPSC diagnostics, optimization costs, <code>report.md</code> and the figures. Derived tables only use <b>complete</b> runs.</p>
+<p>Other scripts: <code>optimize_dspy.py</code>, <code>optimize_textgrad.py</code>, <code>eval_retrieval.py</code> (recall@k, no LLM needed), <code>dataset_stats.py</code>, <code>build_indian_set.py</code>, and <code>run_all.sh</code> (every experiment in order, about 30 hours on the M4).</p>
+
+<h3 id="c-app">Web app · <code>app/</code></h3>
+<p>Built with <b>Streamlit</b> (Python web apps without HTML/JS). <code>streamlit_app.py</code> sets up navigation for 9 pages in <code>app/views/</code>. <code>core.py</code> holds shared, cached state: models (<code>st.cache_resource</code>), datasets, results CSVs (<code>st.cache_data</code>, refreshed every 2 minutes), and labels. <code>theme.py</code> is the visual design.</p>
+<div class="file">app/views/ask.py · the Ask page uses the same library as the experiments</div>
+<pre><code>def run_pipeline(example, strategy, model, fmt, mode, k):
+    if strategy.startswith("dspy:"):          <span class="cm"># a compiled DSPy program runs with its own model</span>
+        model = core.dspy_model(strategy) or model
+    llm = core.get_llm(model)
+    retriever = core.get_retriever() if mode == "retrieved" else None
+    context, retrieved = build_context(example, fmt=fmt, mode=mode, retriever=retriever, k=k)
+    pred, wall = run_with_timer(lambda: get_strategy(strategy)(llm, example, context, fmt), ...)
+    correct = score(pred.answer, example.gold, ...)[0] if example.gold is not None else None
+    return dict(..., flag=grounding_flag(strategy, pred, context))</code></pre>
+<ul>
+<li><b>Three inputs</b> (<code>views/common.py</code>): a benchmark question, a pasted CSV table, or one page of an uploaded PDF (<code>pdf_utils.page_to_example</code> uses pdfplumber’s detected tables or, if better, treats each line ending in numbers as a row, naming the columns from the page’s year heading).</li>
+<li><b>Evidence highlighting:</b> rows whose numbers appear in the model’s code/output are highlighted amber; rows chosen by retrieval are blue.</li>
+<li><b>Grounding flag</b> is shown for VPSC (how many of the 5 programs were grounded) and also for single PoT programs.</li>
+<li><code>core.main_summary()</code> hides incomplete runs (fewer than 100 / 44 questions), so a half-finished run is never shown as a result.</li>
+<li>The Overview page computes the headline findings and the claims checklist <b>live</b> from <code>results/</code>; nothing is typed in by hand.</li>
+<li>The app uses its own Ollama server (port 11435) so it never waits behind experiments on the main server.</li>
+</ul>
+
+<h3 id="c-tests">Tests · <code>tests/</code> (58)</h3>
+<div class="tbl"><table>
+<tr><th>File</th><th>What it checks</th></tr>
+<tr><td><code>test_answers.py</code></td><td>Number parsing (Indian commas, brackets, ₹, %), answer extraction, scoring rules incl. percent forms</td></tr>
+<tr><td><code>test_sandbox.py</code></td><td>Correct code runs; imports, file access, dunder tricks and infinite loops are blocked</td></tr>
+<tr><td><code>test_finqa_program.py</code></td><td>The FinQA program executor: constants, percents, <code>greater</code>, table operations, and every FinQA test question’s gold program re-executes to its gold answer</td></tr>
+<tr><td><code>test_pipeline.py</code></td><td>Table formats, exemplars are correct, few-shot message structure, perturbation, error categories, statistics, retrieval recall, Indian set consistency, PDF parsing, grounding check, empty-server-reply retry</td></tr>
+<tr><td><code>test_app.py</code></td><td>Every page renders headlessly; Ask runs every strategy; retrieval + JSON tables; Compare; paste input; every Data company; every Errors selection; both Optimization models; a DSPy program</td></tr>
+</table></div>
+<p>Run with <code>.venv/bin/python -m pytest</code>. The 12 tests that call the model skip automatically when Ollama is off.</p>
+
+<!-- ============================================================ 06 -->
+<h2 id="results"><span class="n">06</span>Results and what they mean</h2>
+<p>All numbers: 100 FinQA, 100 TAT-QA and 44 Indian questions, Markdown tables, full page, thinking off. Accuracy in %. Bold = best in the column.</p>
+
+<h3>Main table · Qwen3-1.7B</h3>
+<div class="tbl"><table>
+<tr><th>Strategy</th><th class="num">FinQA</th><th class="num">TAT-QA</th><th class="num">Indian</th><th class="num">Tokens / Q (FinQA)</th><th class="num">Calls</th></tr>
+<tr><td>Direct</td><td class="num">5</td><td class="num">11</td><td class="num">2</td><td class="num">1,148</td><td class="num">1</td></tr>
+<tr><td>CoT zero-shot</td><td class="num">49</td><td class="num">68</td><td class="num">66</td><td class="num">1,281</td><td class="num">1</td></tr>
+<tr><td>CoT few-shot (baseline)</td><td class="num">52</td><td class="num">73</td><td class="num">66</td><td class="num">2,745</td><td class="num">1</td></tr>
+<tr><td>Decomposition</td><td class="num">44</td><td class="num">70</td><td class="num">66</td><td class="num">2,968</td><td class="num">1</td></tr>
+<tr><td>Program-of-Thought</td><td class="num best">57</td><td class="num">67</td><td class="num best">77</td><td class="num">2,498</td><td class="num">1.01</td></tr>
+<tr><td>Self-Consistency</td><td class="num">51</td><td class="num best">74</td><td class="num">66</td><td class="num">13,720</td><td class="num">5</td></tr>
+<tr><td>PoT Self-Consistency</td><td class="num">56</td><td class="num">67</td><td class="num best">77</td><td class="num">12,388</td><td class="num">5</td></tr>
+<tr><td>VPSC (ours)</td><td class="num">56</td><td class="num">67</td><td class="num best">77</td><td class="num">12,388</td><td class="num">5</td></tr>
+<tr><td>DSPy BootstrapFewShot</td><td class="num">45</td><td class="num">–</td><td class="num">–</td><td class="num">5,145</td><td class="num">1</td></tr>
+<tr><td>TextGrad</td><td class="num">43</td><td class="num">60</td><td class="num">68</td><td class="num">1,950</td><td class="num">1</td></tr>
+</table></div>
+<p class="small">95% CIs are about ±10 points (e.g. PoT FinQA 57% [47, 66]; Indian PoT 77% [64, 89]).</p>
+
+<h3>Qwen3-8B (FinQA only; other datasets pending)</h3>
+<div class="tbl"><table>
+<tr><th>Strategy</th><th class="num">FinQA</th><th class="num">vs 1.7B</th></tr>
+<tr><td>Direct</td><td class="num">37</td><td class="num">+32</td></tr>
+<tr><td>CoT zero-shot</td><td class="num best">75</td><td class="num">+26</td></tr>
+<tr><td>CoT few-shot</td><td class="num">70</td><td class="num">+18</td></tr>
+<tr><td>Decomposition</td><td class="num">73</td><td class="num">+29</td></tr>
+<tr><td>Program-of-Thought</td><td class="num">73</td><td class="num">+16</td></tr>
+<tr><td>Self-Consistency</td><td class="num">73</td><td class="num">+22</td></tr>
+</table></div>
+
+<h3>The findings, one by one</h3>
+<h4>1. Reasoning is essential</h4>
+<p>Direct answering scores 2–11% with the 1.7B model and 37% with the 8B. Every reasoning strategy is far higher (44–77%). Direct vs few-shot CoT is the only difference that survives Holm correction on every dataset (p_holm ≈ 0). The bigger model helps most where there is no reasoning (+32 points on Direct).</p>
+<h4>2. Python does the arithmetic best, but differences among reasoning strategies are small</h4>
+<p>PoT is the best single call on FinQA (57%) and Indian (77%); few-shot CoT on TAT-QA (73%). None of these differences is significant after correction. A nice detail: PoT’s exact match is almost equal to its accuracy (FinQA EM 56% vs accuracy 57%), while CoT’s EM is far lower (32% vs 52%), because text reasoning rounds intermediate values and Python does not.</p>
+<h4>3. Five samples do not pay for a small model</h4>
+<p>Self-Consistency, PoT-SC and VPSC use 4.4–5.0× the tokens of few-shot CoT for −6 to +11 points, none significant. The samples almost always agree (VPSC agreement: FinQA 91%, TAT-QA 97%, Indian 99%), so voting rarely changes the answer.</p>
+<h4>4. Errors are about evidence</h4>
+<p>For Qwen3-1.7B on FinQA + TAT-QA (reasoning strategies, 549 wrong answers): 60% evidence errors (a gold operand is missing from the work, i.e. wrong or missing number), 23% reasoning errors (wrong formula), 9% scale errors (units). So the bottleneck is reading the right number, not arithmetic. With the 8B model the share of evidence errors falls sharply (FinQA few-shot CoT: 31 evidence errors for 1.7B vs 11 for 8B).</p>
+<h4>5. VPSC: same accuracy as PoT-SC, but a precise warning flag</h4>
+<div class="tbl"><table>
+<tr><th>Dataset</th><th class="num">VPSC</th><th class="num">PoT-SC</th><th class="num">Programs ungrounded</th><th class="num">Flagged questions</th><th class="num">…of which wrong</th></tr>
+<tr><td>FinQA</td><td class="num">56</td><td class="num">56</td><td class="num">26 / 493</td><td class="num">6</td><td class="num">6</td></tr>
+<tr><td>TAT-QA</td><td class="num">67</td><td class="num">67</td><td class="num">0 / 491</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td>Indian</td><td class="num">77</td><td class="num">77</td><td class="num">0 / 219</td><td class="num">0</td><td class="num">0</td></tr>
+</table></div>
+<p>Why no gain: in 5 of the 6 flagged FinQA questions <i>all</i> programs were ungrounded (the model consistently used a number that is not in the report), so VPSC fell back to voting over all of them and the answer did not change. In the sixth, the grounded majority agreed with the overall majority. Value: when the check fires, the answer was wrong every time (6/6), so it can be used to warn the user or abstain. Its coverage is low: it caught 6 of the 44 wrong FinQA answers, because most evidence errors pick a number that <i>is</i> in the report, just the wrong one.</p>
+<h4>6. Generalization to Indian reports</h4>
+<p>PoT gets 77% on our Indian set vs 57% on FinQA, despite ₹ crore units, Indian number formatting and bigger tables (18 rows on average). Likely reasons: our tables are clean transcriptions and our questions state the period and unit clearly; FinQA has noisy text and some ambiguous questions.</p>
+<h4>7. No sign of memorization</h4>
+<p>On the 88 perturbed FinQA questions: few-shot CoT 56 → 50% (p = 0.42), PoT 58 → 56% (p = 0.75), VPSC 57 → 55% (p = 0.75). No significant drop, so the model is reasoning over the numbers it sees, not recalling memorized answers. (The “original” accuracy here is on the same 88 questions, which is why it differs slightly from the 100-question numbers.)</p>
+<h4>8. Ablations</h4>
+<div class="tbl"><table>
+<tr><th>Variant (Qwen3-1.7B)</th><th class="num">FinQA</th><th class="num">TAT-QA</th></tr>
+<tr><td>Table as Markdown · few-shot CoT (default)</td><td class="num">52</td><td class="num">73</td></tr>
+<tr><td>Table as JSON</td><td class="num">54</td><td class="num">68</td></tr>
+<tr><td>Table as HTML</td><td class="num">49</td><td class="num">73</td></tr>
+<tr><td>Table as row text</td><td class="num">44</td><td class="num">63</td></tr>
+<tr><td>Full page · PoT</td><td class="num">57</td><td class="num">67</td></tr>
+<tr><td>Top-5 retrieved rows · PoT</td><td class="num">51</td><td class="num">56</td></tr>
+<tr><td>Zero-shot CoT, thinking off</td><td class="num">49</td><td class="num">–</td></tr>
+<tr><td>Zero-shot CoT, thinking on</td><td class="num">63</td><td class="num">–</td></tr>
+</table></div>
+<ul>
+<li><b>Table format:</b> structured formats (Markdown, JSON, HTML) beat row-sentences, which lose the column structure.</li>
+<li><b>Retrieval hurts:</b> hybrid recall@5 is 78% on FinQA and 85% on TAT-QA, so about 1 in 5 gold evidence units is missing from the top 5 and the model cannot answer. For one-page contexts the full page is better; retrieval would matter for whole reports. Retrieval recall (full test sets): FinQA recall@5 BM25 0.708, dense 0.780, hybrid 0.776; TAT-QA 0.797 / 0.838 / 0.850.</li>
+<li><b>Thinking mode</b> is the one significant improvement: 49% → 63% (23 questions fixed, 9 broken, McNemar p = 0.020), at 2.0× tokens and 13× the time (151 s vs 11 s per question).</li>
+</ul>
+<h4>9. Automatic optimization did not beat hand-written prompts</h4>
+<ul>
+<li><b>DSPy BootstrapFewShot</b> (1.7B): dev 42.5%; FinQA test 45% vs few-shot CoT 52% (not significant). One-time cost: 2.5 minutes, 15 calls, 23,681 tokens. It stops early once it has 3 correct demos.</li>
+<li><b>TextGrad</b> (1.7B prompt, 8B critic): dev 37.5% → 62.5%, but test FinQA 43% (vs zero-shot CoT 49%), TAT-QA 60% (vs 68%), Indian 68% (vs 66%). One-time cost: 318 minutes, 382 calls, 767,527 tokens.</li>
+</ul>
+<p>Why: the validation set is only 40 questions and the same set was used to decide which rewrites to keep, so the 62.5% is optimistic (overfitting to the validation set). The final TextGrad prompt is very long and includes instructions like “if the data is insufficient, say the calculation cannot be performed”, which made the small model sometimes give no number: its format-failure rate on FinQA is 10% vs 2% for few-shot CoT. For a 1.7B model, a short, clear hand-written prompt with good examples works better.</p>
+
+<!-- ============================================================ 07 -->
+<h2 id="pending"><span class="n">07</span>What is not done, and how to talk about it</h2>
+<p>Your slides already mark these as “pending”, and the app’s Overview checklist shows them with “…”. Say it plainly; it is much better than being caught out.</p>
+<div class="tbl"><table>
+<tr><th>Item</th><th>Status</th><th>Why</th></tr>
+<tr><td>Qwen3-8B on TAT-QA and Indian</td><td>Not run (8B TAT-QA Direct stopped at 59/100; not shown)</td><td>8B is 4–5× slower; ~30 h total compute on one laptop</td></tr>
+<tr><td>Qwen3-8B VPSC / PoT-SC, perturbation, ablations</td><td>Not run</td><td>Same compute limit</td></tr>
+<tr><td>DSPy MIPROv2</td><td>Implemented (<code>dspy_opt.compile_program("mipro")</code>), run stopped before finishing, no artifact</td><td>The search is the most expensive optimizer; it was still running at the Review 3 deadline</td></tr>
+<tr><td>DSPy BootstrapFewShot on TAT-QA / Indian</td><td>Only tested on FinQA</td><td>Time</td></tr>
+<tr><td>Optimizers for the 8B model</td><td>Not run</td><td>Time</td></tr>
+<tr><td>Human sign-off of the Indian set</td><td>Automatic checks done (44/44); manual column blank</td><td>Can be done tonight</td></tr>
+</table></div>
+<div class="box say"><span class="lbl">Say this</span><p>“All the code for these is implemented and tested; what is missing is compute time. We ran everything on one laptop, and the 8B model is about five times slower. We prioritized completing every experiment for the 1.7B model, so all our conclusions are based on complete runs. The app and the analysis automatically leave out any incomplete run, so no number we show is from a half-finished experiment. With one more day of compute, <code>bash scripts/run_all.sh</code> fills in the rest.”</p></div>
+<div class="box warn"><span class="lbl">Counting strategies</span><p>The app says “10 prompt configurations: 7 hand-written + 3 optimizers”. Slide 2 says “11 strategies”. Both are right: 7 hand-written strategies + the PoT-SC ablation = 8 hand-written prompt setups, plus 3 optimizers = 11. The “10” does not count the ablation separately.</p></div>
+
+<!-- ============================================================ 08 -->
+<h2 id="demo"><span class="n">08</span>Demo script (about 5 minutes)</h2>
+<div class="box say"><span class="lbl">Full run of show</span><p>For every slide with what to say, the hand-overs, and every demo click with the exact expected result, use the <a href="FinReason_Demo_Runbook.html">demo runbook</a> (<code>FinReason_Demo_Runbook.html</code> in the project folder). Its demo differs slightly from the short version below: it uses marico-08 on the Compare page and changes a table cell live.</p></div>
+<ol>
+<li><b>Overview</b> (30 s). “Every number on this page is computed live from our saved results.” Point at the headline findings and scroll to the claims checklist: “✓ means implemented with results; … means implemented, results pending.”</li>
+<li><b>Ask → Indian reports → marico-08 → VPSC → Run the pipeline</b> (90 s). Question: 9-year CAGR of Marico’s income from operations; gold 6.74. Walk the stepper: Context → Prompt → Model (5 calls) → Sandbox → Grounding 5/5 → Vote → Score. Then the tabs: <b>Evidence</b> (amber rows the model used), <b>Code &amp; trace</b> (the Python and its variables), <b>Votes</b> (5 programs, all grounded), <b>Prompt</b> (the exact messages, 3 worked examples first).
+<div class="box warn"><span class="lbl">Be ready</span><p>This answer comes from the cache (the caption says “answered from the response cache”, wall time 0.2 s). Say so: “This exact request was answered before, so it is replayed from our response cache; the tokens and model time shown are from the original run. Let me ask something new.” Then do step 3.</p></div></li>
+<li><b>Ask → Paste a table</b> (60 s). The default Titan table is filled in. Type a new question, e.g. “By what percent did other income grow from FY2024 to FY2025?” Run with VPSC on Qwen3-1.7B: about 10 s, answer 21.43. (Check: (493 − 406) / 406 × 100 = 21.43.) This proves it works live on new input.</li>
+<li><b>Data → Marico</b> (30 s). Pick the same question; the real annual-report PDF page is shown next to the table and formula.</li>
+<li><b>Compare</b> (60 s). Default selection Direct / CoT few-shot / PoT / VPSC on one question. Show who is right and the token cost bar (VPSC ≈ 5× tokens).</li>
+<li><b>Results</b> (30 s). Accuracy with confidence intervals; “Accuracy vs cost” tab for the Pareto frontier. <b>Optimization</b>: DSPy and TextGrad vs hand-written. <b>Errors</b>: open one evidence error and show the model picked the wrong number.</li>
+</ol>
+<div class="box"><span class="lbl" style="color:var(--accent)">Good live questions (gold computable by hand)</span>
+<ul>
+<li>“What was the profit before tax margin in FY2025, in percent?” → 4,481 / 54,842 × 100 = 8.17</li>
+<li>“By what percent did revenue from operations grow from FY2024 to FY2025?” → (54,842 − 47,114) / 47,114 × 100 = 16.40</li>
+<li>“What was the growth in profit before tax from FY2024 to FY2025, in percent?” → (4,481 − 4,607) / 4,607 × 100 = −2.73</li>
+</ul>
+<p class="small">These use the default pasted Titan table. If the teacher wants the bigger model, switch Model to Qwen3-8B: expect about 15 s for CoT/PoT and over a minute for VPSC.</p></div>
+
+<!-- ============================================================ 09 -->
+<h2 id="viva"><span class="n">09</span>Viva questions with answers</h2>
+<p>Click a question to see the answer. Answers are written to be said out loud.</p>
+
+<h3>The task and the idea</h3>
+<details><summary>What exactly is the task?</summary><div class="a"><p>Given one page of a financial report (a table plus surrounding text) and a question that needs arithmetic, output the number (or yes/no). Scored by execution accuracy: within 0.5% of the gold value, or equal at the gold’s precision; percent and fraction forms both accepted.</p></div></details>
+<details><summary>Why is this hard for an LLM?</summary><div class="a"><p>It needs four skills at once: find the right row and column among many similar ones, read the value with unit, scale and sign (brackets mean negative, “in crore”), choose the correct financial formula, and do exact multi-digit arithmetic. LLMs are weak at the last one and small models struggle with the first.</p></div></details>
+<details><summary>Why not fine-tune a model?</summary><div class="a"><p>Fine-tuning needs labelled data, GPUs and retraining for every new model. Prompting and prompt optimization are cheap, work with any model, and are the focus of this course. Papers like TAT-LLM and BloombergGPT show the training route at much higher cost.</p></div></details>
+<details><summary>Why small local models instead of GPT-4?</summary><div class="a"><p>Financial documents are often confidential, so running locally matters. Local models cost nothing per call, so we could make 7,805 calls. Two sizes from the same family (Qwen3 1.7B and 8B) let us isolate the effect of model size. The code also supports API models with <code>--model openai:gpt-4o-mini</code> and others.</p></div></details>
+<details><summary>Why Qwen3?</summary><div class="a"><p>Open weights, strong maths for its size, available in several sizes of the same family, runs in Ollama on a laptop (Q4_K_M quantization), and has a switchable thinking mode, which gave us an extra ablation.</p></div></details>
+<details><summary>What is your contribution? What is new?</summary><div class="a"><p>(1) VPSC, a training-free grounding check inside program self-consistency, with an exact ablation. (2) A new Indian annual-report calculation set (44 questions, ₹ crore/lakh), verified against the PDFs. (3) A controlled head-to-head of 7 hand-written strategies vs DSPy and TextGrad on small local models, with one-time optimization cost, confidence intervals and paired tests. (4) Diagnostics: error taxonomy, perturbation test, ablations. (5) An app where every answer can be audited.</p></div></details>
+
+<h3>Prompting strategies</h3>
+<details><summary>What is the difference between zero-shot and few-shot CoT?</summary><div class="a"><p>Zero-shot just adds “think step by step”. Few-shot first shows 3 solved examples as previous chat turns, so the model copies the format and approach. Our examples are FinQA train questions, so they never overlap the test.</p></div></details>
+<details><summary>Why did zero-shot CoT beat few-shot CoT on the 8B model (75 vs 70)?</summary><div class="a"><p>The difference is not significant (McNemar p = 0.42). Possible reasons: the examples more than double the prompt (≈2,750 vs 1,280 tokens) and the 8B model already knows the reasoning format, so examples add little and may bias it toward the example formulas.</p></div></details>
+<details><summary>Why is Direct so bad?</summary><div class="a"><p>The model has to output the final number immediately, with no space to write intermediate numbers. Each token is one forward pass, so it cannot do multi-step arithmetic “in its head”. Reasoning text acts as a scratchpad. The 8B model does better (37%) because it can do some simple calculations directly.</p></div></details>
+<details><summary>What is the repair step in Program-of-Thought?</summary><div class="a"><p>If the code fails (syntax error, missing <code>ans</code>, a blocked import), we send the error message back once and ask for corrected code. Only 1–2% of questions needed it (average calls 1.01–1.02).</p></div></details>
+<details><summary>How does the majority vote work exactly?</summary><div class="a"><p>Answers are rounded to 2 decimals as vote keys, so 16.4028 and 16.40 count as the same. The most common key wins; on a tie, the answer seen first wins, which is the greedy sample (sample 0). Agreement = winning votes / 5.</p></div></details>
+<details><summary>Why one greedy and four sampled paths?</summary><div class="a"><p>Sample 0 at temperature 0 equals the single-call strategy, so self-consistency can only add information on top of it. The other four at T = 0.7 give diversity. Fixed seeds keep it reproducible.</p></div></details>
+
+<h3>VPSC (expect several questions here)</h3>
+<details><summary>Explain VPSC in one breath.</summary><div class="a"><p>Sample five Python programs, run each in the sandbox, throw away any program that types a number not found in the report, and take a majority vote over the rest; if none is grounded, vote over all of them. The idea: most errors are evidence errors, so check the evidence.</p></div></details>
+<details><summary>VPSC did not beat PoT-SC. So what is the point?</summary><div class="a"><p>Correct, accuracy is identical on all three datasets, and we report that honestly. The reason is that the 1.7B model’s five programs nearly always agree, and when it uses a number that is not in the report it does so in all five, so filtering cannot change the vote. But every question the check flagged (6/6) was answered wrongly, so it is a precise reliability signal: in a real system you would show a warning or abstain. The method is also free: it reuses the same five programs.</p></div></details>
+<details><summary>Is 6 out of 6 enough to claim anything?</summary><div class="a"><p>It is a small number, so we claim precision, not a general rate: when the flag fired it was right every time in our data. Coverage is low (6 of 44 wrong FinQA answers). A larger test set is in future work.</p></div></details>
+<details><summary>Why does the check catch so few wrong answers?</summary><div class="a"><p>It only catches numbers that do not appear anywhere in the report (misreads, made-up values). Most evidence errors use a number that <i>is</i> in the report but from the wrong row or year. Catching those needs a cell-level check that the number comes from the right row and column, which is our proposed next step.</p></div></details>
+<details><summary>Why are 100, 1000, 10⁷ allowed in the code?</summary><div class="a"><p>They are percentage and unit-conversion constants (thousand, lakh = 10⁵, million, crore = 10⁷, billion) and small counts like 2 for an average or 9 years for a CAGR, plus years 1900–2100. A number from the report may also be rescaled by 100, 0.01, 1000 or 0.001 (e.g. $1.1 billion written as 1100 million).</p></div></details>
+<details><summary>How is VPSC different from VeriFin or other verifiers?</summary><div class="a"><p>VeriFin checks numbers against structured XBRL data with a Z3 logic solver; that needs XBRL-tagged US filings. VPSC needs no structured data, no solver and no training: it checks against the plain table text, so it works on Indian PDFs.</p></div></details>
+<details><summary>Why is PoT-SC a fair ablation?</summary><div class="a"><p>It uses the same prompt, temperatures and seeds, so it gets exactly the same five programs (even the same cache entries). The only difference is the grounding filter, so any difference is caused by verification alone.</p></div></details>
+
+<h3>Prompt optimization</h3>
+<details><summary>How does DSPy BootstrapFewShot work?</summary><div class="a"><p>It runs our Chain-of-Thought program on FinQA training questions and keeps up to 3 runs that our scorer marks correct as demonstrations. The demos are the model’s own reasoning. It then uses those demos in the prompt for new questions.</p></div></details>
+<details><summary>How does TextGrad work?</summary><div class="a"><p>Like gradient descent, but the “gradient” is text. The system prompt is the parameter. For each wrong answer in a mini-batch, the 8B model writes feedback on what went wrong and what instruction would prevent it. The optimizer combines that feedback and rewrites the prompt. We keep a rewrite only if accuracy on 40 dev questions does not drop; otherwise we revert.</p></div></details>
+<details><summary>Why did the optimizers do worse than hand-written prompts?</summary><div class="a"><p>Three reasons. (1) Small validation set: 40 questions, also used to choose which rewrites to keep, so TextGrad’s 62.5% dev accuracy is optimistic and did not transfer to test. (2) The optimized TextGrad prompt became long and added a “say the calculation cannot be performed” rule, so the small model sometimes gave no number (10% format failures vs 2%). (3) DSPy’s demos are the 1.7B model’s own reasoning, which is weaker than our hand-written examples, and DSPy’s field-based prompt format is less natural for a small model. The lesson: for small models, careful hand-written prompts are competitive, and optimization has a real one-time cost (318 minutes for TextGrad).</p></div></details>
+<details><summary>Could the optimizers have seen the test set?</summary><div class="a"><p>No. They use only 50 FinQA train and 40 FinQA dev questions. The test samples come from separate test files, and DSPy’s cache is turned off so the cost is real.</p></div></details>
+<details><summary>Where is MIPROv2?</summary><div class="a"><p>It is implemented in <code>dspy_opt.compile_program</code> with <code>auto="light"</code>, Bayesian search over instruction and demo candidates. Its run did not finish within our compute time, so there is no artifact and no result; the app and slides mark it as pending. We do not report any number for it.</p></div></details>
+
+<h3>Data</h3>
+<details><summary>Why only 100 questions per dataset?</summary><div class="a"><p>Compute. Every strategy × model × dataset combination is a separate run, and multi-sample strategies make 5 calls per question; everything ran on one laptop (about 30 hours total). We use the same fixed sample everywhere, report 95% confidence intervals (about ±10 points) and use paired tests that are valid at this size. <code>--n 0</code> runs the full test sets.</p></div></details>
+<details><summary>How do you know the Indian gold answers are right?</summary><div class="a"><p>Gold answers are never typed: each question has a formula that is executed in the sandbox. The build script checks every formula number is in the table, and that every transcribed cell appears in the text of the cited PDF page. A separate re-check confirmed all 44 operands are on the cited pages and all 44 answers recompute exactly. A test re-runs every formula.</p></div></details>
+<details><summary>Why include the Indian set?</summary><div class="a"><p>FinQA and TAT-QA are US/international reports in dollars. Indian reports use ₹ crore and lakh, Indian digit grouping (1,25,000) and brackets for negatives. It tests whether the methods generalize, and existing Indian benchmarks cover regulatory text or look-ups, not multi-step calculations over annual-report tables.</p></div></details>
+<details><summary>Why only arithmetic questions from TAT-QA?</summary><div class="a"><p>Our topic is numerical reasoning. TAT-QA also has span and counting questions that test extraction, not calculation, and need a different scorer.</p></div></details>
+<details><summary>What is “evidence” in FinQA (table_3, text_5)?</summary><div class="a"><p>FinQA annotates which table rows and sentences are needed. We use the same ids for our retrieval units, which lets us measure recall@k directly.</p></div></details>
+
+<h3>Evaluation and statistics</h3>
+<details><summary>Isn’t a 0.5% tolerance too lenient?</summary><div class="a"><p>It is close to FinQA’s own execution accuracy, which accepts rounding differences. We also report accuracy at 1% tolerance and strict 2-decimal exact match for every run, so a reader can apply a stricter rule. The ranking of strategies stays the same.</p></div></details>
+<details><summary>Why accept both 12.5 and 0.125?</summary><div class="a"><p>FinQA stores 12.5% as 0.125 while TAT-QA stores 12.5, and our prompt asks for percent numbers. Without this, correct answers would be marked wrong only because of the dataset’s convention. We only do it when the question is about a percentage, ratio, margin, growth and similar.</p></div></details>
+<details><summary>What is a bootstrap confidence interval?</summary><div class="a"><p>We resample the 100 right/wrong results with replacement 2,000 times, compute accuracy each time, and take the middle 95% of those accuracies. It needs no assumption about the distribution. With 100 questions it is about ±10 points.</p></div></details>
+<details><summary>Why McNemar and not a t-test or comparing CIs?</summary><div class="a"><p>All strategies answer the same questions, so the data is paired. McNemar uses only the questions where the two strategies disagree and is exact via the binomial distribution. Comparing two independent CIs ignores the pairing and is too conservative; a t-test assumes continuous data.</p></div></details>
+<details><summary>What does Holm correction do?</summary><div class="a"><p>When you run many tests, some small p-values appear by chance. Holm sorts the p-values and multiplies the smallest by the number of tests, the next by one less, and so on, keeping them increasing. It controls the probability of even one false positive, and is less conservative than plain Bonferroni.</p></div></details>
+<details><summary>Your CIs overlap. Can you claim anything?</summary><div class="a"><p>Yes, for big differences: Direct vs reasoning is significant everywhere, and thinking mode vs not is significant (p = 0.020). For differences among reasoning strategies we explicitly say they are not significant. That is itself a useful finding: the choice among reasoning prompts matters less than having reasoning at all.</p></div></details>
+<details><summary>Why are exact match and accuracy so different for CoT?</summary><div class="a"><p>Text reasoning rounds intermediate values (e.g. writes 0.219 then multiplies), so the final answer is close but not equal at 2 decimals. PoT computes in full precision, so its EM is almost its accuracy (56 vs 57 on FinQA).</p></div></details>
+<details><summary>How is the error taxonomy decided? Is it reliable?</summary><div class="a"><p>Rule-based, checked in a fixed order: no answer, execution error, sign, scale, near miss, no work shown, evidence error (a gold operand is missing from the model’s work), reasoning error (all operands present, wrong formula). It is reproducible and fast, but heuristic: for example a number that appears by coincidence can hide an evidence error. Human annotation of a sample is in future work.</p></div></details>
+
+<h3>Engineering</h3>
+<details><summary>Is the sandbox really safe?</summary><div class="a"><p>Four layers: an AST check before running (only <code>math</code> can be imported, no dunder attributes, no <code>open/exec/eval/getattr/os/sys</code>), a separate isolated Python process, a whitelist of builtins, and a 5-second timeout plus CPU limit. It is designed for arithmetic code. It is not a full security container: it does not set a memory limit, and a production system should add one (or run in a container). Tests check that imports, file access, dunder tricks and infinite loops are blocked.</p></div></details>
+<details><summary>Isn’t the response cache cheating?</summary><div class="a"><p>No. A cache hit is returned only for an identical request (same model, prompt, temperature, seed and settings), which would give the same answer anyway. It stores the original token counts and latency, so costs are not understated. It lets long runs resume after a crash and makes re-analysis free. A new question is always answered live.</p></div></details>
+<details><summary>How do you count tokens and cost?</summary><div class="a"><p>Ollama returns <code>prompt_eval_count</code> and <code>eval_count</code> for every call. We add them per question, and report tokens per question and tokens per correct answer. Local models cost $0; for API models <code>cost_usd</code> uses per-million-token prices.</p></div></details>
+<details><summary>How are runs reproducible?</summary><div class="a"><p>Fixed sample seed (42), temperature 0 for single calls, fixed seeds per sample (42 + sample id), pinned library versions in <code>requirements.txt</code>, every answer saved as a JSON line, and analysis that re-scores saved answers. Re-running a finished experiment replays the cache.</p></div></details>
+<details><summary>How does the PDF upload work?</summary><div class="a"><p><code>pdf_utils.page_to_example</code> opens the page with pdfplumber, tries its detected tables, and also builds a table from lines that end in numbers (statement pages are often not real PDF tables). It keeps whichever has more usable rows; the rest of the lines become text. The column names come from the page’s year heading (for example “31st March 2025 31st March 2024” → columns 2025 and 2024, or “31.03.2024 31.03.2023”), and each row’s last numbers are placed under those years, with note references in a Note column.</p><p>Be honest about its limits: turning a PDF into a table is a hard problem. On single statement pages (Titan p275, Asian Paints p12, Marico p253) it works; on pages with two statements side by side it can mix rows. Across all 44 Indian questions answered from raw PDF pages, Program-of-Thought gets 18/44, versus 34/44 from our verified tables. That is why the experiments use transcribed, verified tables; better table extraction is future work.</p></div></details>
+<details><summary>Why Streamlit?</summary><div class="a"><p>It turns Python into a web app without writing HTML or JavaScript, so the app calls the exact same library functions as the experiments. That guarantees the demo shows the real pipeline.</p></div></details>
+
+<h3>Results and interpretation</h3>
+<details><summary>What does the bigger model change?</summary><div class="a"><p>On FinQA every strategy gains 16–32 points (e.g. few-shot CoT 52 → 70, PoT 57 → 73). The biggest gain is for Direct (+32), and evidence errors drop sharply, so size mostly helps with reading the right number. Prompting still matters: 8B Direct (37%) is far below 1.7B PoT (57%).</p></div></details>
+<details><summary>Why does retrieval make accuracy worse?</summary><div class="a"><p>Recall@5 is 78% on FinQA: about one in five gold rows is not in the top 5, and then the question cannot be answered. One report page fits easily in the model’s context, so giving the full page is better. Retrieval becomes necessary for whole 300-page reports, which is future work.</p></div></details>
+<details><summary>Why is thinking mode better but not your default?</summary><div class="a"><p>It is the one significant improvement (49% → 63%, p = 0.020), but it costs 2× tokens and 13× the time (151 s vs 11 s per question). We kept it off for the main grid so every strategy is compared on equal terms and the grid fits our compute budget; it is reported as an ablation.</p></div></details>
+<details><summary>Which strategy would you recommend in practice?</summary><div class="a"><p>For a small local model: Program-of-Thought with few-shot examples. It is the best or near-best single call, costs one call, gives exact arithmetic, and its code is auditable. Add the grounding check as a free warning flag. Use thinking mode if latency does not matter.</p></div></details>
+<details><summary>Why are Indian results higher than FinQA?</summary><div class="a"><p>Our Indian tables are clean transcriptions and the questions state the period and unit clearly, while FinQA has noisy extracted text and some ambiguous questions. So it is a sign of generalization across currency and formatting, not proof that Indian reports are easier in general.</p></div></details>
+
+<h3>Limitations and future work</h3>
+<details><summary>What are the main limitations?</summary><div class="a"><ul><li>Small samples (100/100/44) give ±10-point intervals.</li><li>One model family (Qwen3), and the 8B grid is incomplete.</li><li>Grounding is value-level: it checks a number exists, not that it comes from the right cell.</li><li>Error labels are rule-based.</li><li>Single pages, not whole reports.</li><li>MIPROv2 did not finish.</li></ul></div></details>
+<details><summary>What would you do next?</summary><div class="a"><p>Run the full test sets and the remaining 8B experiments; add larger and API models; make the check cell-level (row and column must match the question) and let the system abstain when flagged; human-annotate errors; extend retrieval to full reports; finish MIPROv2.</p></div></details>
+<details><summary>If you had to name one lesson?</summary><div class="a"><p>For numerical questions, make the model show its work, preferably as code, and spend effort on getting the right numbers from the document; voting and automatic optimization add cost but little accuracy for small models.</p></div></details>
+
+<!-- ============================================================ 10 -->
+<h2 id="cheat"><span class="n">10</span>Numbers cheat sheet</h2>
+<div class="grid2">
+<div class="stat"><div class="v">4,119</div><div class="k">answers scored in 47 runs</div></div>
+<div class="stat"><div class="v">7,805</div><div class="k">local model calls · 18.1 M tokens</div></div>
+<div class="stat"><div class="v">≤ 11% → 44–77%</div><div class="k">Direct vs reasoning strategies (1.7B)</div></div>
+<div class="stat"><div class="v">57 · 73 · 77</div><div class="k">best single call (1.7B): PoT FinQA · CoT-fs TAT-QA · PoT Indian</div></div>
+<div class="stat"><div class="v">75%</div><div class="k">best overall FinQA: 8B zero-shot CoT</div></div>
+<div class="stat"><div class="v">4.4–5.0×</div><div class="k">tokens for 5-sample strategies, no significant gain</div></div>
+<div class="stat"><div class="v">60 / 23 / 9%</div><div class="k">evidence / formula / scale errors (549 wrong answers)</div></div>
+<div class="stat"><div class="v">6 / 6</div><div class="k">VPSC-flagged questions that were wrong</div></div>
+<div class="stat"><div class="v">49 → 63%</div><div class="k">thinking mode, p = 0.020, 2× tokens, 13× time</div></div>
+<div class="stat"><div class="v">57 → 51%</div><div class="k">PoT full page vs top-5 retrieval (FinQA)</div></div>
+<div class="stat"><div class="v">45% · 43%</div><div class="k">DSPy Bootstrap · TextGrad on FinQA (vs 52%)</div></div>
+<div class="stat"><div class="v">318 min</div><div class="k">TextGrad one-time cost (382 calls, 768 k tokens)</div></div>
+</div>
+
+<h3>Settings to remember</h3>
+<div class="tbl"><table>
+<tr><th>Setting</th><th>Value</th><th>Where</th></tr>
+<tr><td>Tolerance</td><td>0.5% relative</td><td><code>config.REL_TOLERANCE</code></td></tr>
+<tr><td>Samples / temperature</td><td>5 (1 greedy + 4 at T = 0.7)</td><td><code>config.SC_SAMPLES, SC_TEMPERATURE</code></td></tr>
+<tr><td>Seed</td><td>42 (samples: 42 + id)</td><td><code>config.SEED</code></td></tr>
+<tr><td>Context / output limit</td><td>8,192 / 1,024 tokens (thinking: 16,384 / 8,192)</td><td><code>llm.LLM</code>, <code>run_experiment.py</code></td></tr>
+<tr><td>Retrieval</td><td>BM25 + all-MiniLM-L6-v2 (384-d) + FAISS, RRF k = 60, top 5</td><td><code>retrieval.py</code></td></tr>
+<tr><td>Sandbox</td><td>AST check, <code>python -I</code>, safe builtins, 5 s + CPU limit</td><td><code>sandbox.py</code></td></tr>
+<tr><td>Bootstrap</td><td>2,000 resamples, percentile 95%</td><td><code>metrics.py</code></td></tr>
+<tr><td>Optimizer data</td><td>50 FinQA train + 40 FinQA dev</td><td><code>scripts/optimize_*.py</code></td></tr>
+<tr><td>TextGrad</td><td>6 steps × batch 6; 8B critic; keep if dev accuracy does not drop</td><td><code>textgrad_opt.py</code></td></tr>
+<tr><td>Models</td><td>Qwen3-1.7B (2.0 B) and Qwen3-8B (8.2 B), Q4_K_M, Ollama</td><td><code>app/core.py</code></td></tr>
+<tr><td>Ports</td><td>Ollama 11434 (experiments), 11435 (app); app 8501</td><td><code>scripts/start_app.sh</code></td></tr>
+</table></div>
+
+<h3>Literature numbers (from your Review 1 survey)</h3>
+<ul>
+<li>FinQA (EMNLP 2021): fine-tuned FinQANet 61.24% vs human experts 91.16%.</li>
+<li>TAT-QA (ACL 2021): TagOp 50.1 EM / 58.0 F1 vs humans 84.1 / 90.8.</li>
+<li>Program-of-Thought (TMLR 2023): FinQA 40.4% (CoT) → 64.5% (PoT); with self-consistency 44.4 → 68.1.</li>
+<li>FinanceBench: 81% of GPT-4-Turbo + retrieval answers were wrong or refused.</li>
+<li>MIPROv2: up to 13% accuracy gain on its benchmarks. TextGrad: GPQA 51% → 55%.</li>
+<li>FinanceReasoning (ACL 2025): o1 + PoT best at 89.1%.</li>
+</ul>
+<p class="small" style="margin-top:40px">Guide generated from the FinReason project folder on 11 Nov 2026. Source of truth: <code>results/report.md</code>, <code>results/*.csv</code> and the code in <code>finreason/</code>.</p>
+</main>
+</div>
