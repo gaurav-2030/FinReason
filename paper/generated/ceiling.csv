@@ -1,0 +1,9 @@
+setting,candidate set,oracle coverage,distinct answers / q,unanimous and wrong
+"FinQA dev-test (n=100), Qwen3-1.7B","PoT-SC: 5 programs, one prompt",0.57,1.31,0.29
+"FinQA dev-test (n=100), Qwen3-1.7B","CoT-SC: 5 CoT paths, one prompt",0.62,1.56,0.12
+"FinQA dev-test (n=100), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.75,2.11,0.01
+"FinQA dev-test (n=100), Qwen3-1.7B",TRACE: 6 views + repairs,0.75,2.37,0.01
+"TAT-QA dev-test (n=100), Qwen3-1.7B","PoT-SC: 5 programs, one prompt",0.67,1.02,0.31
+"TAT-QA dev-test (n=100), Qwen3-1.7B","CoT-SC: 5 CoT paths, one prompt",0.75,1.18,0.15
+"TAT-QA dev-test (n=100), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.88,1.47,0.02
+"TAT-QA dev-test (n=100), Qwen3-1.7B",TRACE: 6 views + repairs,0.9,1.66,0.02

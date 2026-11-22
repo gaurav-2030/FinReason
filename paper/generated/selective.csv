@@ -1,0 +1,11 @@
+setting,method,accuracy,AURC,acc@50%,acc@80%,coverage
+"FinQA dev-test (n=100), Qwen3-1.7B",CoT-SC (5),0.51,0.38036520063481155,0.66,0.55,
+"FinQA dev-test (n=100), Qwen3-1.7B",PoT-SC (5),0.56,0.3911690376555835,0.6,0.65,
+"FinQA dev-test (n=100), Qwen3-1.7B",VPSC-v2,0.56,0.2576121316974407,0.74,0.6375,
+"FinQA dev-test (n=100), Qwen3-1.7B",TRACE (full),0.61,0.2030306933424711,0.8,0.7125,
+"FinQA dev-test (n=100), Qwen3-1.7B",TRACE accept-path,0.7555555555555555,,,,0.45
+"TAT-QA dev-test (n=100), Qwen3-1.7B",CoT-SC (5),0.74,0.22431048685613855,0.82,0.75,
+"TAT-QA dev-test (n=100), Qwen3-1.7B",PoT-SC (5),0.67,0.2572484108893215,0.74,0.7125,
+"TAT-QA dev-test (n=100), Qwen3-1.7B",VPSC-v2,0.79,0.10444363522798028,0.92,0.875,
+"TAT-QA dev-test (n=100), Qwen3-1.7B",TRACE (full),0.81,0.10303623268924053,0.92,0.875,
+"TAT-QA dev-test (n=100), Qwen3-1.7B",TRACE accept-path,0.9027777777777778,,,,0.72

@@ -1,0 +1,5 @@
+setting,prefix,part,n,TRACE,TRACE-PG (rules),TRACE-PG,TRACE-PG (escalated),tokens_full,calls_full,tokens_escalated,calls_escalated
+FinQA$^{dev}$ (50),finqa_dev_n50,development,50,0.62,0.6,0.62,0.62,20407.22,6.22,12457.7,3.74
+FinQA$^{D}$ (100),finqa_test_n100,development,100,0.61,0.64,0.65,0.66,20168.96,6.21,12401.91,3.68
+TAT-QA$^{dev}$ (50),tatqa_dev_n50,development,50,0.78,0.76,0.78,0.78,17400.06,6.08,7681.96,2.52
+TAT-QA$^{D}$ (100),tatqa_test_n100,development,100,0.81,0.81,0.81,0.81,17535.12,6.18,8197.12,2.73

@@ -1,0 +1,286 @@
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{cite}
+\newcommand{\ours}{\textsc{Trace-PG}}
+\newcommand{\trace}{\textsc{Trace}}
+\newcommand{\TBD}[1]{\textcolor{red}{#1}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{theorem}{Theorem}
+
+\begin{document}
+
+\title{When Voting Cannot Help: Provenance-Graph Verification, Template Completion and Conformal Escalation for Financial Numerical Reasoning with Small Local LLMs}
+
+\author{
+\IEEEauthorblockN{Gaurav Girish, Sunay R Hegde, Dhruvagouda, Hanshal Nagesh}
+\IEEEauthorblockA{Dept. of CSE (AI \& ML), PES University, Bengaluru, India}
+}
+
+\maketitle
+
+\begin{abstract}
+Small language models that run on-premise are attractive for confidential financial reports but unreliable at numerical reasoning over report tables. The standard remedy---sample several programs, filter by grounding, vote---fails for them, and we show why. A beta-binomial \emph{coverage law} fitted to their samples gives an intra-question error correlation of $\hat\rho{=}0.97$ for program samples: the correct answer is among five samples for 57\% of FinQA questions while their vote already scores 56\%, and the fitted law predicts under 60\% coverage even at fifty samples. No selector can exceed coverage, so the candidates themselves must change, and the evidence used to choose among them must not depend on how often an answer recurs. We propose \ours{}. It (i)~generates candidates from heterogeneous program and text views and repairs programs with cell-specific audit feedback, cutting cross-view error correlation to 0.38--0.55; (ii)~lifts every program into a \emph{provenance graph}, a symbolic formula whose leaves are typed references to table cells with periods and units, and type-checks it against the question's intent, periods, temporal orientation and units; (iii)~completes formula templates symbolically, letting the model choose \emph{which} evidence and the question's type choose \emph{how} to combine it; (iv)~selects with a calibrated verifier over structural features and abstains with a conformal risk-control guarantee; and (v)~escalates in stages so that easy questions cost two calls. On held-out samples that share no question with development data, \ours{} reaches \TBD{XX}\% on FinQA and \TBD{XX}\% on TAT-QA with Qwen3-1.7B against \TBD{XX}\%/\TBD{XX}\% for program self-consistency, at \TBD{XX} calls per question; conformal abstention keeps the rate of wrong answers at \TBD{XX}\% for a target of 10\%; and the cited cells match gold evidence for \TBD{XX}\% of answers. Results transfer to another model family, a larger model, perturbed numbers and Indian annual reports. No training of the language model is required.
+\end{abstract}
+
+\begin{IEEEkeywords}
+financial question answering, numerical reasoning, program verification, neuro-symbolic reasoning, self-consistency, conformal prediction, small language models
+\end{IEEEkeywords}
+
+\section{Introduction}
+Analysts ask numerical questions of annual reports---growth rates, margins, shares of a total. Answering them means finding the right cells, reading them with the right period, unit and sign, and computing the right formula. On FinQA~\cite{finqa} the original fine-tuned system reached 61\% execution accuracy against 91\% for experts. For confidential documents small open models that run locally are attractive, yet they are the least reliable.
+
+Program-of-Thought (PoT)~\cite{pot,pal} removes arithmetic errors, and self-consistency~\cite{sc} votes over samples. In earlier work~\cite{vpsc} we added a grounding filter (VPSC): discard sampled programs whose numbers do not occur in the report, then vote. It was precise---every question it flagged was wrong---yet it changed \emph{no} answer. This paper explains that failure quantitatively and builds a method around the explanation.
+
+\textbf{Diagnosis.} Accuracy is coverage (is the correct answer among the candidates?) minus a selection gap (\S\ref{sec:theory}). For a small model, same-prompt samples are near-copies: a beta-binomial fit gives an intra-question error correlation of 0.97 for programs, the vote is one point below coverage, and the law predicts that no practical number of samples will help. Worse, most wrong programs pass value-level grounding because they copy a real number from the wrong row, the wrong year, or combine correct numbers with the wrong operation or orientation.
+
+\textbf{Approach.} \ours{} treats a program not as a string of literals but as a \emph{provenance graph}: a symbolic formula over typed references to report cells. On this representation we can type-check what the program computes against what the question asks, compare programs by \emph{what} they compute rather than \emph{what number} they print, and even complete the computation symbolically. Candidate diversity and repair raise coverage; typed verification, template completion and calibrated selection close the selection gap; conformal abstention and staged escalation make the system safe and cheap to deploy.
+
+\textbf{Contributions.}
+\begin{enumerate}
+\item \emph{A coverage law for sampling-based reasoning} (\S\ref{sec:theory}): a coverage/selection decomposition and a beta-binomial model whose single parameter, the intra-question correlation $\rho$, predicts how coverage grows with the number of samples. It fits measured coverage within 0.5 points and shows that same-prompt sampling of small models saturates almost immediately.
+\item \emph{Provenance-graph verification (PGV)}: symbolic lifting of programs into formulas over typed cell references, and four checks no literal-level audit can express---intent typing of the formula's shape, period checking, temporal orientation (sign errors) and dimensional (scale) analysis---plus \emph{structural consensus} over canonical formulas.
+\item \emph{Neuro-symbolic template completion}: the model's program identifies the evidence row; the question's typed intent and periods determine the formula, which is instantiated over the exact cells without any model call.
+\item \emph{Audit-guided repair} with cell-specific external feedback, and heterogeneous views that cut error correlation from 0.91--0.97 to 0.38--0.55.
+\item \emph{Calibrated selection with a conformal guarantee}: a verifier over structural features chosen by grouped cross-validation on development data, and conformal risk control~\cite{crc} that bounds the expected rate of wrong answers.
+\item \emph{Staged escalation} with stage-wise calibrated stopping, replayed exactly from logged calls.
+\item \emph{Cell-level attribution}: every answer cites the cells it used; we measure citation precision and recall against gold evidence.
+\item \emph{A strict protocol}: development and disjoint never-inspected held-out samples, artifacts frozen before held-out runs, paired tests with Holm correction, a second model family, a larger model, numerical perturbation and a new Indian annual-report set.
+\end{enumerate}
+
+\section{Related Work}
+\textbf{Financial numerical reasoning.} FinQA~\cite{finqa} and TAT-QA~\cite{tatqa} pair report tables and text with multi-step arithmetic questions; ConvFinQA~\cite{convfinqa}, DocFinQA~\cite{docfinqa}, FinanceBench~\cite{financebench} and FinanceReasoning~\cite{finreasoning} extend the setting. Srivastava et al.~\cite{eedp} evaluate LLM mathematical reasoning on these datasets with a structured extract-then-compute prompt; TAT-LLM~\cite{tatllm} fine-tunes for the task. We study training-free inference with small general models.
+
+\textbf{Programs, tables and sampling.} PoT and PAL~\cite{pot,pal} delegate arithmetic to an interpreter; Binder~\cite{binder} and Chain-of-Table~\cite{chainoftable} reason with symbolic operations over tables. Self-consistency~\cite{sc} votes over samples, adaptive-consistency~\cite{adaptiveconsistency} stops sampling early, and Zhao et al.~\cite{modelselection} choose between CoT and PAL. Ensemble diversity is classically linked to accuracy~\cite{kuncheva}; we turn this into a predictive coverage law for LLM sampling and show that the binding constraint for small models is coverage, not selection.
+
+\textbf{Verification and correction.} Trained verifiers rank solutions~\cite{verifiers,lever}. LLMs do not reliably self-correct without external feedback~\cite{cannotselfcorrect} but can with execution or tool feedback~\cite{selfdebug,critic,selfrefine}. VeriFin~\cite{verifin} checks operands of financial claims against XBRL facts with an SMT solver, and DCRC~\cite{dcrc} trains an evidence-auditing agent. PGV needs no structured filing, solver or LLM training: it reads the program's own variable names and formula against the plain report table.
+
+\textbf{Attribution and abstention.} Citation-based attribution~\cite{alce} and selective prediction~\cite{selective,selectiveqa} make outputs auditable and safe; conformal prediction~\cite{vovk} and conformal risk control~\cite{crc} give distribution-free guarantees. We provide cell-level citations and a conformal bound on the rate of wrong answers.
+
+\section{Why Voting Cannot Help: a Coverage Law}
+\label{sec:theory}
+Let $S_K(q)$ be the answers of $K$ candidates for question $q$, $g(q)$ the gold answer and $f$ any selector.
+\begin{proposition}[Decomposition]
+$\mathrm{Acc}(f) = \mathrm{Cov}(S_K) - \mathrm{Gap}(f)$, where $\mathrm{Cov}(S_K)=\Pr[g(q)\in S_K(q)]$ and $\mathrm{Gap}(f) = \Pr[g(q)\in S_K(q),\ f(S_K(q))\neq g(q)] \ge 0$. Hence $\mathrm{Acc}(f)\le \mathrm{Cov}(S_K)$ for every filter, vote or verifier.
+\end{proposition}
+\begin{proposition}[Coverage law]
+Suppose each question has a latent success probability $\theta_q \sim \mathrm{Beta}(a,b)$ and $K$ samples are i.i.d.\ Bernoulli$(\theta_q)$ given $\theta_q$. Then
+\begin{equation}
+\mathrm{Cov}(K) = 1 - \frac{B(a,\, b+K)}{B(a,\, b)}, \qquad \rho = \frac{1}{a+b+1},
+\label{eq:law}
+\end{equation}
+where $\rho$ is the correlation between the correctness of two samples of the same question. For fixed mean accuracy $\mu = a/(a+b)$, $\mathrm{Cov}(K)\to\mu$ for every $K$ as $\rho\to1$.
+\end{proposition}
+\emph{Proof sketch.} $\Pr[\text{all }K\text{ wrong}\mid\theta]=(1-\theta)^K$; integrating against the Beta density gives $B(a,b+K)/B(a,b)$. The intra-class correlation of a beta-binomial is $1/(a+b+1)$. As $a+b\to0$ with $a/(a+b)=\mu$ the Beta mass concentrates on $\{0,1\}$, so every sample of a question is right or every one is wrong. $\square$
+
+\begin{proposition}[Cross-view coverage]
+For two candidates with error rates $e_1,e_2$ and error correlation $r$, $\mathrm{Cov}=1-e_1e_2-r\sqrt{e_1(1-e_1)e_2(1-e_2)}$, so lowering $r$ raises coverage linearly.
+\end{proposition}
+These statements make the diagnosis testable. We fit $(a,b)$ by maximum likelihood to the four exchangeable $T{=}0.7$ samples of PoT-SC and CoT-SC (Table~\ref{tab:law}, Fig.~\ref{fig:law}). For Qwen3-1.7B, $\hat\rho=0.97$/$0.98$ for programs on FinQA/TAT-QA; the law reproduces measured coverage at $K{=}4$ within 0.3 points and predicts 58\%/68\% coverage at $K{=}20$. CoT samples are less correlated ($\hat\rho=0.76$/$0.88$) but reaching the 75\% coverage of \ours{}'s six heterogeneous calls on FinQA would need about 53 CoT samples. Between views, error correlations drop to 0.38--0.55 (vs.\ 0.91--0.97 within a prompt). The design consequence is the structure of \ours{}: raise coverage with views whose errors differ, and close the gap with evidence that does not count votes.
+
+\begin{table}[t]
+\centering
+\caption{Coverage law (development samples, Qwen3-1.7B). $\hat\rho$: fitted intra-question correlation; Cov@$K$ in \%; $K_{x}$: samples needed for coverage $x$ under the fitted law.}
+\label{tab:law}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\input{generated/coverage_law_table.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{generated/coverage_law.pdf}
+\caption{Coverage of same-prompt samples (dots: measured; lines: fitted beta-binomial law) against the coverage of \trace{}'s six heterogeneous calls (dashed).}
+\label{fig:law}
+\end{figure}
+
+\section{Method: \ours{}}
+\label{sec:method}
+\ours{} takes a report table $T$, text $P$ and question $q$ and returns an answer, a confidence, the cells it used, and optionally an abstention (Algorithm~\ref{alg:tracepg}).
+
+\subsection{Candidate generation: heterogeneous views and audit-guided repair}
+Six calls produce candidates: an \emph{operation-guided} PoT prompt (greedy and $T{=}0.7$) stating when a question asks for a difference, a percentage change, a share or an average; a plain few-shot PoT prompt; few-shot chain-of-thought (greedy and $T{=}0.7$); and a decomposition prompt. Programs run in a sandbox (AST whitelist, isolated interpreter, CPU and time limits). A literal-level audit checks that each number occurs in the report (unit- and scale-word-aware), that a variable named \texttt{revenue\_2019} holds the value of the revenue row in the 2019 column (with header detection for repeated and spanning headers), that the columns read lie in the question's span, and that yes/no questions get yes/no answers. A greedy program that fails is repaired once with the audit's findings, e.g.\ ``\texttt{lease\_obligations\_2008 = 19}, but row \emph{lease obligations} in column \emph{2008} holds 117''. This candidate generator with tolerance-pooled voting is our intermediate method \trace{}.
+
+\subsection{Provenance graphs}
+Each program is executed \emph{symbolically}. A numeric literal becomes a leaf when it is report evidence and stays a constant when it is a unit factor ($\times100$, $/1000$) or a small divisor ($/3$); this decision depends on the literal's syntactic role. A leaf is bound to the table cell whose row label best matches the variable it initializes (or to a text number), and carries a typed reference: cell coordinates, row label, period (from the column header, forward-filled across spanning headers, or from the row label), unit scale (from ``in millions'', ``\$'000'', crore/lakh) and percent flag. The program's answer becomes a sympy expression over leaves. Lifting succeeds for 99--100\% of executed programs. Two programs have the same \emph{structural signature} when their canonical (cancelled) formulas over cell references coincide, regardless of how literals were typed.
+
+\subsection{Typed verification}
+\textbf{Intent typing.} A rule-based parser maps the question to an intent (difference, percentage change, share, ratio, average, sum, CAGR, yes/no). The formula's \emph{shape} is recognized numerically: a program has shape $s$ if $\mathrm{expr}/\mathrm{template}_s$ is the same non-zero constant at two random positive assignments of its leaves (templates: $a{-}b$, $(a{-}b)/b$, $a/b$, $\sum a_i$, $\frac1n\sum a_i$, $\sum_{S}a_i-\sum_{\bar S}a_i$, $\sum_S a_i/\sum_{\bar S}a_i$, $(a/b)^{1/n}{-}1$). A shape incompatible with the intent is a type error.
+\textbf{Periods and orientation.} Dated leaves must carry periods the question asks about; for changes, the positive term must be the later period, which detects sign errors.
+\textbf{Units.} Leaves of different scale (``\$1.1 billion'' in text, a table ``in millions'') combined without a power-of-ten conversion are a dimension error.
+
+\subsection{Neuro-symbolic template completion}
+When all leaves of a program come from one table row and the question's intent is a change, percentage change, average or sum over named years, PGV instantiates the intent's formula over the exact cells of that row for exactly those years. The language model decides \emph{which} evidence; the type of the question decides \emph{how} to combine it. Completion runs without a model call and abstains whenever the row, the year columns or the intent are ambiguous.
+
+\subsection{Calibrated selection}
+Candidates are pooled when they agree within 1\%. Each pool gets features: audited and flagged program counts, text-view counts, cross-modal agreement, which views agree, typed-check outcomes, structural agreement (largest set of programs with the same signature), template-completion agreement and the \trace{} weight share. A logistic verifier $P(\text{pool correct}\mid\text{features})$ is fitted on development data only, with its regularization chosen by 5-fold cross-validation grouped by question; the pool with the highest probability is returned and the probability is the confidence.
+
+\subsection{Conformal abstention}
+Let $L_i(\lambda)=\mathbb{1}[\hat c_i\ge\lambda]\cdot\mathbb{1}[\text{answer}_i\text{ wrong}]$ be the loss of answering question $i$ when its confidence $\hat c_i$ reaches threshold $\lambda$; $L$ is non-increasing in $\lambda$ and bounded by 1. Given $n$ calibration questions,
+\begin{equation}
+\hat\lambda = \inf\Big\{\lambda : \tfrac{n}{n+1}\hat R_n(\lambda) + \tfrac{1}{n+1} \le \alpha\Big\}
+\end{equation}
+\begin{theorem}[Conformal risk control~\cite{crc}]
+If calibration and test questions are exchangeable, $\mathbb{E}[L_{n+1}(\hat\lambda)]\le\alpha$: the expected fraction of questions answered wrongly is at most $\alpha$.
+\end{theorem}
+We calibrate on out-of-fold confidences of the development samples, which are drawn from the same test splits as the held-out samples.
+
+\subsection{Staged escalation}
+Stage~1 uses the guided program and greedy CoT (2 calls), stage~2 adds the plain program and decomposition with repairs, stage~3 all views. A separate verifier is calibrated for each stage; \ours{} stops at the first stage whose confidence exceeds $\tau_k$. The thresholds are the cheapest pair within one point of the best development accuracy. Because every call is deterministic given prompt, temperature and seed, the policy is replayed exactly from logged calls.
+
+\begin{algorithm}[t]
+\caption{\ours{}$(T,P,q)$}
+\label{alg:tracepg}
+\small
+\begin{algorithmic}[1]
+\State $C \gets$ candidates of stage 1 (guided PoT, CoT)
+\For{$k = 1,2,3$}
+  \State audit and repair programs in $C$; lift each to a provenance graph $G$
+  \State type-check $G$ (intent, periods, orientation, units); complete templates
+  \State pool answers; $(a,\hat c) \gets \arg\max$ calibrated $P_k(\text{pool correct})$
+  \If{$k<3 \wedge \hat c \ge \tau_k$} \textbf{break} \EndIf
+  \State $C \gets C \cup$ candidates of stage $k{+}1$
+\EndFor
+\State \Return $a$, cited cells of its program, and abstain if $\hat c < \hat\lambda_\alpha$
+\end{algorithmic}
+\end{algorithm}
+
+\section{Experimental Setup}
+\label{sec:setup}
+\textbf{Data.} FinQA~\cite{finqa}, the arithmetic questions of TAT-QA~\cite{tatqa}, and IndAR, 44 multi-step calculation questions we wrote over statements of four Indian companies with INR crore/lakh units, each gold answer computed from a formula whose operands were checked against the cited PDF page~\cite{vpsc}. FinQA-pert re-samples the numbers of 88 FinQA questions and recomputes the gold program~\cite{gsmsym}.
+
+\textbf{Protocol.} Development data are the FinQA and TAT-QA dev samples (50 each) and fixed test samples of 100 each (D), on which VPSC-v2, \trace{} and \ours{} were developed. Held-out samples (H) of 200 FinQA and 200 TAT-QA test questions exclude every development question and were never inspected. All code, audit rules, \trace{} weights, the PGV rules, the verifiers and the conformal and escalation thresholds (\texttt{artifacts/trace\_pg.json}) were frozen before the held-out runs completed; no number from them was looked at before freezing. On development data we report cross-validated verifier accuracy; development rows for \ours{} in Table~\ref{tab:main} are in-sample.
+
+\textbf{Models and baselines.} Qwen3-1.7B~\cite{qwen3} (4-bit, Ollama, non-thinking); Llama-3.2-3B~\cite{llama3} on a held-out FinQA sample of 100; Qwen3-8B on the FinQA development sample. Baselines share prompts, exemplars and sandbox: few-shot CoT~\cite{cot}, PoT~\cite{pot}, CoT-SC and PoT-SC (5 samples)~\cite{sc}, VPSC~\cite{vpsc} and VPSC-v2.
+
+\textbf{Metrics.} Execution accuracy (0.5\% tolerance; percent and fraction forms accepted) with 95\% bootstrap CIs~\cite{bootstrap}; exact McNemar tests~\cite{mcnemar} against \ours{} (escalated) with Holm correction~\cite{holm,dror}; tokens and calls per question; conformal coverage and realized risk; citation precision/recall of cited table rows against gold evidence rows.
+
+\section{Results}
+\begin{table*}[t]
+\centering
+\caption{Execution accuracy (\%) with 95\% bootstrap CIs, Qwen3-1.7B. H = held-out (never inspected), D = development. $^{\ast}$: \ours{} (escalated) is significantly better (exact McNemar, Holm $p<0.05$). Tokens/calls refer to the first column. \ours{} rows on D are in-sample for the verifier (its 5-fold CV accuracy on development data is 71.0\% vs.\ 70.7\% for \trace{}'s fixed weights).}
+\label{tab:main}
+\footnotesize
+\input{generated/main_table.tex}
+\end{table*}
+
+\textbf{Main results.} On held-out data \ours{} (escalated) reaches \TBD{XX}\% on FinQA and \TBD{XX}\% on TAT-QA (Table~\ref{tab:main}), against \TBD{XX}/\TBD{XX}\% for PoT, \TBD{XX}/\TBD{XX}\% for PoT-SC, \TBD{XX}/\TBD{XX}\% for VPSC and \TBD{XX}/\TBD{XX}\% for VPSC-v2, using \TBD{XX} calls per question versus 5 for self-consistency. On development data, \trace{} reaches 61/81\% (PoT 57/67\%, VPSC 56/67\%, CoT-SC 51/74\%).
+
+\begin{table}[t]
+\centering
+\caption{Typed verification and template completion: share of programs lifted, base error rate, and for each check the share of flagged programs that are wrong (number flagged); completion: share of questions where it fires and its accuracy then (\%).}
+\label{tab:signals}
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\input{generated/pgv_signals_table.tex}
+\end{table}
+
+\textbf{Typed verification.} PGV's checks catch errors invisible to literal-level grounding (Table~\ref{tab:signals}): orientation and unit violations are wrong in 100\% of development cases, period violations in 50--87\% and intent type errors in 67--82\%, against base error rates of 27--51\%. Template completion fires on 12--66\% of questions and is right 58--88\% of the time when it does. Held-out: \TBD{XX}.
+
+\begin{table}[t]
+\centering
+\caption{Selection methods over the same candidates. PG-rules: deterministic typed down-weighting; \ours{}: calibrated verifier; PG-esc.: staged escalation.}
+\label{tab:pgv}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\input{generated/pgv_table.tex}
+\end{table}
+
+\textbf{Selection and cost.} Table~\ref{tab:pgv} compares selectors over identical candidates. \TBD{On held-out data the calibrated verifier changes accuracy by XX points over \trace{}'s fixed weights and staged escalation cuts calls from about 6.2 to XX.} Consistent with the coverage law, the largest gains come from the candidate set, not the selector.
+
+\begin{table}[t]
+\centering
+\caption{The selection ceiling: oracle coverage (\%), distinct answers per question, and questions where all candidates are identically wrong (\%).}
+\label{tab:ceiling}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{generated/ceiling_table.tex}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Ablations of \trace{}'s candidate generator, replayed exactly from logged calls.}
+\label{tab:ablation}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\input{generated/ablation_table.tex}
+\end{table}
+
+\textbf{Coverage and ablations.} Same-prompt sampling leaves \TBD{XX}\% of held-out questions unanimously wrong; heterogeneous views reduce this to \TBD{XX}\% and raise coverage by \TBD{XX} points (Table~\ref{tab:ceiling}). Removing the text views or view diversity costs the most accuracy (development: $-7$ points on FinQA, $-2$ to $-3$ on TAT-QA; Table~\ref{tab:ablation}).
+
+\begin{table*}[t]
+\centering
+\caption{Literal-level audit and repair: flagged first-pass programs, share wrong among flagged / unflagged programs, repairs (wrong$\to$right / right$\to$wrong), and accuracy and coverage of the two-call accept path.}
+\label{tab:audit}
+\footnotesize
+\input{generated/audit_table.tex}
+\end{table*}
+
+\textbf{Audit and repair.} Programs flagged by the literal audit are wrong 97\% (FinQA) and 88\% (TAT-QA) of the time on development data, against 43\% and 21\% of unflagged ones; repair turned 1 and 6 wrong programs right and no right program wrong (Table~\ref{tab:audit}). Held-out: \TBD{XX}.
+
+\begin{table}[t]
+\centering
+\caption{Conformal abstention on held-out data: target $\alpha$, coverage (answered \%), realized risk (answered and wrong, \% of all questions) and selective accuracy.}
+\label{tab:conformal}
+\footnotesize
+\input{generated/conformal_table.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{generated/risk_coverage.pdf}
+\caption{Risk--coverage curves: selective accuracy when only the most confident questions are answered.}
+\label{fig:rc}
+\end{figure}
+
+\textbf{Guaranteed abstention.} With $\alpha{=}0.10$, \ours{} answers \TBD{XX}\% of held-out FinQA and \TBD{XX}\% of TAT-QA questions, with realized risk \TBD{XX}\% and \TBD{XX}\% (Table~\ref{tab:conformal}); the vote share of PoT-SC and CoT-SC is a poor confidence signal because correlated samples are confidently wrong (Fig.~\ref{fig:rc}).
+
+\begin{table}[t]
+\centering
+\caption{Cell-level attribution of the chosen program on held-out data: precision and recall of cited table rows against gold evidence rows, and share of answers whose citations match exactly (\%).}
+\label{tab:attr}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{generated/attribution_table.tex}
+\end{table}
+
+\textbf{Attribution.} Every \ours{} answer cites its cells. Citations match gold evidence rows exactly for \TBD{XX}\% of held-out FinQA answers versus \TBD{XX}\% for the PoT baseline (Table~\ref{tab:attr}); on the FinQA development sample 81\% versus 76\%.
+
+\begin{table}[t]
+\centering
+\caption{Other models, FinQA (n=100), accuracy (\%): Llama-3.2-3B on a held-out sample, Qwen3-8B on the development sample.}
+\label{tab:cross}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\input{generated/cross_model_table.tex}
+\end{table}
+
+\textbf{Generalization.} The ranking holds for Llama-3.2-3B and Qwen3-8B (Table~\ref{tab:cross}); on IndAR (18-row statements, crore/lakh units) \trace{} scores \TBD{XX}\% (PoT 77.3\%) and on FinQA-pert \TBD{XX}\% (PoT 55.7\%), so gains do not rest on memorized numbers.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{generated/pareto.pdf}
+\caption{Accuracy against tokens per question (Qwen3-1.7B); bars are 95\% CIs.}
+\label{fig:pareto}
+\end{figure}
+
+\section{Discussion and Limitations}
+\textbf{What matters.} The coverage law and the ablations agree: for small models the decisive lever is which candidates exist. Typed verification and template completion contribute high-precision evidence, structural citations and a confidence that supports guaranteed abstention; their accuracy gain over well-tuned voting is smaller than that of view diversity, and we report it as such.
+
+\textbf{Limitations.} (1)~Samples of 100--200 questions give CIs of $\pm$6--10 points, and several pairwise differences are not significant after Holm correction. (2)~PGV relies on descriptive variable names and readable tables; text-only operands get value-level checks only, and the intent parser is rule-based. (3)~The conformal guarantee is marginal and assumes exchangeability between calibration and test questions. (4)~We evaluate small models; frontier models have higher single-call accuracy and looser ceilings. (5)~IndAR is small and self-authored; we use the evidence page rather than whole-document retrieval.
+
+\section{Conclusion}
+Grounding filters and votes cannot help small models because their samples share their errors; a beta-binomial coverage law makes this precise and predictive. \ours{} raises the ceiling with heterogeneous views and audit-guided repair, and closes the remaining gap by verifying programs as typed provenance graphs, completing formula templates symbolically, selecting with a calibrated verifier and abstaining with a conformal guarantee, while citing the exact cells behind each answer. \TBD{Summary of held-out gains.} Future work: typed grounding of text operands, learned intent parsing, and whole-document retrieval.
+
+\section*{Reproducibility}
+Prompts, sandbox, audit, PGV, the frozen verifier and thresholds, every run log (all candidates, audit findings and per-call tokens) and the scripts that produce every table and figure will be released.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+\end{document}

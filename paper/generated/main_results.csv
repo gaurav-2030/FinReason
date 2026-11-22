@@ -1,0 +1,21 @@
+setting,prefix,model,strategy,method,n,accuracy,ci_low,ci_high,tokens,calls,trace_wins,trace_losses,p,p_holm
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,cot_fs,CoT (few-shot),100,0.52,0.42,0.62,2744.88,1.0,16,2,0.001312255859375,0.010498046875
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,pot_fs,PoT,100,0.57,0.47975,0.67,2498.34,1.01,14,5,0.063568115234375,0.25
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,sc_cot,CoT-SC (5),100,0.51,0.41,0.61,13720.47,5.0,17,2,0.000728607177734375,0.006557464599609375
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,pot_sc,PoT-SC (5),100,0.56,0.46,0.66,12387.81,5.0,15,5,0.04138946533203125,0.2483367919921875
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,vpsc,VPSC [prior],100,0.56,0.46,0.66,12387.81,5.0,15,5,0.04138946533203125,0.2483367919921875
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,vpsc2,VPSC-v2,100,0.56,0.47,0.66,16450.59,5.0,11,1,0.00634765625,0.04443359375
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,trace,TRACE (full),100,0.61,0.51,0.7,20168.96,6.21,5,0,0.0625,0.25
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,trace_adaptive,TRACE (adaptive),100,0.61,0.51,0.7,14716.86,4.4,5,0,0.0625,0.25
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,trace_pg,TRACE-PG,100,0.65,0.55,0.74,20168.96,6.21,1,0,1.0,1.0
+"FinQA dev-test (n=100), Qwen3-1.7B",finqa_test_n100,qwen3:1.7b,trace_pg_esc,TRACE-PG (escalated),100,0.66,0.57,0.76,12401.91,3.68,0,0,,
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,cot_fs,CoT (few-shot),100,0.73,0.64,0.82,2319.34,1.0,12,4,0.076812744140625,0.46087646484375
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,pot_fs,PoT,100,0.67,0.58,0.76,2134.76,1.02,16,2,0.001312255859375,0.011810302734375
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,sc_cot,CoT-SC (5),100,0.74,0.65,0.83,11593.2,5.0,12,5,0.143463134765625,0.717315673828125
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,pot_sc,PoT-SC (5),100,0.67,0.58,0.76,10382.35,5.0,16,2,0.001312255859375,0.011810302734375
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,vpsc,VPSC [prior],100,0.67,0.58,0.76,10382.35,5.0,16,2,0.001312255859375,0.011810302734375
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,vpsc2,VPSC-v2,100,0.79,0.71,0.87,14399.79,5.0,4,2,0.6875,1.0
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,trace,TRACE (full),100,0.81,0.73,0.88,17535.12,6.18,1,1,1.0,1.0
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,trace_adaptive,TRACE (adaptive),100,0.81,0.73,0.88,9736.58,3.27,1,1,1.0,1.0
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,trace_pg,TRACE-PG,100,0.81,0.73,0.88,17535.12,6.18,0,0,1.0,1.0
+"TAT-QA dev-test (n=100), Qwen3-1.7B",tatqa_test_n100,qwen3:1.7b,trace_pg_esc,TRACE-PG (escalated),100,0.81,0.73,0.88,8197.12,2.73,0,0,,

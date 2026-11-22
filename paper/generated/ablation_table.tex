@@ -1,0 +1,16 @@
+\begin{tabular}{lcccc}
+\toprule
+Variant & \multicolumn{2}{c}{FinQA dev-test} & \multicolumn{2}{c}{TAT-QA dev-test} \\
+ & Acc & Tok/q & Acc & Tok/q \\
+\midrule
+TRACE (full) & 61.0 & 20.2k & 81.0 & 17.5k \\
+TRACE adaptive & 61.0 & 14.7k & 81.0 & 9.7k \\
+$-$ repair & 61.0 & 19.4k & 81.0 & 17.0k \\
+$-$ cell-level audit (v1+v2 checks only) & 62.0 & 19.8k & 81.0 & 17.0k \\
+$-$ audit entirely (no filter, no repair) & 59.0 & 19.4k & 81.0 & 17.0k \\
+$-$ text views (programs only) & 54.0 & 11.7k & 79.0 & 10.3k \\
+$-$ decomposition view & 61.0 & 17.2k & 80.0 & 15.0k \\
+$-$ view diversity (guided programs + CoT only) & 54.0 & 14.4k & 78.0 & 12.7k \\
+$-$ ans fix & 61.0 & 20.2k & 81.0 & 17.5k \\
+\bottomrule
+\end{tabular}
