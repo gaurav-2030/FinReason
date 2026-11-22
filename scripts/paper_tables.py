@@ -364,7 +364,9 @@ def main_tex(main, models=("qwen3:1.7b",), name="main_table.tex", tokens_prefix=
 
 def cross_model_tex(main):
     rows = [(p, m) for p, m in sorted(set(zip(main["prefix"], main["model"]))) if m != "qwen3:1.7b"]
-    if not rows:
+    if not rows:  # keep the paper compilable while the cross-model runs are pending
+        (OUT / "cross_model_table.tex").write_text(
+            "\\begin{tabular}{l}\n\\toprule\nCross-model runs pending \\\\\n\\bottomrule\n\\end{tabular}\n")
         return
     strategies = [s for s in ORDER if s in set(main.strategy)]
     lines = ["\\begin{tabular}{l" + "c" * len(rows) + "}", "\\toprule",

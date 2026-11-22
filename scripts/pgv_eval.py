@@ -132,6 +132,10 @@ def pools_of(record, e, stage_views=None):
                 break
         else:
             pools.append({"answer": c["answer"], "members": [(c, w)]})
+    # report the value the deployed TRACE vote would report (trace.pool_vote): the heaviest
+    # positively-weighted program in the pool, else the heaviest member
+    for p in pools:
+        p["answer"] = min(p["members"], key=lambda m: (m[1] <= 0, not m[0]["is_program"], -m[1]))[0]["answer"]
     synth = synth_answers(cands, e)
     for p in pools:
         p["synth"] = any(_same_answer(a, p["answer"]) for a in synth)
@@ -483,6 +487,8 @@ def analyses(runs):
         if "perturbed" in prefix or prefix.startswith("indian"):
             continue
         recs = [json.loads(line) for line in open(p)]
+        if len(recs) < len(examples_for(prefix)):
+            continue  # run still in progress
         # samples 1..4 are i.i.d. at T=0.7 (sample 0 is greedy), so they are exchangeable
         votes = [[correct(r, a) for a in r["extra"]["votes"][1:5]] for r in recs if len(r["extra"]["votes"]) >= 5]
         if len(votes) < 40:

@@ -1,18 +1,18 @@
-\begin{tabular}{lccrr}
+\begin{tabular}{lccccccrr}
 \toprule
-Method & FinQA\textsuperscript{D} (100) & TAT-QA\textsuperscript{D} (100) & Tok/q & Calls \\
+Method & FinQA\textsuperscript{H} (200) & TAT-QA\textsuperscript{H} (200) & IndAR (44) & FinQA-pert (88) & FinQA\textsuperscript{D} (100) & TAT-QA\textsuperscript{D} (100) & Tok/q & Calls \\
 \midrule
-CoT (few-shot) & 52.0$^{\ast}$ {\scriptsize[42,62]} & 73.0 {\scriptsize[64,82]} & 2.7k & 1.0 \\
-PoT & 57.0 {\scriptsize[48,67]} & 67.0$^{\ast}$ {\scriptsize[58,76]} & 2.5k & 1.0 \\
-CoT-SC (5) & 51.0$^{\ast}$ {\scriptsize[41,61]} & 74.0 {\scriptsize[65,83]} & 13.7k & 5.0 \\
-PoT-SC (5) & 56.0 {\scriptsize[46,66]} & 67.0$^{\ast}$ {\scriptsize[58,76]} & 12.4k & 5.0 \\
-VPSC [prior] & 56.0 {\scriptsize[46,66]} & 67.0$^{\ast}$ {\scriptsize[58,76]} & 12.4k & 5.0 \\
-VPSC-v2 & 56.0$^{\ast}$ {\scriptsize[47,66]} & 79.0 {\scriptsize[71,87]} & 16.5k & 5.0 \\
+CoT (few-shot) & 49.0$^{\ast}$ {\scriptsize[42,56]} & 72.5$^{\ast}$ {\scriptsize[66,78]} & 65.9 {\scriptsize[52,80]} & 50.0$^{\ast}$ {\scriptsize[40,60]} & 52.0$^{\ast}$ {\scriptsize[42,62]} & 73.0 {\scriptsize[64,82]} & 2.8k & 1.0 \\
+PoT & 56.5$^{\ast}$ {\scriptsize[50,64]} & 71.0$^{\ast}$ {\scriptsize[65,77]} & 77.3 {\scriptsize[66,89]} & 55.7 {\scriptsize[45,66]} & 57.0 {\scriptsize[48,67]} & 67.0$^{\ast}$ {\scriptsize[58,76]} & 2.6k & 1.0 \\
+CoT-SC (5) & -- & -- & 65.9 {\scriptsize[52,80]} & -- & 51.0$^{\ast}$ {\scriptsize[41,61]} & 74.0 {\scriptsize[65,83]} & -- & -- \\
+PoT-SC (5) & -- & -- & 77.3 {\scriptsize[66,89]} & -- & 56.0 {\scriptsize[46,66]} & 67.0$^{\ast}$ {\scriptsize[58,76]} & -- & -- \\
+VPSC [prior] & -- & -- & 77.3 {\scriptsize[66,89]} & 54.5 {\scriptsize[44,65]} & 56.0 {\scriptsize[46,66]} & 67.0$^{\ast}$ {\scriptsize[58,76]} & -- & -- \\
+VPSC-v2 & 62.0 {\scriptsize[56,69]} & \textbf{80.0} {\scriptsize[74,85]} & 81.8 {\scriptsize[70,93]} & 60.2 {\scriptsize[50,70]} & 56.0$^{\ast}$ {\scriptsize[47,66]} & 79.0 {\scriptsize[71,87]} & 16.6k & 5.0 \\
 \midrule
-TRACE (full) & 61.0 {\scriptsize[51,70]} & \textbf{81.0} {\scriptsize[73,88]} & 20.2k & 6.2 \\
-TRACE (adaptive) & 61.0 {\scriptsize[51,70]} & \textbf{81.0} {\scriptsize[73,88]} & 14.7k & 4.4 \\
+TRACE (full) & 63.5 {\scriptsize[57,70]} & \textbf{80.0} {\scriptsize[74,86]} & \textbf{86.4} {\scriptsize[75,95]} & 64.8 {\scriptsize[55,74]} & 61.0 {\scriptsize[51,70]} & \textbf{81.0} {\scriptsize[73,88]} & 20.3k & 6.2 \\
+TRACE (adaptive) & 63.5 {\scriptsize[57,70]} & \textbf{80.0} {\scriptsize[74,86]} & \textbf{86.4} {\scriptsize[75,95]} & 64.8 {\scriptsize[55,74]} & 61.0 {\scriptsize[51,70]} & \textbf{81.0} {\scriptsize[73,88]} & 13.8k & 4.1 \\
 \midrule
-TRACE-PG & 65.0 {\scriptsize[55,74]} & \textbf{81.0} {\scriptsize[73,88]} & 20.2k & 6.2 \\
-TRACE-PG (escalated) & \textbf{66.0} {\scriptsize[57,76]} & \textbf{81.0} {\scriptsize[73,88]} & 12.4k & 3.7 \\
+TRACE-PG & \textbf{65.5} {\scriptsize[59,72]} & 78.5 {\scriptsize[72,84]} & 84.1 {\scriptsize[73,93]} & \textbf{65.9} {\scriptsize[56,76]} & 65.0 {\scriptsize[55,74]} & \textbf{81.0} {\scriptsize[73,88]} & 20.3k & 6.2 \\
+TRACE-PG (escalated) & 65.0 {\scriptsize[58,72]} & 79.5 {\scriptsize[74,85]} & 84.1 {\scriptsize[73,93]} & 64.8 {\scriptsize[55,75]} & \textbf{66.0} {\scriptsize[57,76]} & \textbf{81.0} {\scriptsize[73,88]} & 11.6k & 3.5 \\
 \bottomrule
 \end{tabular}

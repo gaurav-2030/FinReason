@@ -1,8 +1,18 @@
 setting,candidate set,oracle coverage,distinct answers / q,unanimous and wrong
+"FinQA-pert test (n=100), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.7613636363636364,1.9318181818181819,0.011363636363636364
+"FinQA-pert test (n=100), Qwen3-1.7B",TRACE: 6 views + repairs,0.7613636363636364,2.1818181818181817,0.0
+"FinQA held-out (n=200), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.715,1.955,0.03
+"FinQA held-out (n=200), Qwen3-1.7B",TRACE: 6 views + repairs,0.72,2.23,0.025
 "FinQA dev-test (n=100), Qwen3-1.7B","PoT-SC: 5 programs, one prompt",0.57,1.31,0.29
 "FinQA dev-test (n=100), Qwen3-1.7B","CoT-SC: 5 CoT paths, one prompt",0.62,1.56,0.12
 "FinQA dev-test (n=100), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.75,2.11,0.01
 "FinQA dev-test (n=100), Qwen3-1.7B",TRACE: 6 views + repairs,0.75,2.37,0.01
+"IndAR test (n=44), Qwen3-1.7B","PoT-SC: 5 programs, one prompt",0.7727272727272727,1.0227272727272727,0.22727272727272727
+"IndAR test (n=44), Qwen3-1.7B","CoT-SC: 5 CoT paths, one prompt",0.7272727272727273,1.2954545454545454,0.1590909090909091
+"IndAR test (n=44), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.9090909090909091,1.5681818181818181,0.0
+"IndAR test (n=44), Qwen3-1.7B",TRACE: 6 views + repairs,0.9090909090909091,1.7045454545454546,0.0
+"TAT-QA held-out (n=200), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.86,1.46,0.025
+"TAT-QA held-out (n=200), Qwen3-1.7B",TRACE: 6 views + repairs,0.875,1.635,0.02
 "TAT-QA dev-test (n=100), Qwen3-1.7B","PoT-SC: 5 programs, one prompt",0.67,1.02,0.31
 "TAT-QA dev-test (n=100), Qwen3-1.7B","CoT-SC: 5 CoT paths, one prompt",0.75,1.18,0.15
 "TAT-QA dev-test (n=100), Qwen3-1.7B","VPSC-v2: 5 calls, 3 views",0.88,1.47,0.02
