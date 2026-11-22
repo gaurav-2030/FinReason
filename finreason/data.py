@@ -123,8 +123,14 @@ LOADERS = {"finqa": load_finqa, "tatqa": load_tatqa, "indian": load_indian}
 
 
 def load_dataset(name, split="test", n=None, seed=42):
-    """Load a dataset split; if n is given, return a fixed random sample of n examples."""
-    examples = LOADERS[name](split)
+    """Load a dataset split; if n is given, return a fixed random sample of n examples.
+    split="heldout" is the test split minus the fixed n=100 sample used during development, so a
+    held-out sample never shares a question with the development sample."""
+    if split == "heldout":
+        used = {e.uid for e in load_dataset(name, "test", n=100, seed=seed)}
+        examples = [e for e in LOADERS[name]("test") if e.uid not in used]
+    else:
+        examples = LOADERS[name](split)
     if n is not None and n < len(examples):
         indices = sorted(random.Random(seed).sample(range(len(examples)), n))
         examples = [examples[i] for i in indices]

@@ -1,0 +1,14 @@
+.venv
+.venv/
+.venv.nosync/
+.venv-old-icloud/
+.cache/
+.pytest_cache/
+__pycache__/
+*.pyc
+.DS_Store
+logs/*
+!logs/*.sh
+data/raw/
+data/indian/reports/
+data/indian/pages/

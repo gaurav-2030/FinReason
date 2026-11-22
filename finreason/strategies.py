@@ -254,4 +254,7 @@ def get_strategy(name):
     if name.startswith("dspy:"):
         from .dspy_opt import DSPyStrategy
         return DSPyStrategy(str(_artifact_path(name)))
+    if name.startswith("trace"):
+        from . import trace
+        return {"trace": trace.trace_strategy, "trace_adaptive": trace.trace_adaptive}[name]
     return STRATEGIES[name]
